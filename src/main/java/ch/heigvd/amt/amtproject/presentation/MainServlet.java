@@ -29,7 +29,7 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String SecondPassword = request.getParameter("secondPassword");
-        User user = new User(name,lastname,password,email,true);
+        User user = new User(name,lastname,password,email,true, 0);
 
         boolean login = true;
 

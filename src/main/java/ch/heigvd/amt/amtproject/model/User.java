@@ -1,5 +1,7 @@
 package ch.heigvd.amt.amtproject.model;
 
+import ch.heigvd.amt.amtproject.business.KeyGenerator;
+
 import javax.naming.Name;
 
 public class User {
@@ -66,5 +68,24 @@ public class User {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public int suspendAccount(String emailUserToSuspend) throws RightException {
+        if(!admin){
+            throw new RightException("You need to be admin to suspend an account");
+        }
+        // TODO : suspenssion du compte
+        // Return 1 if win 0 il error
+        return 1;
+    }
+
+    public int resetPassword(String emailUserToReset, int length ) throws RightException {
+        if(!admin){
+            throw new RightException("You need to be admin to suspend an account");
+        }
+        // TODO: reset la password du compte.
+        String newPassword = KeyGenerator.generateRandomPassword(10);
+        // Return 1 if win 0 il error
+        return 1;
     }
 }

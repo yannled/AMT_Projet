@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V16</title>
+    <title>Register</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -58,8 +58,18 @@
         <div class="wrap-login100 p-t-90 p-b-30 p-r-30 p-l-30">
             <form class="login100-form validate-form">
 					<span class="login100-form-title p-b-40">
-						Login
+						Register
 					</span>
+
+                <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter your first name">
+                    <input class="input100" type="text" name="first-name" placeholder="First Name">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter your last name">
+                    <input class="input100" type="text" name="last-name" placeholder="Last Name">
+                    <span class="focus-input100"></span>
+                </div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter email: ex@abc.xyz">
                     <input class="input100" type="text" name="email" placeholder="Email">
@@ -70,24 +80,22 @@
 						<span class="btn-show-pass">
 							<i class="fa fa fa-eye"></i>
 						</span>
-                    <input class="input100" type="password" name="pass" placeholder="Password">
+                    <input class="input100" type="password" name="pass1" placeholder="Password">
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-20" data-validate = "Please repeate password">
+						<span class="btn-show-pass">
+							<i class="fa fa fa-eye"></i>
+						</span>
+                    <input class="input100" type="password" name="pass2" placeholder="Repeat Password">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn">
-                        Enter
+                        Submit
                     </button>
-                </div>
-
-                <div class="flex-col-c p-t-100">
-						<span class="txt2 p-b-10">
-							Don’t have an account?
-						</span>
-
-                    <a href="#" class="txt3 bo1 hov1">
-                        Sign up now
-                    </a>
                 </div>
 
             </form>

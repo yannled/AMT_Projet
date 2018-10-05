@@ -29,6 +29,8 @@
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
+
+
 </head>
 <body>
 
@@ -52,40 +54,46 @@ s
 </c:if>
 
 <div class="limiter">
-    <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
-        <div class="wrap-login100 p-t-30 p-b-50">
-				<span class="login100-form-title p-b-41">
-					Account Login
-				</span>
-            <form class="login100-form validate-form p-b-33 p-t-5" action="user" method="post">
+    <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
+        <div class="wrap-login100 p-t-90 p-b-30 p-r-30 p-l-30">
+            <form class="login100-form validate-form">
+					<span class="login100-form-title p-b-40">
+						Login
+					</span>
 
-                <div class="wrap-input100 ${nameValidate}" data-validate="${errors[1].errorText}">
-                    <input class="input100" id="name" type="text" name="name" placeholder="Name" value="${errors[1].value}">
-                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter email: ex@abc.xyz">
+                    <input class="input100" type="text" name="email" placeholder="Email">
+                    <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 ${lastNameValidate}" data-validate="${errors[2].errorText}">
-                    <input class="input100" id="lastName" type="text" name="lastname" placeholder="LastName" value="${errors[2].value}">
-                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                <div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
+						<span class="btn-show-pass">
+							<i class="fa fa fa-eye"></i>
+						</span>
+                    <input class="input100" type="password" name="pass" placeholder="Password">
+                    <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 ${emailValidate}" data-validate="${errors[0].errorText}">
-                    <input class="input100" id="email" type="text" name="email" placeholder="Email" value="${errors[0].value}">
-                    <span class="focus-input100" data-placeholder="&#xe80f;"></span>
-                </div>
-
-                <div class="container-login100-form-btn m-t-32">
+                <div class="container-login100-form-btn">
                     <button class="login100-form-btn">
                         Login
                     </button>
                 </div>
+
+                <div class="flex-col-c p-t-100">
+						<span class="txt2 p-b-10">
+							Don’t have an account?
+						</span>
+
+                    <a href="#" class="txt3 bo1 hov1">
+                        Sign up now
+                    </a>
+                </div>
+
             </form>
         </div>
     </div>
 </div>
-
-
-<div id="dropDownSelect1"></div>
 
 <!--===============================================================================================-->
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

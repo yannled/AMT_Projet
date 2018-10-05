@@ -11,11 +11,14 @@
 }
 
 @font-face {
+  font-family: Ubuntu-Medium;
+  src: url('../fonts/ubuntu/Ubuntu-Medium.ttf');
+}
+
+@font-face {
   font-family: Ubuntu-Bold;
   src: url('../fonts/ubuntu/Ubuntu-Bold.ttf');
 }
-
-
 
 
 /*//////////////////////////////////////////////////////////////////
@@ -128,21 +131,21 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Oswald-Bold;
+  font-family: Ubuntu-Bold;
   font-size: 20px;
   color: #333333;
   line-height: 1.2;
 }
 
 .txt2 {
-  font-family: Oswald-Regular;
+  font-family: Ubuntu-Regular;
   font-size: 16px;
   color: #333333;
   line-height: 1.4;
 }
 
 .txt3 {
-  font-family: Oswald-Regular;
+  font-family: Ubuntu-Regular;
   font-size: 16px;
   color: #333333;
   line-height: 1.2;
@@ -201,7 +204,7 @@ iframe {
 }
 
 .login100-form-title {
-  font-family: Oswald-Medium;
+  font-family: Ubuntu-Medium;
   font-size: 30px;
   color: #43383e;
   line-height: 1.2;
@@ -215,7 +218,7 @@ iframe {
 [ Button Login with ]*/
 
 .btn-login-with {
-  font-family: Oswald-Medium;
+  font-family: Ubuntu-Medium;
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
@@ -254,7 +257,7 @@ iframe {
 }
 
 .input100 {
-  font-family: Oswald-Medium;
+  font-family: Ubuntu-Medium;
   font-size: 16px;
   color: #43383e;
   line-height: 1.2;
@@ -358,7 +361,7 @@ iframe {
   background-color: transparent;
   border-radius: 5px;
 
-  font-family: Oswald-Regular;
+  font-family: Ubuntu-Regular;
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
@@ -430,7 +433,7 @@ iframe {
   right: 10px;
   pointer-events: none;
 
-  font-family: Oswald-Regular;
+  font-family: Ubuntu-Regular;
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;

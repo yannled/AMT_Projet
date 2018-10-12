@@ -14,11 +14,11 @@ CREATE TABLE tbPrivilege (
 
 CREATE TABLE tbUser (
 	userId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	lastName varchar(255) NOT NULL,
-    firstName varchar(255) NOT NULL,
-    email varchar(255) NOT NULL UNIQUE,
+	userLastName varchar(255) NOT NULL,
+    userFirstName varchar(255) NOT NULL,
+    userEmail varchar(255) NOT NULL UNIQUE,
 	userSel char(32) NOT NULL,
-	password char(32) NOT NULL,
+	userPassword char(32) NOT NULL,
 	userAvatar blob,
 	privilegeId INT UNSIGNED NOT NULL,
 	statusId INT UNSIGNED NOT NULL,
@@ -32,8 +32,8 @@ CREATE TABLE tbProject (
 	projectName varchar(255) NOT NULL,
     projectDescrition TEXT,
 	projectCreationDate datetime DEFAULT CURRENT_TIMESTAMP,
-	APIKey INT UNSIGNED NOT NULL,
-	APISecret varchar(255) NOT NULL
+	APIKey INT UNSIGNED NOT NULL UNIQUE,
+	APISecret varchar(255) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE tbUserProject (

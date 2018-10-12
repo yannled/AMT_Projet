@@ -8,10 +8,10 @@ import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
 
+@WebServlet("/login")
+public class LoginServlet extends javax.servlet.http.HttpServlet {
 
-@WebServlet("/")
-public class MainServlet extends javax.servlet.http.HttpServlet {
-
+    public static String VUE = "/WEB-INF/pages/login.jsp";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -19,8 +19,7 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
-        //request.getRequestDispatcher("/WEB-INF/pages/view.jsp?page="+page.getCurrentPage()).forward(request, response);
+        request.getRequestDispatcher(VUE).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
@@ -71,6 +70,6 @@ public class MainServlet extends javax.servlet.http.HttpServlet {
 
 
         //request.setAttribute("value", value);
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        request.getRequestDispatcher(VUE).forward(request, response);
     }
 }

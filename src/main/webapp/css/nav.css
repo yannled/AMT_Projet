@@ -1,0 +1,39 @@
+.wrap-nav{
+    width: 100%;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+}
+
+.navbar {
+    opacity: 0.8;
+    padding: 0;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+    padding : 0;
+    border-radius: 10px;
+    width: 150px;
+}
+
+li a {
+    display: block;
+    color: #666666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color:  #808080;
+    border-radius: 10px;
+}

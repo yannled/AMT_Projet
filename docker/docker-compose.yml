@@ -1,0 +1,25 @@
+version : '2'
+
+services :
+  Payara:
+    image: payara/server-web:latest
+    container_name: Payara
+    restart: always
+    ports:
+      - "4848:4848"
+      - "8080:8080"
+    volumes:
+      - ~/payara/apps:/opt/payara41/deployments
+    links:
+      - MySQL
+
+  MySQL:
+    image: mysql
+    container_name: MySQL
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - ~/mysql/data:/var/lib/mysql
+

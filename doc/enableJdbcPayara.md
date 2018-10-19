@@ -10,7 +10,7 @@
 * dans cet archive prendre mysql-connector-java-x.x.x.jar
 * l'extraire dans "payaraX\javadb\lib\"
 
-### Partie server
+### Partie serveur
 
 * lancer le serveur payara
 * aller sur la page admin par défaut http://localhost:4848/
@@ -36,4 +36,14 @@
 * si ceci apparait 
 ![alt](img/8.png)
 
-* c'est bon sinon recommencer 
+* c'est bon? sinon recommencer 
+
+* aller dans JDBC Ressource
+![alt](img/9.png)
+* cliquer sur new
+![alt](img/10.png)
+  * le Pool Name est celui précédemment créé
+  * le JNDI Name doit être le même que celui se trouvant dans "persistence.xml" du projet
+![alt](img/11.png) ![alt](img/12.png)
+
+* rerun payara et normalement c'est bon !!!

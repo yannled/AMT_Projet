@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
@@ -29,21 +30,24 @@
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/pages.css">
+    <link rel="stylesheet" type="text/css" href="css/projects.css">
     <!--===============================================================================================-->
 
 
 </head>
 <body>
-
+<%@ include file="include/AddAppModal.jsp" %>
 <div class="limiter">
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <%@ include file="include/nav.jsp" %>
             <div class="wrap-main">
                 <div class="projects-left">
-
+                    <ul>
+                        <li><button data-toggle="modal" data-target="#addApp">AddApplication</button></li>
+                    </ul>
                 </div>
                 <div class="projects-right">
-
+                    <%@ include file="include/listapp.jsp" %>
                 </div>
             </div>
     </div>

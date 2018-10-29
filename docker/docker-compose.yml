@@ -11,7 +11,7 @@ services :
     volumes:
       - ~/payara:/opt/payara41/deployments
     links:
-      - MySQL
+      - MySQL : db
 
   MySQL:
     image: mysql

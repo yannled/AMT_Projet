@@ -5,14 +5,14 @@ import ch.heigvd.amt.amtproject.business.KeyGenerator;
 public class Application {
     private String name;
     private String description;
-    private int apiKey;
     private String apiSecret;
+    private int apikey;
 
     public Application(String name, String description){
         this.name = name;
         this.description = description;
-        apiKey = KeyGenerator.generateNumberKey();
-        apiSecret = KeyGenerator.generateRandomKey();
+        this.apikey = KeyGenerator.generateNumberKey();
+        this.apiSecret = KeyGenerator.generateRandomKey();
     }
 
     public String getName() {
@@ -29,5 +29,21 @@ public class Application {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getApiSecret() {
+        return apiSecret;
+    }
+
+    public void setApiSecret(String apiSecret) {
+        this.apiSecret = apiSecret;
+    }
+
+    public int getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(int apikey) {
+        this.apikey = apikey;
     }
 }

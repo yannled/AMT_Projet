@@ -35,42 +35,36 @@
 <body>
 
 <c:set var="emailValidate" value=""/>
-<c:set var="nameValidate" value=""/>
-<c:set var="lastNameValidate" value=""/>
+<c:set var="passwordvalidate" value=""/>
 
 <!-- Test email -->
 <c:if test="${errors[0].error}">
     <c:set var="emailValidate" value="alert-validate"/>
 </c:if>
 
-<!-- Test name -->
+<!-- Test password -->
 <c:if test="${errors[1].error}">
-    <c:set var="nameValidate" value="alert-validate"/>
-</c:if>
-
-<!-- Test lastname -->
-<c:if test="${errors[2].error}">
-    <c:set var="lastNameValidate" value="alert-validate"/>
+    <c:set var="passwordvalidate" value="alert-validate"/>
 </c:if>
 
 <div class="limiter">
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <div class="wrap-login100 p-t-90 p-b-30 p-r-30 p-l-30">
-            <form class="login100-form validate-form">
+            <form action="login" method="post" class="login100-form validate-form">
 					<span class="login100-form-title p-b-40">
 						Login
 					</span>
 
-                <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter email: ex@abc.xyz">
-                    <input class="input100" type="text" name="email" placeholder="Email">
+                <div class="wrap-input100 m-b-16 ${emailValidate}" data-validate="${errors[0].errorText}">
+                    <input class="input100" type="text" name="email" placeholder="Email" value="${errors[0].value}">
                     <span class="focus-input100"></span>
                 </div>
 
-                <div class="wrap-input100 validate-input m-b-20" data-validate = "Please enter password">
+                <div class="wrap-input100 m-b-20 ${passwordvalidate}" data-validate = "${errors[1].errorText}">
 						<span class="btn-show-pass">
 							<i class="fa fa fa-eye"></i>
 						</span>
-                    <input class="input100" type="password" name="pass" placeholder="Password">
+                    <input class="input100" type="password" name="password" placeholder="Password">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -85,7 +79,7 @@
 							Don’t have an account?
 						</span>
 
-                    <a href="#" class="txt3 bo1 hov1">
+                    <a href="register" class="txt3 bo1 hov1">
                         Sign up now
                     </a>
                 </div>

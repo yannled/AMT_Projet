@@ -1,17 +1,25 @@
 package ch.heigvd.amt.amtproject.presentation;
 
+import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.model.User;
 
+import ch.heigvd.amt.amtproject.model.Error;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @WebServlet("/login")
 public class LoginServlet extends javax.servlet.http.HttpServlet {
 
     public static String VUE = "/WEB-INF/pages/login.jsp";
+    public static String PROJECTS = "/WEB-INF/pages/projects.jsp";
+
+    //@EJB
+    //UserDAO userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -23,53 +31,51 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String lastname = request.getParameter("lastname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String SecondPassword = request.getParameter("secondPassword");
-        User user = new User(name,lastname,password,email,true, 0);
 
-        boolean login = true;
+        List<Error> errors = new ArrayList<>();
+        Error errorPassword = new Error();
+        Error errorEmail = new Error();
 
-        /*
+        boolean syntaxOK = true;
+
         if (!email.contains("@")) {
             errorEmail.setErrorText( "bad email structure !");
             errorEmail.setError(true);
-            login = false;
+            syntaxOK = false;
         }
         else {
             errorEmail.setValue(email);
         }
 
-        if (name.equals("")){
-            errorName.setErrorText("name empty !");
-            errorName.setError(true);
-            login = false;
-        }
-        else {
-            errorName.setValue(name);
+        if (password.equals("")){
+            errorPassword.setErrorText("password empty !");
+            errorPassword.setError(true);
+            syntaxOK = false;
         }
 
-        if (lastname.isEmpty()){
-            errorLastName.setErrorText("lastName empty !");
-            errorLastName.setError(true);
-            login = false;
-        }
-        else {
-            errorLastName.setValue(lastname);
-        }
-        */
-
-        if (login) {
-            //User user = new User(name, lastname, email);
-            //users.add(user);
-            doGet(request, response);
+        if (syntaxOK) {
+            request.getRequestDispatcher("projects");
             return;
+            //TODO : Faire les tests si dessous avec la base de donnée
+            /*
+            if(userDAO.isExist(email, password)) {
+                request.getRequestDispatcher(PROJECTS).forward(request, response);                return;
+            }
+            else{
+                errorPassword.setErrorText("password or email false");
+                errorPassword.setError(true);
+                errorEmail.setErrorText( "bad email structure !");
+                errorEmail.setError(true);
+            }
+            */
         }
 
+        errors.add(errorEmail);
+        errors.add(errorPassword);
 
-        //request.setAttribute("value", value);
+        request.setAttribute("errors", errors);
         request.getRequestDispatcher(VUE).forward(request, response);
     }
 }

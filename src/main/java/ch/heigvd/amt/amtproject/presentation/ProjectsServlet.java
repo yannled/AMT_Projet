@@ -1,12 +1,16 @@
 package ch.heigvd.amt.amtproject.presentation;
 
+import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAO;
+import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.model.Pagination;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +22,18 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     public static String VUE = "/WEB-INF/pages/projects.jsp";
     private List<Application> applications;
     private Pagination pagination;
+
+    //@EJB
+    //ApplicationDAO applicationDAO;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+    }
+
+    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
+        // applications = applicationDAO.findAll();
         pagination = new Pagination(1,1);
         applications = new ArrayList<>();
         Application app1 = new Application("nametest1", "description");
@@ -31,9 +43,6 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         applications.add(app2);
         applications.add(app3);
 
-    }
-
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         //PAGINATION
         int recordPerPage = 2;
 
@@ -62,6 +71,57 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(VUE).forward(request, response);
+        String action = request.getParameter("action");
+        String name = "";
+        String description = "";
+        String apiKey = "";
+
+        if(action.equals("MODIFY")){
+            apiKey = request.getParameter("apiKey");
+            name = request.getParameter("name");
+            description = request.getParameter("description");
+
+            //TODO Recuperer l'application de la db
+            //Application myApplicationToModify = applicationDAO.findByApiKey();
+            Application myApplicationToModify = new Application("test", "test");
+
+            if(myApplicationToModify != null) {
+                myApplicationToModify.setName(name);
+                myApplicationToModify.setDescription(description);
+                //TODO Faire la modification dans la db
+                //applicationDAO.update(myApplicationToModify);
+            }
+            else{
+                //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
+            }
+        }
+
+        else if(action.equals("DELETE")){
+            apiKey = request.getParameter("apiKey");
+
+            //TODO Recuperer l'application de la db
+            //Application myApplicationToModify = applicationDAO.findByApiKey();
+            Application myApplicationToModify = new Application("test", "test");
+
+            if(myApplicationToModify != null) {
+                //TODO Faire la modification dans la db
+                //applicationDAO.delete(myApplicationToModify);
+            }
+            else{
+                //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
+            }
+        }
+
+        else if(action.equals("ADD")){
+            name = request.getParameter("name");
+            description = request.getParameter("description");
+            Application application = new Application(name, description);
+            //TODO Faire la modification dans la db
+            //applicationDAO.create(application);
+        }
+        else{
+
+        }
+        doGet(request, response);
     }
 }

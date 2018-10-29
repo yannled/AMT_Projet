@@ -2,7 +2,7 @@ version : '2'
 
 services :
   Payara:
-    image: payara/server-web:latest
+    image: payara_server_db:latest
     container_name: Payara
     restart: always
     ports:

@@ -21,6 +21,7 @@ services :
     ports:
         - "3306:3306"
     environment:
+      MYSQL_DATABASE: AMTProjectDatabase
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./mysql:/var/lib/mysql

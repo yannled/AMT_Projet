@@ -24,4 +24,7 @@ services :
       MYSQL_DATABASE: AMTProjectDatabase
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./mysql:/var/lib/mysql
+      - dbdata:/var/lib/mysql
+
+volumes:
+    dbdata:

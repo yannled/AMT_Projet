@@ -19,7 +19,8 @@ import java.util.List;
 @WebServlet("/register")
 public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
-    public String VUE = "/WEB-INF/pages/register.jsp";
+    public String REGISTER = "/WEB-INF/pages/register.jsp";
+    public String LOGIN = "/WEB-INF/pages/login.jsp";
 
     @EJB
     private UserDAOLocal userDAO;
@@ -30,7 +31,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(REGISTER).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
@@ -109,6 +110,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
         if (syntaxOK) {
             try {
+                // TODO il pourrait etre judicieux de faire le hash du mot de passe encore plus tot dans le programme
                 User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1);
                 userDAO.create(user);
             }catch (NoSuchAlgorithmException | InvalidKeySpecException e){
@@ -116,8 +118,8 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
                 System.out.print(e.getMessage());
             }
 
-            // TODO: redirect to login page, is not working
-            //request.getRequestDispatcher("login");
+
+            request.getRequestDispatcher(LOGIN).forward(request, response);
             return;
         }
 
@@ -128,6 +130,6 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
         errors.add(errorSecondPassword);
 
         request.setAttribute("errors", errors);
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(REGISTER).forward(request, response);
     }
 }

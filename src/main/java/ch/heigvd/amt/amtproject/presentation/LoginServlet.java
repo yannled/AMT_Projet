@@ -1,8 +1,9 @@
 package ch.heigvd.amt.amtproject.presentation;
 
-import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
+import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
 
+import javax.ejb.EJB;
 import ch.heigvd.amt.amtproject.model.Error;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -18,8 +19,8 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
     public static String VUE = "/WEB-INF/pages/login.jsp";
     public static String PROJECTS = "/WEB-INF/pages/projects.jsp";
 
-    //@EJB
-    //UserDAO userDAO;
+    @EJB
+    private UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -56,20 +57,22 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         }
 
         if (syntaxOK) {
-            request.getRequestDispatcher("projects");
-            return;
+            //request.getRequestDispatcher("projects");
+            //return;
             //TODO : Faire les tests si dessous avec la base de donnée
-            /*
-            if(userDAO.isExist(email, password)) {
-                request.getRequestDispatcher(PROJECTS).forward(request, response);                return;
+
+            if(userDAO.isValid(email, password)) {
+                request.getRequestDispatcher(PROJECTS).forward(request, response);
+                return;
             }
             else{
-                errorPassword.setErrorText("password or email false");
+                errorPassword.setErrorText("wrong password");
                 errorPassword.setError(true);
-                errorEmail.setErrorText( "bad email structure !");
+                // TODO correct message, should be more explicit if user not exits -> bad email or wrong password
+                errorEmail.setErrorText( "email not found");
                 errorEmail.setError(true);
             }
-            */
+
         }
 
         errors.add(errorEmail);

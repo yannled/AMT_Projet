@@ -9,4 +9,6 @@ public interface UserDAOLocal extends IGenericDAO<User>{
 
     public Long create(User user);
 
+    public boolean isValid(String emailUser, String password);
+
 }

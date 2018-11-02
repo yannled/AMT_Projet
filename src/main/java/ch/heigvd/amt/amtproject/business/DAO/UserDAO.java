@@ -1,9 +1,11 @@
 package ch.heigvd.amt.amtproject.business.DAO;
 import ch.heigvd.amt.amtproject.model.User;
-
+import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +16,7 @@ import java.util.List;
 public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userSel, userPassword, privilegeId, statusId) VALUES (?,?,?,?,?,?,?)";
-    private final String getUser = "SELECT * FROM tbUser WHERE userId = (?)";
+    private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
@@ -75,8 +77,30 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
         return null;
     }
 
-    public boolean isExist(String emailUser, String password){
-        return true;
+    public boolean isValid(String emailUser, String password) {
+        String email;
+        String passwordHash;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getUserEmailPassword);
+
+            // insert data into statement.
+            ps.setString(1, emailUser);
+
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                email = rs.getString("userEmail");
+                passwordHash = rs.getString("userPassword");
+            } else {
+                return false;
+            }
+
+            return PasswordUtils.validatePassword(password, passwordHash);
+
+        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public boolean isExist(String emailUser){

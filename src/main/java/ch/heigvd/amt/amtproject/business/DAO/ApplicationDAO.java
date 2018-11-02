@@ -1,11 +1,17 @@
 package ch.heigvd.amt.amtproject.business.DAO;
 import ch.heigvd.amt.amtproject.model.Application;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.sql.DataSource;
 import java.util.List;
 
 @Stateless
 public class ApplicationDAO implements IGenericDAO<Application> {
+
+    @Resource(name = "jdbc/AMTCars")
+    DataSource dataSource;
+
     @Override
     public Long create(Application application) {
         return null;

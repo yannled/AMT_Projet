@@ -28,4 +28,4 @@ https://github.com/SoftEng-HEIGVD/Teaching-HEIGVD-AMT-2018-Project
 
 ![1541152884960](/img/1541152884960.png)
 
-![1541153043447](/../../../../../.config/Typora/typora-user-images/1541153043447.png)
+![1541154640004](/img/1541154640004.png)

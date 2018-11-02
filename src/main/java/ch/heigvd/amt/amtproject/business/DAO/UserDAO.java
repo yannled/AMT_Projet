@@ -21,7 +21,7 @@ public class UserDAO implements IGenericDAO<User>{
     public Long create(User user) {
         try (Connection connection = dataSource.getConnection()) {
             ResultSet rs = connection
-                    .prepareStatement(queryCount)
+                    .prepareStatement(createUser)
                     .executeQuery();
             rs.next();
             return rs.getLong(1);

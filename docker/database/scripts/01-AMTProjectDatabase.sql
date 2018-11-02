@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS tbUser (
     userFirstName varchar(255) NOT NULL,
     userEmail varchar(255) NOT NULL UNIQUE,
 	userSel char(32) NOT NULL,
-	userPassword char(32) NOT NULL,
+	userPassword varchar(255) NOT NULL,
 	userAvatar blob,
 	privilegeId INT UNSIGNED NOT NULL,
 	statusId INT UNSIGNED NOT NULL,

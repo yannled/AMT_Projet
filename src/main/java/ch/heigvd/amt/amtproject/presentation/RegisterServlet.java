@@ -1,6 +1,7 @@
 package ch.heigvd.amt.amtproject.presentation;
 
-import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
+import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
+import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import ch.heigvd.amt.amtproject.model.Error;
 import ch.heigvd.amt.amtproject.model.User;
 
@@ -9,6 +10,8 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +19,10 @@ import java.util.List;
 @WebServlet("/register")
 public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
-    public static String VUE = "/WEB-INF/pages/register.jsp";
+    public String VUE = "/WEB-INF/pages/register.jsp";
 
-    //@EJB
-    //UserDAO userDAO;
+    @EJB
+    private UserDAOLocal userDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -105,10 +108,16 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
         }*/
 
         if (syntaxOK) {
-            User user = new User(name, lastname, password, email, false, 1);
-            //TODO : Add user in database
-            //userDAO.create(user);
-            request.getRequestDispatcher("login");
+            try {
+                User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1);
+                userDAO.create(user);
+            }catch (NoSuchAlgorithmException | InvalidKeySpecException e){
+                // TODO: make a better error handle
+                System.out.print(e.getMessage());
+            }
+
+            // TODO: redirect to login page, is not working
+            //request.getRequestDispatcher("login");
             return;
         }
 

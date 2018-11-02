@@ -5,14 +5,16 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Stateless
-public class UserDAO implements IGenericDAO<User>{
+public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
-    private final String createUser = "SELECT count(*) FROM `tires`";
+    private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userSel, userPassword, privilegeId, statusId) VALUES (?,?,?,?,?,?,?)";
+    private final String getUser = "SELECT * FROM tbUser WHERE userId = (?)";
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
@@ -20,11 +22,20 @@ public class UserDAO implements IGenericDAO<User>{
     @Override
     public Long create(User user) {
         try (Connection connection = dataSource.getConnection()) {
-            ResultSet rs = connection
-                    .prepareStatement(createUser)
-                    .executeQuery();
-            rs.next();
-            return rs.getLong(1);
+            PreparedStatement ps = connection.prepareStatement(createUser);
+
+            // insert data into statement.
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, "");
+            ps.setString(5, user.getPassword());
+            ps.setInt(6, user.isAdmin() ? 1 : 0 );
+            ps.setInt(7, 1);
+
+            ps.execute();
+
+            return null;//rs.getLong(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

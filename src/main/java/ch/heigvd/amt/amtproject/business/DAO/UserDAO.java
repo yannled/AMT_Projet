@@ -4,17 +4,30 @@ import ch.heigvd.amt.amtproject.model.User;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Stateless
 public class UserDAO implements IGenericDAO<User>{
+
+    private final String createUser = "SELECT count(*) FROM `tires`";
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
 
     @Override
     public Long create(User user) {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            ResultSet rs = connection
+                    .prepareStatement(queryCount)
+                    .executeQuery();
+            rs.next();
+            return rs.getLong(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

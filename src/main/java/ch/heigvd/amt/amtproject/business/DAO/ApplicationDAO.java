@@ -9,7 +9,7 @@ import java.util.List;
 @Stateless
 public class ApplicationDAO implements IGenericDAO<Application> {
 
-    @Resource(name = "jdbc/AMTCars")
+    @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
 
     @Override

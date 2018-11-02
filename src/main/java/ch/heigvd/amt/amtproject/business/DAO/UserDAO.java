@@ -1,11 +1,17 @@
 package ch.heigvd.amt.amtproject.business.DAO;
 import ch.heigvd.amt.amtproject.model.User;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.sql.DataSource;
 import java.util.List;
 
 @Stateless
 public class UserDAO implements IGenericDAO<User>{
+
+    @Resource(name = "jdbc/AMTProject")
+    DataSource dataSource;
+
     @Override
     public Long create(User user) {
         return null;

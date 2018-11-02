@@ -1,6 +1,7 @@
 package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAO;
+import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAOLocal;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
@@ -23,8 +24,8 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     private List<Application> applications;
     private Pagination pagination;
 
-    //@EJB
-    //ApplicationDAO applicationDAO;
+    @EJB
+    private ApplicationDAOLocal applicationDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -33,15 +34,14 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
-        // applications = applicationDAO.findAll();
+        applications = applicationDAO.getProjectsAll();
         pagination = new Pagination(1,1);
-        applications = new ArrayList<>();
-        Application app1 = new Application("nametest1", "description");
-        Application app2 = new Application("nametest2", "description");
-        Application app3 = new Application("nametest3", "description");
-        applications.add(app1);
-        applications.add(app2);
-        applications.add(app3);
+        //Application app1 = new Application("nametest1", "description");
+        //Application app2 = new Application("nametest2", "description");
+        //Application app3 = new Application("nametest3", "description");
+        //applications.add(app1);
+        //applications.add(app2);
+        //applications.add(app3);
 
         //PAGINATION
         int recordPerPage = 2;

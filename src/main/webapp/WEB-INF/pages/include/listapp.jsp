@@ -43,14 +43,18 @@
                         </div>
                         <form action="projects" method="post">
                             <input class="hide" type="text" name="action" value="MODIFY">
-                            <input class="hide" type="text" name="apiKey" value=<c:out value="${ application.apikey }"/>>
+                            <input class="hide" type="text" name="apiKey" value=<c:out
+                                    value="${ application.apikey }"/>>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="ApplicationName">Application name</label>
-                                    <input type="text" class="form-control" id="ApplicationName" name="name" aria-describedby="application name"
+                                    <input type="text" class="form-control" id="ApplicationName" name="name"
+                                           aria-describedby="application name"
                                            placeholder="<c:out value="${ application.name }"/>">
                                     <label for="ApplicationDescription">Application description</label>
-                                    <textarea class="form-control" name="description" placeholder="<c:out value="${ application.description }"/>" id="ApplicationDescription" rows="5"></textarea>
+                                    <textarea class="form-control" name="description"
+                                              placeholder="<c:out value="${ application.description }"/>"
+                                              id="ApplicationDescription" rows="5"></textarea>
                                 </div>
 
                             </div>
@@ -77,10 +81,12 @@
                         </div>
                         <form action="projects" method="post">
                             <input class="hide" type="text" name="action" value="DELETE">
-                            <input class="hide" type="text" name="apiKey" value=<c:out value="${ application.apikey }"/>>
+                            <input class="hide" type="text" name="apiKey" value=<c:out
+                                    value="${ application.apikey }"/>>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <h6> Are you sure to delete this application ? : <strong><c:out value="${ application.name }"/></strong></h6>
+                                    <h6> Are you sure to delete this application ? : <strong><c:out
+                                            value="${ application.name }"/></strong></h6>
                                 </div>
 
                             </div>
@@ -96,21 +102,26 @@
         </c:forEach>
     </table>
 </div>
-<!-- PAGINATION -->
-<%--For displaying Previous link except for the 1st page --%>
-<c:if test="${currentPage != 1}">
-    <td>
-        <form action="projects" method="get">
-            <input style="display: none" type="text" name="value" placeholder="value" value="${currentPage - 1}">
-            <button>Previous</button>
-        </form>
-    </td>
-</c:if>
 
-<div>
+<!-- PAGINATION -->
+
+<div class="pagination pagination-center">
+    <%--For displaying Previous link except for the 1st page --%>
+    <c:if test="${currentPage != 1}">
+        <div class="mr-3">
+            <td>
+                <form action="projects" method="get">
+                    <input style="display: none" type="text" name="value" placeholder="value"
+                           value="${currentPage - 1}">
+                    <button>Previous</button>
+                </form>
+            </td>
+        </div>
+    </c:if>
+
     <%--For displaying Page numbers.
     The when condition does not display a link for the current page--%>
-    <table border="1" cellpadding="5" cellspacing="5">
+    <table class="pagination-table" border="0" cellpadding="5" cellspacing="5">
         <tr>
             <c:forEach begin="1" end="${noOfPages}" var="i">
                 <c:choose>
@@ -118,7 +129,7 @@
                         <form action="projects" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
-                                <button>${i}</button>
+                                <button class="font-weight-bold fs-20">${i}</button>
                             </td>
                         </form>
                     </c:when>
@@ -138,10 +149,14 @@
 
     <%--For displaying Next link --%>
     <c:if test="${currentPage lt noOfPages}">
-    <td>
-        <form action="projects" method="get">
-            <input style="display: none" type="text" name="value" placeholder="value" value="${currentPage + 1}">
-            <button>Next</button>
-        </form>
-        </c:if>
+        <div class="ml-3">
+            <td>
+                <form action="projects" method="get">
+                    <input style="display: none" type="text" name="value" placeholder="value"
+                           value="${currentPage + 1}">
+                    <button>Next</button>
+                </form>
+            </td>
+        </div>
+    </c:if>
 </div>

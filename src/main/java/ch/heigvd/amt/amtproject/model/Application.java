@@ -8,6 +8,8 @@ public class Application {
     private String apiSecret;
     private int apikey;
 
+    public Application(){}
+
     public Application(String name, String description){
         this.name = name;
         this.description = description;

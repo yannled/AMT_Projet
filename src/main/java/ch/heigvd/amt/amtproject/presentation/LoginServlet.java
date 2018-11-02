@@ -1,7 +1,6 @@
 package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
-import ch.heigvd.amt.amtproject.model.User;
 
 import javax.ejb.EJB;
 import ch.heigvd.amt.amtproject.model.Error;

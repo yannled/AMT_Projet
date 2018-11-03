@@ -36,12 +36,6 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
         applications = applicationDAO.getProjectsAll();
         pagination = new Pagination(1,1);
-        //Application app1 = new Application("nametest1", "description");
-        //Application app2 = new Application("nametest2", "description");
-        //Application app3 = new Application("nametest3", "description");
-        //applications.add(app1);
-        //applications.add(app2);
-        //applications.add(app3);
 
         //PAGINATION
         int recordPerPage = 2;
@@ -81,15 +75,12 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
             name = request.getParameter("name");
             description = request.getParameter("description");
 
-            //TODO Recuperer l'application de la db
-            //Application myApplicationToModify = applicationDAO.findByApiKey();
-            Application myApplicationToModify = new Application("test", "test");
+            Application myApplicationToModify = applicationDAO.findByApiKey(Integer.parseInt(apiKey));
 
             if(myApplicationToModify != null) {
                 myApplicationToModify.setName(name);
                 myApplicationToModify.setDescription(description);
-                //TODO Faire la modification dans la db
-                //applicationDAO.update(myApplicationToModify);
+                applicationDAO.update(myApplicationToModify);
             }
             else{
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
@@ -99,13 +90,10 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         else if(action.equals("DELETE")){
             apiKey = request.getParameter("apiKey");
 
-            //TODO Recuperer l'application de la db
-            //Application myApplicationToModify = applicationDAO.findByApiKey();
-            Application myApplicationToModify = new Application("test", "test");
+            Application myApplicationToModify = applicationDAO.findByApiKey(Integer.parseInt(apiKey));
 
             if(myApplicationToModify != null) {
-                //TODO Faire la modification dans la db
-                //applicationDAO.delete(myApplicationToModify);
+                applicationDAO.delete(myApplicationToModify);
             }
             else{
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
@@ -116,8 +104,7 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
             name = request.getParameter("name");
             description = request.getParameter("description");
             Application application = new Application(name, description);
-            //TODO Faire la modification dans la db
-            //applicationDAO.create(application);
+            applicationDAO.create(application);
         }
         else{
 

@@ -1,9 +1,12 @@
 package ch.heigvd.amt.amtproject.business.DAO;
+import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import ch.heigvd.amt.amtproject.model.Application;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +17,14 @@ import java.util.List;
 @Stateless
 public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOLocal {
 
-    private final String getProjectsByPage = "SELECT projectName, projectDescription, projectCreationDate, APIKey, APISecret FROM tbProject   " +
+    private final String createApplication = "INSERT INTO tbProject (projectName, projectDescrition ,APIKey, APISecret) VALUES (?,?,?,?)";
+    private final String modifyApplication = "UPDATE tbProject SET projectName = ?, projectDescrition = ? WHERE APIKey = ? AND APISecret = ?";
+    private final String getProjectsByPage = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject   " +
             "ORDER BY projectId OFFSET 10 * ((?) - 1) ROWS FETCH NEXT 10 ROWS ONLY;";
     private final String getProjects = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject";
+    private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
+    private final String deleteProject = "DELETE FROM tbProject WHERE APIKey = ?";
+    private final String deleteRelationBetweenAppAndUser = "DELETE FROM tbUserProject WHERE projectId = ?";
 
 
     @Resource(name = "jdbc/AMTProject")
@@ -24,7 +32,21 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     @Override
     public Long create(Application application) {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(createApplication);
+
+            // insert data into statement.
+            ps.setString(1, application.getName());
+            ps.setString(2, application.getDescription());
+            ps.setInt(3, application.getApikey());
+            ps.setString(4, application.getApiSecret());
+
+            ps.execute();
+
+            return null;//rs.getLong(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Application> getProjectsAll(){
@@ -66,7 +88,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             while (rs.next()) {
                 Application application = new Application();
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescription"));
+                application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -87,12 +109,52 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     @Override
     public void update(Application application) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(modifyApplication);
 
+            // insert data into statement.
+            ps.setString(1, application.getName());
+            ps.setString(2, application.getDescription());
+            ps.setInt(3, application.getApikey());
+            ps.setString(4, application.getApiSecret());
+
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void delete(Application application) {
+        int idApplication = 0;
+        try (Connection connection = dataSource.getConnection()) {
 
+            //Get id application
+            PreparedStatement getProject = connection.prepareStatement(getProjectsByApiKey);
+
+            // insert data into statement.
+            getProject.setInt(1, application.getApikey());
+
+            getProject.execute();
+            ResultSet rs = getProject.executeQuery();
+            while (rs.next()) {
+                idApplication = rs.getInt("projectId");
+            }
+            //Delete relation between the app and the user
+            PreparedStatement deleteBetweenUserAndApp = connection.prepareStatement(deleteRelationBetweenAppAndUser);
+            deleteBetweenUserAndApp.setInt(1, idApplication);
+            deleteBetweenUserAndApp.execute();
+
+            //Delete the app
+            PreparedStatement deleteApp = connection.prepareStatement(deleteProject);
+            // insert data into statement.
+            deleteApp.setInt(1, application.getApikey());
+
+            deleteApp.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -105,8 +167,28 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
         return null;
     }
 
-    public Application findByApiKey(int id) {
-        return null;
+    public Application findByApiKey(int apiKey) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getProjectsByApiKey);
+
+            // insert data into statement.
+            ps.setInt(1, apiKey);
+
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            Application application = new Application();
+            while (rs.next()) {
+                application.setName(rs.getString("projectName"));
+                application.setDescription(rs.getString("projectDescrition"));
+                application.setApikey(rs.getInt("APIKey"));
+                application.setApiSecret(rs.getString("APISecret"));
+            }
+
+            return application;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

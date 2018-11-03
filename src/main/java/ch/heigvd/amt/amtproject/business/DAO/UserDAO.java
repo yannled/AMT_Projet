@@ -1,4 +1,5 @@
 package ch.heigvd.amt.amtproject.business.DAO;
+import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -17,6 +19,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userSel, userPassword, privilegeId, statusId) VALUES (?,?,?,?,?,?,?)";
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
+    private final String getUsers ="SELECT userLastName, userFirstName, userEmail, privilegeId, statusId FROM  tbUser";
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
@@ -74,7 +77,33 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     @Override
     public List<User> findAll() {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getUsers);
+
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setLastName(rs.getString("userLastName"));
+                user.setName(rs.getString("userFirstName")); // TODO correct projectDescription name in database
+                user.setEmail(rs.getString("userEmail"));
+                user.setState(rs.getInt("statusId"));
+                int value = rs.getInt("privilegeId");
+                if(value == 0) {
+                    user.setAdmin(false);
+                }
+                if(value == 1) {
+                    user.setAdmin(true);
+                }
+                users.add(user);
+            }
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isValid(String emailUser, String password) {

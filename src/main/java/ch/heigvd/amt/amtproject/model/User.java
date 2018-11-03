@@ -22,6 +22,8 @@ public class User {
         this.state = state;
     }
 
+    public User(){}
+
     public String getName() {
         return name;
     }

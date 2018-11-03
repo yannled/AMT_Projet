@@ -15,7 +15,7 @@
         </ul>
         <ul class="ml-auto">
             <li>
-                <a href="#">Profile</a>
+                <a href="profile">Profile</a>
             </li>
             <li>
             <a href="#">Logout</a>

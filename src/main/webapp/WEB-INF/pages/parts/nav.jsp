@@ -10,15 +10,16 @@
 <div class="wrap-nav">
     <nav class="navbar">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Projects</a></li>
+            <li><a href="login">Home</a></li>
+            <li><a href="projects">Projects</a></li>
+            <li><a href="admin">App Developers</a></li>
         </ul>
         <ul class="ml-auto">
             <li>
                 <a href="profile">Profile</a>
             </li>
             <li>
-            <a href="#">Logout</a>
+            <a href="logout">Logout</a>
             </li>
         </ul>
     </nav>

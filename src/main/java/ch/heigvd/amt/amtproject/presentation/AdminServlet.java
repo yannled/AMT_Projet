@@ -1,6 +1,5 @@
 package ch.heigvd.amt.amtproject.presentation;
 
-import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
 
@@ -11,10 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/profile")
-public class ProfileServlet extends javax.servlet.http.HttpServlet {
+@WebServlet("/admin")
+public class AdminServlet extends javax.servlet.http.HttpServlet {
 
-    public static String PROFILE = "/WEB-INF/pages/profile.jsp";
+    public static String ADMIN = "/WEB-INF/pages/admin.jsp";
     private List<User> users;
 
     @EJB
@@ -27,10 +26,9 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         users = userDAO.findAll();
-        //TODO Get the current user
-        request.setAttribute("currentUser", users.get(0));
-        request.setAttribute("users", users);
-        request.getRequestDispatcher(PROFILE).forward(request, response);
+        //TODO use pagination structure to get a users list
+
+        request.getRequestDispatcher(ADMIN).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {

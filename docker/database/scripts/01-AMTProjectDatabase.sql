@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS tbUser (
 	userLastName varchar(255) NOT NULL,
     userFirstName varchar(255) NOT NULL,
     userEmail varchar(255) NOT NULL UNIQUE,
-	userSel char(32) NOT NULL,
 	userPassword varchar(255) NOT NULL,
 	userAvatar blob,
 	privilegeId INT UNSIGNED NOT NULL,
@@ -39,6 +38,6 @@ CREATE TABLE IF NOT EXISTS tbUserProject (
 	userId INT UNSIGNED NOT NULL,
 	projectId INT UNSIGNED NOT NULL,
 	CONSTRAINT pk_user_project PRIMARY KEY (userId, projectId),
-	CONSTRAINT fk_tbUserProject_tbProject FOREIGN KEY (projectId) REFERENCES tbProject (projectId) ON UPDATE CASCADE,
+	CONSTRAINT fk_tbUserProject_tbProject FOREIGN KEY (projectId) REFERENCES tbProject (projectId) ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_tbUserProject_tbUser FOREIGN KEY (userId) REFERENCES tbUser (userId) ON UPDATE CASCADE
 );

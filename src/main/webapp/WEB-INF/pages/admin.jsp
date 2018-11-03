@@ -15,9 +15,11 @@
         <%@ include file="parts/nav.jsp" %>
             <div class="wrap-main">
                 <div class="projects-left">
+                    <nav class="navbar navbar-left">
                     <ul>
-                        <li><button data-toggle="modal" data-target="#action">action</button></li>
+                        <li><a data-toggle="modal" data-target="#action">action</a></li>
                     </ul>
+                    </nav>
                 </div>
                 <div class="projects-right">
                    application developers list

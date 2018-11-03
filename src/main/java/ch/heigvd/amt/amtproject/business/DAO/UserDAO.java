@@ -53,7 +53,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     @Override
     public void update(User user) {
-
+        
     }
 
     @Override

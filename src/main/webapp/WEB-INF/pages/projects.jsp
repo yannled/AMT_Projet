@@ -14,9 +14,11 @@
         <%@ include file="parts/nav.jsp" %>
             <div class="wrap-main">
                 <div class="projects-left">
+                    <nav class="navbar navbar-left">
                     <ul>
-                        <li><button data-toggle="modal" data-target="#addApp">AddApplication</button></li>
+                        <li><a data-toggle="modal" data-target="#addApp">Add Application</a></li>
                     </ul>
+                    </nav>
                 </div>
                 <div class="projects-right">
                     <%@ include file="include/listapp.jsp" %>

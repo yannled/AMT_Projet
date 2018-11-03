@@ -26,4 +26,5 @@
 <link rel="stylesheet" type="text/css" href="css/pages.css">
 <link rel="stylesheet" type="text/css" href="css/projects.css">
 <link rel="stylesheet" type="text/css" href="css/profile.css">
+<link rel="stylesheet" type="text/css" href="css/nav.css">
 <!--===============================================================================================-->

@@ -28,12 +28,24 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         users = userDAO.findAll();
         //TODO Get the current user
+        if(request.getParameter("modify") != null){
+            request.setAttribute("modify", true);
+        }else{
+            request.setAttribute("modify", false);
+        }
         request.setAttribute("currentUser", users.get(0));
         request.setAttribute("users", users);
         request.getRequestDispatcher(PROFILE).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+
+
+
+        userDAO.update();
 
         doGet(request, response);
     }

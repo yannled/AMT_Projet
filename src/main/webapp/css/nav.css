@@ -37,3 +37,11 @@ li a:hover {
     background-color:  #808080;
     border-radius: 10px;
 }
+
+.navbar-left li{
+    width: 100%;
+}
+
+.navbar-left ul{
+    width: 100%;
+}

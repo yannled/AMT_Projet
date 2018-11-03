@@ -13,15 +13,130 @@
 <div class="limiter">
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <%@ include file="parts/nav.jsp" %>
-            <div class="wrap-main">
-                <div class="projects-left">
+        <div class="wrap-main">
+            <div class="projects-left">
+                <nav class="navbar navbar-left">
                     <ul>
-                        <li><button data-toggle="modal" data-target="#resetPassw">Reset Password</button></li>
-                        <li><button data-toggle="modal" data-target="#changePrivilege">Change Privilege</button></li>
-                        <li><button data-toggle="modal" data-target="#changeSuspend">Suspend Account</button></li>
+                        <li><a data-toggle="modal" data-target="#resetPassw">Reset Password</a></li>
+                        <li><a data-toggle="modal" data-target="#changePrivilege">Change Privilege</a></li>
+                        <li><a data-toggle="modal" data-target="#changeSuspend">Suspend Account</a></li>
+                        <li><a href="profile?modify">Modify Profile</a></li>
                     </ul>
+                </nav>
+            </div>
+            <div class="projects-right">
+                <div class="col-md-10 col-lg-10 toppad">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Joel Schar</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row toppad">
+                                <div class="col-md-4 col-lg-2" align="center">
+                                    <div class="profile-pic">
+                                        <img alt="User Pic"
+                                             src="images/squirrel.jpg">
+                                    </div>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${modify == true}">
+                                        <div class="col-md-6 col-lg-6">
+
+                                            <form action="profile" method="post">
+                                                <input class="hide" type="text" name="action" value="MODIFY">
+                                                <div class="form-group">
+                                                    <table class="table table-user-information">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>First Name</td>
+                                                            <td><input type="text" class="form-control"
+                                                                       id="FirstName"
+                                                                       name="firstName" aria-describedby="FirstName"
+                                                                       value="${ currentUser.name }"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Last Name</td>
+                                                            <td>
+                                                            <input type="text" class="form-control"
+                                                                   id="Lastname"
+                                                                   name="lastName" aria-describedby="Lastname"
+                                                                   value="${ currentUser.lastName }"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Email</td>
+                                                            <td><input type="text" class="form-control" id="email"
+                                                                       name="email" aria-describedby="email"
+                                                                       value="${ currentUser.email }"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Account Type</td>
+                                                            <td>Female</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Number of applications</td>
+                                                            <td>1000</td>
+                                                        </tr>
+                                                        <tr>
+                                                        <tr>
+                                                            <td>Home Address</td>
+                                                            <td>Kathmandu,Nepal</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <a href="profile" class="btn btn-secondary">
+                                                    Close
+                                                </a>
+                                                <button type="submit" class="btn btn-primary">Apply</button>
+                                            </form>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="col-md-6 col-lg-6">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                <tr>
+                                                    <td>First Name</td>
+                                                    <td>Joel</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Last Name</td>
+                                                    <td>Schar</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td><a href="mailto:info@support.com">info@support.com</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Account Type</td>
+                                                    <td>Female</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Number of applications</td>
+                                                    <td>1000</td>
+                                                </tr>
+                                                <tr>
+                                                <tr>
+                                                    <td>Home Address</td>
+                                                    <td>Kathmandu,Nepal</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+
+                    </div>
                 </div>
-                <div class="projects-right">
+
+
+                <!--
                     <form action="profile" method="post">
                         <input class="hide" type="text" name="action" value="MODIFY">
                         <div class="modal-body">
@@ -42,8 +157,10 @@
                             <button type="submit" class="btn btn-primary">Modify</button>
                         </div>
                     </form>
-                </div>
+
+                   -->
             </div>
+        </div>
     </div>
 </div>
 
@@ -108,12 +225,12 @@
                         </select>
                         <label for="choosePriv">Select the User</label>
                         <select name="selectUser" id="choosePriv">
-                                <option value="0">
-                                    Administrator
-                                </option>
-                                <option value="1">
-                                    User
-                                </option>
+                            <option value="0">
+                                Administrator
+                            </option>
+                            <option value="1">
+                                User
+                            </option>
                         </select>
                     </div>
 
@@ -147,7 +264,7 @@
                         <select name="selectUser" id="selectUser3">
                             <c:forEach items="${users}" var="userValue">
                                 <option value="${userValue.email}">
-                                    ${userValue.lastName}-${userValue.name}
+                                        ${userValue.lastName}-${userValue.name}
                                 </option>
                             </c:forEach>
                         </select>

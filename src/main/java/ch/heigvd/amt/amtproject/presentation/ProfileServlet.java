@@ -15,7 +15,6 @@ import java.util.List;
 public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     public static String PROFILE = "/WEB-INF/pages/profile.jsp";
-    private List<User> users;
 
     @EJB
     private UserDAOLocal userDAO;
@@ -26,26 +25,33 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
-        users = userDAO.findAll();
+        //TODO get session user id
+        long currentUserId = 7;
+
         //TODO Get the current user
         if(request.getParameter("modify") != null){
             request.setAttribute("modify", true);
         }else{
             request.setAttribute("modify", false);
         }
-        request.setAttribute("currentUser", users.get(0));
-        request.setAttribute("users", users);
+
+        User user = userDAO.findById(currentUserId);
+
+        request.setAttribute("currentUser", user);
         request.getRequestDispatcher(PROFILE).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        //TODO get session user id
+        long currentUserId = 7;
+
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
 
 
-
-        userDAO.update();
+        userDAO.updateName(currentUserId, firstName, lastName);
+        userDAO.updateEmail(currentUserId, email);
 
         doGet(request, response);
     }

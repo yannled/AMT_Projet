@@ -28,7 +28,7 @@
                 <div class="col-md-10 col-lg-10 toppad">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Joel Schar</h3>
+                            <h3 class="panel-title">${currentUser.name} ${currentUser.lastName}</h3>
                         </div>
                         <div class="panel-body">
                             <div class="row toppad">
@@ -70,7 +70,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Account Type</td>
-                                                            <td>Female</td>
+                                                            <td>Admin</td>
                                                         </tr>
                                                         <tr>
                                                             <td>Number of applications</td>
@@ -97,19 +97,19 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>First Name</td>
-                                                    <td>Joel</td>
+                                                    <td>${ currentUser.name }</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Last Name</td>
-                                                    <td>Schar</td>
+                                                    <td>${ currentUser.lastName }</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Email</td>
-                                                    <td><a href="mailto:info@support.com">info@support.com</a></td>
+                                                    <td><a href="mailto:${ currentUser.email }">${ currentUser.email }</a></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Account Type</td>
-                                                    <td>Female</td>
+                                                    <td>Admin</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Number of applications</td>

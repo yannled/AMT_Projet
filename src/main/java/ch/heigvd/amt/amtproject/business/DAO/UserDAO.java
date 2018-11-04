@@ -18,8 +18,15 @@ import java.util.List;
 public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userSel, userPassword, privilegeId, statusId) VALUES (?,?,?,?,?,?,?)";
+
+    private final String updateUser = "UPDATE tbUser SET userFirstName = (?), userLastName = (?), userEmail = (?), privilegeId = (?), statusId = (?) WHERE userId = (?)";
+    private final String updateUserName = "UPDATE tbUser SET userFirstName = (?), userLastName = (?) WHERE userId = (?)";
+    private final String updateUserEmail = "UPDATE tbUser SET userEmail = (?) WHERE userId = (?)";
+
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
     private final String getUsers ="SELECT userLastName, userFirstName, userEmail, privilegeId, statusId FROM  tbUser";
+    private final String getUserById = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId FROM  tbUser WHERE userId = (?)";
+    private final String getUserByEmail = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId FROM  tbUser WHERE userEmail = (?)";
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
@@ -52,9 +59,41 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
     }
 
     @Override
-    public void update(User user) {
-        
+    public void update(User user){
+
     }
+
+    @Override
+    public void updateName(Long id, String firstName, String lastName) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(updateUserName);
+
+            // insert data into statement.
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setLong(3, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateEmail(Long id, String email) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(updateUserEmail);
+
+            // insert data into statement.
+            ps.setString(1, email);
+            ps.setLong(2, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public void delete(User user) {
@@ -68,11 +107,63 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
 
     @Override
     public User findById(Long id) {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getUserById);
+
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            User user = new User();
+            if (rs.next()) {
+                user.setLastName(rs.getString("userLastName"));
+                user.setName(rs.getString("userFirstName"));
+                user.setEmail(rs.getString("userEmail"));
+                user.setState(rs.getInt("statusId"));
+                int value = rs.getInt("privilegeId");
+                if(value == 0) {
+                    user.setAdmin(false);
+                }
+                if(value == 1) {
+                    user.setAdmin(true);
+                }
+            } else {
+                return null;
+            }
+            return user;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public User findByIdEmail(String emailUser) {
-        return null;
+    public User findByIdEmail(String userEmail) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getUserByEmail);
+
+            ps.setString(1, userEmail);
+            ResultSet rs = ps.executeQuery();
+
+            User user = new User();
+            if (rs.next()) {
+                user.setLastName(rs.getString("userLastName"));
+                user.setName(rs.getString("userFirstName"));
+                user.setEmail(rs.getString("userEmail"));
+                user.setState(rs.getInt("statusId"));
+                int value = rs.getInt("privilegeId");
+                if(value == 0) {
+                    user.setAdmin(false);
+                }
+                if(value == 1) {
+                    user.setAdmin(true);
+                }
+            } else {
+                return null;
+            }
+            return user;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -80,7 +171,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUsers);
 
-            ps.execute();
             ResultSet rs = ps.executeQuery();
 
             List<User> users = new ArrayList<>();

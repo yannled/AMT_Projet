@@ -26,7 +26,7 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         //TODO get session user id
-        long currentUserId = 7;
+        long currentUserId = 3;
 
         //TODO Get the current user
         if(request.getParameter("modify") != null){
@@ -43,7 +43,7 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         //TODO get session user id
-        long currentUserId = 7;
+        long currentUserId = 3;
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");

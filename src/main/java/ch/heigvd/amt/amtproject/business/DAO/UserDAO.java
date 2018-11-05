@@ -1,8 +1,7 @@
 package ch.heigvd.amt.amtproject.business.DAO;
-
+import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
-
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
@@ -10,7 +9,10 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -45,7 +47,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ps.setString(3, user.getEmail());
             ps.setString(4, "");
             ps.setString(5, user.getPassword());
-            ps.setInt(6, user.isAdmin() ? 1 : 0);
+            ps.setInt(6, user.isAdmin() ? 1 : 0 );
             ps.setInt(7, 1);
             ps.setBlob(8, this.base64ToBlob(user.getBase64Avatar()));
 
@@ -63,7 +65,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user){
 
     }
 
@@ -160,8 +162,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             User user = new User();
             if (rs.next()) {
-
-
+                this.rsToUser(rs);
             } else {
                 return null;
             }
@@ -236,7 +237,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     }
 
-    public boolean isExist(String emailUser) {
+    public boolean isExist(String emailUser){
         return true;
     }
 
@@ -301,4 +302,3 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         }
     }
 }
-

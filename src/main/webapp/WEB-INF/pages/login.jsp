@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V16</title>
+    <title>Login Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -56,7 +56,7 @@
 					</span>
 
                 <div class="wrap-input100 m-b-16 ${emailValidate}" data-validate="${errors[0].errorText}">
-                    <input class="input100" type="text" name="email" placeholder="Email" value="${errors[0].value}">
+                    <input id="inputEmail" class="input100" type="text" name="email" placeholder="Email" value="${errors[0].value}">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -64,12 +64,12 @@
 						<span class="btn-show-pass">
 							<i class="fa fa fa-eye"></i>
 						</span>
-                    <input class="input100" type="password" name="password" placeholder="Password">
+                    <input id="inputPassword" class="input100" type="password" name="password" placeholder="Password">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn">
+                    <button id="buttonSubmit" class="login100-form-btn">
                         Enter
                     </button>
                 </div>

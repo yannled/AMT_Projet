@@ -47,8 +47,6 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         String base64Avatar = userDAO.getAvatar(currentUserId);
         user.setBase64Avatar(base64Avatar);
 
-        System.out.print("base64 : " + base64Avatar);
-
         request.setAttribute("currentUser", user);
         request.getRequestDispatcher(PROFILE).forward(request, response);
     }
@@ -71,7 +69,22 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         }
 
         userDAO.updateName(currentUserId, firstName, lastName);
-        userDAO.updateEmail(currentUserId, email);
+
+        // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
+        if(! userDAO.isExist(email)) {
+            userDAO.updateEmail(currentUserId, email);
+        }else{
+
+            User user = userDAO.findById(currentUserId);
+            user.setEmail(email);
+            request.setAttribute("currentUser", user);
+
+            String emailError = "This email already exists";
+            request.setAttribute("emailError", true);
+            request.setAttribute("emailErrorText", emailError);
+            request.setAttribute("modify", true);
+            request.getRequestDispatcher(PROFILE).forward(request, response);
+        }
 
         doGet(request, response);
     }

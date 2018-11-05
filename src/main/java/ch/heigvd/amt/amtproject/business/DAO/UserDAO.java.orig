@@ -1,6 +1,8 @@
 package ch.heigvd.amt.amtproject.business.DAO;
+
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
+
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.sql.DataSource;
@@ -16,7 +18,7 @@ import java.util.List;
 @Stateless
 public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
-    private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userPassword, privilegeId, statusId, userAvatar) VALUES (?,?,?,?,?,?,?)";
+    private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userSel, userPassword, privilegeId, statusId, userAvatar) VALUES (?,?,?,?,?,?,?,?)";
 
     private final String updateUser = "UPDATE tbUser SET userFirstName = (?), userLastName = (?), userEmail = (?), privilegeId = (?), statusId = (?) WHERE userId = (?)";
     private final String updateUserName = "UPDATE tbUser SET userFirstName = (?), userLastName = (?) WHERE userId = (?)";
@@ -28,8 +30,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private final String getUserById = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userId = (?)";
     private final String getUserByEmail = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userEmail = (?)";
     private final String getAvatar = "SELECT userAvatar FROM  tbUser WHERE userId = (?)";
-    private final String getCountUserEmail = "SELECT count(*) AS total FROM tbUser WHERE userEmail = (?)";
-
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
@@ -43,10 +43,11 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ps.setString(1, user.getName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setInt(5, user.isAdmin() ? 1 : 0 );
-            ps.setInt(6, 1);
-            ps.setBlob(7, this.base64ToBlob(user.getBase64Avatar()));
+            ps.setString(4, "");
+            ps.setString(5, user.getPassword());
+            ps.setInt(6, user.isAdmin() ? 1 : 0);
+            ps.setInt(7, 1);
+            ps.setBlob(8, this.base64ToBlob(user.getBase64Avatar()));
 
             ps.execute();
 
@@ -62,7 +63,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     @Override
-    public void update(User user){
+    public void update(User user) {
 
     }
 
@@ -157,11 +158,15 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
 
+            User user = new User();
             if (rs.next()) {
-                return this.rsToUser(rs);
+
+
             } else {
                 return null;
             }
+            return user;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -196,7 +201,23 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             List<User> users = new ArrayList<>();
             while (rs.next()) {
+<<<<<<< HEAD
                 users.add(this.rsToUser(rs));
+=======
+                User user = new User();
+                user.setLastName(rs.getString("userLastName"));
+                user.setName(rs.getString("userFirstName"));
+                user.setEmail(rs.getString("userEmail"));
+                user.setState(rs.getInt("statusId"));
+                int value = rs.getInt("privilegeId");
+                if(value == 0) {
+                    user.setAdmin(false);
+                }
+                if(value == 1) {
+                    user.setAdmin(true);
+                }
+                users.add(user);
+>>>>>>> 9c9041102c92ed9fe365b4ac861e11d85f2c730c
             }
             return users;
 
@@ -231,20 +252,8 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     }
 
-    public boolean isExist(String userEmail){
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(getCountUserEmail);
-
-            ps.setString(1, userEmail);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total") != 0;
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public boolean isExist(String emailUser) {
+        return true;
     }
 
     private String blobToBase64(Blob blob) {
@@ -274,9 +283,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     private Blob base64ToBlob(String base64Str) {
         try {
-            byte[] buffer =  Base64.getDecoder().decode(base64Str);
+            byte[] buffer = new byte[4096];
+            buffer =  Base64.getDecoder().decode(base64Str);
 
-            return new SerialBlob(buffer);
+            Blob blob = new SerialBlob(buffer);
+
+            return blob;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -305,3 +317,4 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         }
     }
 }
+

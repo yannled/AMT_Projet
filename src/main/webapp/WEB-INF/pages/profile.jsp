@@ -64,9 +64,16 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Email</td>
-                                                            <td><input type="text" class="form-control" id="email"
-                                                                       name="email" aria-describedby="email"
-                                                                       value="${ currentUser.email }"></td>
+                                                            <td>
+                                                                <c:if test="${emailError}">
+                                                                    <c:set var="validate" value="alert-validate"/>
+                                                                </c:if>
+                                                                <div class="${validate}" data-validate="${emailErrorText}">
+                                                                    <input type="text" class="form-control" id="email"
+                                                                           name="email" aria-describedby="email"
+                                                                           value="${ currentUser.email }">
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Account Type</td>
@@ -114,11 +121,6 @@
                                                 <tr>
                                                     <td>Number of applications</td>
                                                     <td>1000</td>
-                                                </tr>
-                                                <tr>
-                                                <tr>
-                                                    <td>Home Address</td>
-                                                    <td>Kathmandu,Nepal</td>
                                                 </tr>
                                                 </tbody>
                                             </table>

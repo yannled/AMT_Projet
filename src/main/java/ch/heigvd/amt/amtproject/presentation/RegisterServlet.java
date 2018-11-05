@@ -110,6 +110,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }*/
 
+        // we set a default avatar to the user database for a new registered user
         String defaultAvatarPath = getServletContext().getRealPath("images/defaultAvatar.png");
         InputStream inputStream = new DataInputStream(new FileInputStream(new File(defaultAvatarPath)));
 

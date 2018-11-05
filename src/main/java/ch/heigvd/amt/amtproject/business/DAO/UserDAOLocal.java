@@ -25,6 +25,8 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public List<User> findAll();
 
+    public boolean isExist(String userEmail);
+
     public boolean isValid(String emailUser, String password);
 
 }

@@ -11,7 +11,7 @@ public class User {
     private String password;
     private String email;
     private boolean admin;
-    private int state; // 0 = ok, 1 = ban, 2 = hasChangePassword
+    private int state; // 0 = ban, 1 = ok, 2 = hasChangePassword
 
     public User(String name, String lastName, String password, String email, boolean admin, int state) {
         this.name = name;

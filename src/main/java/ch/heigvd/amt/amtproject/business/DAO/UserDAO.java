@@ -177,7 +177,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal{
             while (rs.next()) {
                 User user = new User();
                 user.setLastName(rs.getString("userLastName"));
-                user.setName(rs.getString("userFirstName")); // TODO correct projectDescription name in database
+                user.setName(rs.getString("userFirstName"));
                 user.setEmail(rs.getString("userEmail"));
                 user.setState(rs.getInt("statusId"));
                 int value = rs.getInt("privilegeId");

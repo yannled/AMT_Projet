@@ -4,9 +4,12 @@ import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 
 import javax.ejb.EJB;
 import ch.heigvd.amt.amtproject.model.Error;
+import ch.heigvd.amt.amtproject.model.User;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +64,12 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
             //TODO : Faire les tests si dessous avec la base de donnée
 
             if(userDAO.isValid(email, password)) {
+
+                //Créer une session si credentials validés
+                HttpSession session = request.getSession();
+                User currentUser = userDAO.findByIdEmail(email);
+                session.setAttribute("user", currentUser);
+
                 request.getRequestDispatcher(PROJECTS).forward(request, response);
                 return;
             }

@@ -24,9 +24,9 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private final String updateUserAvatar = "UPDATE tbUser SET userAvatar =(?) WHERE userId = (?)";
 
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
-    private final String getUsers = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser";
-    private final String getUserById = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userId = (?)";
-    private final String getUserByEmail = "SELECT userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userEmail = (?)";
+    private final String getUsers = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser";
+    private final String getUserById = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userId = (?)";
+    private final String getUserByEmail = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userEmail = (?)";
     private final String getAvatar = "SELECT userAvatar FROM  tbUser WHERE userId = (?)";
     private final String getCountUserEmail = "SELECT count(*) AS total FROM tbUser WHERE userEmail = (?)";
 
@@ -195,8 +195,10 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ResultSet rs = ps.executeQuery();
 
             List<User> users = new ArrayList<>();
+            int i = 0;
             while (rs.next()) {
-                users.add(this.rsToUser(rs));
+                User user = this.rsToUser(rs);
+                users.add(user);
             }
             return users;
 
@@ -286,6 +288,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private User rsToUser(ResultSet rs) {
         try {
             User user = new User();
+            user.setId(rs.getLong("userId"));
             user.setLastName(rs.getString("userLastName"));
             user.setName(rs.getString("userFirstName"));
             user.setEmail(rs.getString("userEmail"));

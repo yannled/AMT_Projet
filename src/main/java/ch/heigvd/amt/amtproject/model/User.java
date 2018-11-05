@@ -6,6 +6,7 @@ import javax.naming.Name;
 
 public class User {
 
+    private Long id;
     private String name;
     private String lastName;
     private String password;
@@ -25,6 +26,14 @@ public class User {
     }
 
     public User(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

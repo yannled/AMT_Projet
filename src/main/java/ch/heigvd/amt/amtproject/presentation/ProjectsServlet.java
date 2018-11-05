@@ -6,6 +6,7 @@ import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.model.Pagination;
+import ch.heigvd.amt.amtproject.model.VerifySession;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
@@ -33,6 +34,8 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
         applications = applicationDAO.getProjectsAll();
         pagination = new Pagination(1,1);

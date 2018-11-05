@@ -4,12 +4,14 @@ import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
 import sun.misc.IOUtils;
+import ch.heigvd.amt.amtproject.model.VerifySession;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Part;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
@@ -32,8 +34,13 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
+
         //TODO get session user id
-        long currentUserId = 3;
+        long currentUserId = currentUser.getId();
 
         //TODO Get the current user
         if(request.getParameter("modify") != null){
@@ -52,8 +59,11 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
+
         //TODO get session user id
-        long currentUserId = 3;
+        long currentUserId = currentUser.getId();
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -67,10 +77,9 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
             userDAO.updateAvatar(currentUserId, fileContent);
         }
-
         userDAO.updateName(currentUserId, firstName, lastName);
 
-        // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
+      // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
         if(! userDAO.isExist(email)) {
             userDAO.updateEmail(currentUserId, email);
         }else{
@@ -85,6 +94,12 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
             request.setAttribute("modify", true);
             request.getRequestDispatcher(PROFILE).forward(request, response);
         }
+
+        //Mettre à jour la session en fonction du changement de profil
+        currentUser.setName(firstName);
+        currentUser.setLastName(lastName);
+        currentUser.setEmail(email);
+        session.setAttribute("user", currentUser);
 
         doGet(request, response);
     }

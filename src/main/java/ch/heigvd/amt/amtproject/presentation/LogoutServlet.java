@@ -26,6 +26,7 @@ public class LogoutServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().invalidate();
         request.getRequestDispatcher(LOGIN).forward(request, response);
     }
 

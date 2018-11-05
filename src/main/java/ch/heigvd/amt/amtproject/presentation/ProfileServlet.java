@@ -3,11 +3,13 @@ package ch.heigvd.amt.amtproject.presentation;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
+import ch.heigvd.amt.amtproject.model.VerifySession;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
         //TODO get session user id
         long currentUserId = 3;
 
@@ -49,9 +53,16 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
 
-
         userDAO.updateName(currentUserId, firstName, lastName);
         userDAO.updateEmail(currentUserId, email);
+
+        //Mettre à jour la session en fonction du changement de profil
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
+        currentUser.setName(firstName);
+        currentUser.setLastName(lastName);
+        currentUser.setEmail(email);
+        session.setAttribute("user", currentUser);
 
         doGet(request, response);
     }

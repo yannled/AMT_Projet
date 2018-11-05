@@ -3,9 +3,9 @@ package ch.heigvd.amt.uat.fluentlenium.pages;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * This class is used to test the "Login" page in the MVCDemo app.
+ * This class is used to test the "Login" page in the Amt Project.
  *
- * @author Olivier Liechti
+ * @author Yann Lederrey inspired by Olivier Liechti
  */
 public class LoginFluentPage extends AbstractMVCDemoFluentPage {
 

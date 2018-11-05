@@ -22,7 +22,7 @@
                     </nav>
                 </div>
                 <div class="projects-right">
-                   application developers list
+                    <%@ include file="include/listusers.jsp" %>
                 </div>
             </div>
     </div>

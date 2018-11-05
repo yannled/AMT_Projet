@@ -50,17 +50,17 @@
 					</span>
 
                 <div class="wrap-input100 m-b-16 ${firstNameValidate}" data-validate="${errors[0].errorText}">
-                    <input class="input100" type="text" name="first-name" placeholder="First Name" value="${errors[0].value}">
+                    <input id="inputFirstName" class="input100" type="text" name="first-name" placeholder="First Name" value="${errors[0].value}">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="wrap-input100 m-b-16 ${lastNameNameValidate}" data-validate="${errors[1].errorText}">
-                    <input class="input100" type="text" name="last-name" placeholder="Last Name" value="${errors[1].value}">
+                    <input id="inputLastName" class="input100" type="text" name="last-name" placeholder="Last Name" value="${errors[1].value}">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="wrap-input100 m-b-16 ${emailValidate}" data-validate="${errors[2].errorText}">
-                    <input class="input100" type="text" name="email" placeholder="Email" value="${errors[2].value}">
+                    <input id="inputEmail" class="input100" type="text" name="email" placeholder="Email" value="${errors[2].value}">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -68,7 +68,7 @@
 						<span class="btn-show-pass">
 							<i class="fa fa fa-eye"></i>
 						</span>
-                    <input class="input100" type="password" name="pass1" placeholder="Password">
+                    <input id="inputPassword1" class="input100" type="password" name="pass1" placeholder="Password">
                     <span class="focus-input100"></span>
                 </div>
 
@@ -76,12 +76,12 @@
 						<span class="btn-show-pass">
 							<i class="fa fa fa-eye"></i>
 						</span>
-                    <input class="input100" type="password" name="pass2" placeholder="Repeat Password">
+                    <input id="inputPassword2" class="input100" type="password" name="pass2" placeholder="Repeat Password">
                     <span class="focus-input100"></span>
                 </div>
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn">
+                    <button id="buttonSubmit" class="login100-form-btn">
                         Submit
                     </button>
                 </div>

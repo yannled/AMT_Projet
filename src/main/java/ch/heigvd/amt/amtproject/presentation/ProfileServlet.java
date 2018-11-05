@@ -3,15 +3,22 @@ package ch.heigvd.amt.amtproject.presentation;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
+import sun.misc.IOUtils;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.sql.Blob;
+import java.util.Base64;
 import java.util.List;
 
-@WebServlet("/profile")
+import static javax.xml.transform.OutputKeys.ENCODING;
+
 public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     public static String PROFILE = "/WEB-INF/pages/profile.jsp";
@@ -37,6 +44,11 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
         User user = userDAO.findById(currentUserId);
 
+        String base64Avatar = userDAO.getAvatar(currentUserId);
+        user.setBase64Avatar(base64Avatar);
+
+        System.out.print("base64 : " + base64Avatar);
+
         request.setAttribute("currentUser", user);
         request.getRequestDispatcher(PROFILE).forward(request, response);
     }
@@ -49,6 +61,14 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
 
+        Part filePart = request.getPart("avatar");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        InputStream fileContent = filePart.getInputStream();
+
+        if (fileName != null && !fileName.isEmpty()) {
+
+            userDAO.updateAvatar(currentUserId, fileContent);
+        }
 
         userDAO.updateName(currentUserId, firstName, lastName);
         userDAO.updateEmail(currentUserId, email);

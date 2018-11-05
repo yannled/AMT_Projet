@@ -7,12 +7,14 @@ import ch.heigvd.amt.amtproject.model.User;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import java.io.IOException;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -108,11 +110,30 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }*/
 
+        String defaultAvatarPath = getServletContext().getRealPath("images/defaultAvatar.png");
+        InputStream inputStream = new DataInputStream(new FileInputStream(new File(defaultAvatarPath)));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        byte[] imageBytes = outputStream.toByteArray();
+        String base64Avatar = Base64.getEncoder().encodeToString(imageBytes);
+
+
+        inputStream.close();
+        outputStream.close();
+
         if (syntaxOK) {
             try {
                 // TODO il pourrait etre judicieux de faire le hash du mot de passe encore plus tot dans le programme
-                User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1);
+                User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1, base64Avatar);
                 userDAO.create(user);
+
             }catch (NoSuchAlgorithmException | InvalidKeySpecException e){
                 // TODO: make a better error handle
                 System.out.print(e.getMessage());

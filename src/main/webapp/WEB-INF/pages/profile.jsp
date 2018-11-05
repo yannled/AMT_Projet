@@ -34,15 +34,15 @@
                             <div class="row toppad">
                                 <div class="col-md-4 col-lg-2" align="center">
                                     <div class="profile-pic">
-                                        <img alt="User Pic"
-                                             src="images/squirrel.jpg">
+                                       <!-- <img alt="User Pic" src="images/squirrel.jpg">-->
+                                        <img src="data:image/jpg;base64,${currentUser.base64Avatar}" width="240" height="300"/>
                                     </div>
                                 </div>
                                 <c:choose>
                                     <c:when test="${modify == true}">
                                         <div class="col-md-6 col-lg-6">
 
-                                            <form action="profile" method="post">
+                                            <form action="profile" method="post" enctype="multipart/form-data">
                                                 <input class="hide" type="text" name="action" value="MODIFY">
                                                 <div class="form-group">
                                                     <table class="table table-user-information">
@@ -78,8 +78,8 @@
                                                         </tr>
                                                         <tr>
                                                         <tr>
-                                                            <td>Home Address</td>
-                                                            <td>Kathmandu,Nepal</td>
+                                                            <td>Avatar</td>
+                                                            <td><input type="file" name="avatar" /></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

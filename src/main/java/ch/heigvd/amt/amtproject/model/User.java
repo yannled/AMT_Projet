@@ -12,14 +12,16 @@ public class User {
     private String email;
     private boolean admin;
     private int state; // 0 = ok, 1 = ban, 2 = hasChangePassword
+    private String base64Avatar;
 
-    public User(String name, String lastName, String password, String email, boolean admin, int state) {
+    public User(String name, String lastName, String password, String email, boolean admin, int state, String base64Avatar) {
         this.name = name;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
         this.admin = admin;
         this.state = state;
+        this.base64Avatar = base64Avatar;
     }
 
     public User(){}
@@ -68,5 +70,14 @@ public class User {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+
+    public String getBase64Avatar() {
+        return base64Avatar;
+    }
+
+    public void setBase64Avatar(String base64Avatar) {
+        this.base64Avatar = base64Avatar;
     }
 }

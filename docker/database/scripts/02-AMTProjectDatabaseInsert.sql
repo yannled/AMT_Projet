@@ -2,7 +2,7 @@ USE AMTProjectDatabase;
 
 INSERT INTO tbStatus(statusId, status)
 VALUES (0, 'Inactive'),
-	   (1, 'Active');
+	   (1, 'Active'),
 	   (2, 'HasChangedPassword');
 	   
 INSERT INTO tbPrivilege(privilegeId, privilege)

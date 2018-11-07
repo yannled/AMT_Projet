@@ -20,8 +20,8 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     private final String updateUser = "UPDATE tbUser SET userFirstName = (?), userLastName = (?), userEmail = (?), privilegeId = (?), statusId = (?) WHERE userId = (?)";
     private final String updateUserName = "UPDATE tbUser SET userFirstName = (?), userLastName = (?) WHERE userId = (?)";
-    private final String updateUserState = "UPDATE tbUser SET statusId = (?) WHERE userId = (?)";
-    private final String updateUserAdmin = "UPDATE tbUser SET privilegeId = (?) WHERE userId = (?)";
+    private final String updateUserState = "UPDATE tbUser SET statusId = (?) WHERE userEmail = (?)";
+    private final String updateUserAdmin = "UPDATE tbUser SET privilegeId = (?) WHERE userEmail = (?)";
     private final String updateUserEmail = "UPDATE tbUser SET userEmail = (?) WHERE userId = (?)";
     private final String updateUserAvatar = "UPDATE tbUser SET userAvatar =(?) WHERE userId = (?)";
 
@@ -75,6 +75,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
         // insert data into statement.
         ps.setInt(1, user.getState());
+        ps.setString(2, user.getEmail());
         ps.execute();
       } catch (SQLException e) {
         throw new RuntimeException(e);
@@ -88,6 +89,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
         // insert data into statement.
         ps.setInt(1, user.isAdmin()? 1 : 0);
+        ps.setString(2, user.getEmail());
         ps.execute();
       } catch (SQLException e) {
         throw new RuntimeException(e);

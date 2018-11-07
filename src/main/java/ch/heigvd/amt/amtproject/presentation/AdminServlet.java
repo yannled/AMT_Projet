@@ -32,7 +32,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         new VerifySession(request.getSession(), request, response).redirectIfNoAdmin();
 
         users = userDAO.findAll();
-
+        System.out.println(users);
         //TODO use pagination structure to get a users list
         pagination = new Pagination(1,1);
 
@@ -72,12 +72,11 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         if(action.equals("MODIFYPrivilege")){
             email = request.getParameter("email");
             privilege = request.getParameter("privilege");
-
             User userToUpdate = userDAO.findByIdEmail(email);
 
             if(userToUpdate != null) {
-                userToUpdate.setAdmin(Integer.parseInt(privilege) == 1);
-                userDAO.update(userToUpdate);
+                userToUpdate.setAdmin(Integer.getInteger(privilege) == 1);
+                userDAO.updateAdmin(userToUpdate);
             }
             else{
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
@@ -91,8 +90,8 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             User userToUpdate = userDAO.findByIdEmail(email);
 
             if(userToUpdate != null) {
-                userToUpdate.setState(Integer.parseInt(status));
-                userDAO.update(userToUpdate);
+                userToUpdate.setState(Integer.getInteger(status));
+                userDAO.updateState(userToUpdate);
             }
             else{
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications

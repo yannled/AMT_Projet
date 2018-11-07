@@ -20,6 +20,8 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     private final String updateUser = "UPDATE tbUser SET userFirstName = (?), userLastName = (?), userEmail = (?), privilegeId = (?), statusId = (?) WHERE userId = (?)";
     private final String updateUserName = "UPDATE tbUser SET userFirstName = (?), userLastName = (?) WHERE userId = (?)";
+    private final String updateUserState = "UPDATE tbUser SET statusId = (?) WHERE userId = (?)";
+    private final String updateUserAdmin = "UPDATE tbUser SET privilegeId = (?) WHERE userId = (?)";
     private final String updateUserEmail = "UPDATE tbUser SET userEmail = (?) WHERE userId = (?)";
     private final String updateUserAvatar = "UPDATE tbUser SET userAvatar =(?) WHERE userId = (?)";
 
@@ -64,6 +66,32 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     @Override
     public void update(User user){
 
+    }
+
+    @Override
+    public void updateState(User user){
+      try (Connection connection = dataSource.getConnection()) {
+        PreparedStatement ps = connection.prepareStatement(updateUserState);
+
+        // insert data into statement.
+        ps.setInt(1, user.getState());
+        ps.execute();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    @Override
+    public void updateAdmin(User user){
+      try (Connection connection = dataSource.getConnection()) {
+        PreparedStatement ps = connection.prepareStatement(updateUserAdmin);
+
+        // insert data into statement.
+        ps.setInt(1, user.isAdmin()? 1 : 0);
+        ps.execute();
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     @Override

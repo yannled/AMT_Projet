@@ -20,12 +20,12 @@
         <td><c:out value="${ user.lastName }"/></td>
         <td><c:out value="${ user.name }"/></td>
         <td><c:out value="${ user.email }"/></td>
-        <td class="centerIcon">
+        <td>
           <button data-toggle="modal" data-target="#privilegeUser-${user.lastName}-${user.name}-${ counter.count }">
             ${user.admin ? 'Administrator' : 'User'}
           </button>
         </td>
-        <td class="centerIcon">
+        <td>
           <button data-toggle="modal" data-target="#suspendUser-${user.lastName}-${user.name}-${ counter.count }">
             <display:column>
               <c:choose>
@@ -49,10 +49,9 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="profile" method="post">
+            <form action="admin" method="post">
               <input class="hide" type="text" name="action" value="MODIFYPrivilege">
-              <input class="hide" type="text" name="email" value=<c:out
-                value="${ user.email }"/>>
+              <input class="hide" type="text" name="email" value=<c:out value="${ user.email }"/>>
               <div class="modal-body">
                 <div class="form-group">
                   <p><c:out value="${user.email}"/></p>
@@ -90,13 +89,12 @@
             </div>
             <form action="admin" method="post">
               <input class="hide" type="text" name="action" value="MODIFYStatus">
-              <input class="hide" type="text" name="email" value=<c:out
-                  value="${ user.email }"/> >
+              <input class="hide" type="text" name="email" value=<c:out value="${ user.email }"/> >
               <div class="modal-body">
                 <div class="form-group">
                   <p><c:out value="${user.email}"/></p>
-                  <label for="chooseSuspend">Select the Status</label><br>
-                  <select class="custom-select" name="selectUser" id="chooseSuspend">
+                  <label for="status">Select the Status</label><br>
+                  <select class="custom-select" name="status" id="status">
                     <option value="0" ${user.state == 0 ? 'selected' : ''} >
                       Suspend
                     </option>

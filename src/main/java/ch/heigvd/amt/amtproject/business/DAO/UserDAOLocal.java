@@ -11,6 +11,10 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public Long create(User user);
 
+    public void updateState(User user);
+
+    public void updateAdmin(User user);
+
     public void updateName(Long id, String firstName, String lastName);
 
     public void updateEmail(Long id, String email);

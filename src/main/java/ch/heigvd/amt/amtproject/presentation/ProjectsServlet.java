@@ -64,6 +64,7 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         int noOfRecords = applications.size();
         int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / pagination.getRecordsPerPage());
 
+        request.setAttribute("isAdmin", currentUser.isAdmin());
         request.setAttribute("applications", tempList);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", pagination.getCurrentPage());

@@ -54,6 +54,7 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         String base64Avatar = userDAO.getAvatar(currentUserId);
         user.setBase64Avatar(base64Avatar);
 
+        request.setAttribute("isAdmin", user.isAdmin());
         request.setAttribute("currentUser", user);
         request.setAttribute("nbrApplications", numberOfApplications);
         request.getRequestDispatcher(PROFILE).forward(request, response);

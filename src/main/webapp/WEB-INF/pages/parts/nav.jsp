@@ -9,9 +9,11 @@
 <div class="wrap-nav">
     <nav class="navbar">
         <ul>
-            <li><a href="login">Home</a></li>
+            <li><a href="home">Home</a></li>
             <li><a href="projects">Projects</a></li>
-            <li><a href="admin">App Developers</a></li>
+            <c:if test="${isAdmin}">
+                <li><a href="admin">App Developers</a></li>
+            </c:if>
         </ul>
         <ul class="ml-auto">
             <li>

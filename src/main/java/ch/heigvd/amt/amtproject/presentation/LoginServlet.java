@@ -19,7 +19,7 @@ import java.util.List;
 public class LoginServlet extends javax.servlet.http.HttpServlet {
 
     public static String VUE = "/WEB-INF/pages/login.jsp";
-    public static String PROJECTS = "/WEB-INF/pages/projects.jsp";
+    public static String HOME = "/WEB-INF/pages/home.jsp";
 
     @EJB
     private UserDAOLocal userDAO;
@@ -70,7 +70,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                 User currentUser = userDAO.findByIdEmail(email);
                 session.setAttribute("user", currentUser);
 
-                request.getRequestDispatcher(PROJECTS).forward(request, response);
+                response.sendRedirect("home");
                 return;
             }
             else{

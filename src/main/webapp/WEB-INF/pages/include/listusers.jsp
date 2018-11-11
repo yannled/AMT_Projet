@@ -23,7 +23,7 @@
         <td>
           <button data-toggle="modal" data-target="#privilegeUser-${user.lastName}-${user.name}-${ counter.count }">
             ${user.admin ? 'Administrator' : 'User'}
-          </button>
+              <i class="fas fa-pencil-alt"></i></button>
         </td>
         <td>
           <button data-toggle="modal" data-target="#suspendUser-${user.lastName}-${user.name}-${ counter.count }">
@@ -34,7 +34,7 @@
                 <c:when test="${user.state == 2}">hasChangePassword</c:when>
               </c:choose>
             </display:column>
-          </button>
+            <i class="fas fa-pencil-alt"></i></button>
         </td>
       </tr>
 

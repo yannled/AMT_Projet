@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         //Vérification de session
         new VerifySession(request.getSession(), request, response).redirectIfNoAdmin();
+
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
 
         users = userDAO.findAll();
         //TODO use pagination structure to get a users list
@@ -55,6 +59,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         int noOfRecords = users.size();
         int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / pagination.getRecordsPerPage());
 
+        request.setAttribute("isAdmin", currentUser.isAdmin());
         request.setAttribute("users", tempList);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", pagination.getCurrentPage());

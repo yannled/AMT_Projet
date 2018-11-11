@@ -50,11 +50,12 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         }
 
         User user = userDAO.findById(currentUserId);
-
+        int numberOfApplications = userDAO.countNumbersApplications(user.getEmail());
         String base64Avatar = userDAO.getAvatar(currentUserId);
         user.setBase64Avatar(base64Avatar);
 
         request.setAttribute("currentUser", user);
+        request.setAttribute("nbrApplications", numberOfApplications);
         request.getRequestDispatcher(PROFILE).forward(request, response);
     }
 

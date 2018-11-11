@@ -31,6 +31,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private final String getUserByEmail = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userEmail = (?)";
     private final String getAvatar = "SELECT userAvatar FROM  tbUser WHERE userId = (?)";
     private final String getCountUserEmail = "SELECT count(*) AS total FROM tbUser WHERE userEmail = (?)";
+    private final String countNbrOfApplications = "SELECT count(tbProject.projectId) AS total FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
 
 
     @Resource(name = "jdbc/AMTProject")
@@ -273,6 +274,22 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 return rs.getInt("total") != 0;
             } else {
                 return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int countNumbersApplications(String userEmail){
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(countNbrOfApplications);
+
+            ps.setString(1, userEmail);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            } else {
+                return 0;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

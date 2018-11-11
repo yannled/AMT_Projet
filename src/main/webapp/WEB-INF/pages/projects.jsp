@@ -16,7 +16,7 @@
                 <div class="projects-left">
                     <nav class="navbar navbar-left">
                     <ul>
-                        <li><a data-toggle="modal" data-target="#addApp">Add Application</a></li>
+                        <li><a id="addAppLink" data-toggle="modal" data-target="#addApp">Add Application</a></li>
                     </ul>
                     </nav>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" id="submitApp" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>

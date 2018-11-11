@@ -23,7 +23,7 @@
                 <td><c:out value="${ application.apikey }"/></td>
                 <td><c:out value="${ application.apiSecret }"/></td>
                 <td class="centerIcon">
-                    <button data-toggle="modal" data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
+                    <button data-toggle="modal" id="modifyApp-${ application.apikey }" data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
                 </td>
                 <td class="centerIcon">
                     <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i class="fas fa-trash-alt"></i></button>

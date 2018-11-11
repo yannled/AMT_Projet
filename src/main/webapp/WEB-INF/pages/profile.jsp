@@ -116,11 +116,16 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Account Type</td>
-                                                    <td>Admin</td>
+                                                    <c:if test="${ currentUser.admin }">
+                                                        <td>Admin</td>
+                                                    </c:if>
+                                                    <c:if test="${ !currentUser.admin }">
+                                                        <td>User</td>
+                                                    </c:if>
                                                 </tr>
                                                 <tr>
                                                     <td>Number of applications</td>
-                                                    <td>1000</td>
+                                                    <td>${nbrApplications}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>

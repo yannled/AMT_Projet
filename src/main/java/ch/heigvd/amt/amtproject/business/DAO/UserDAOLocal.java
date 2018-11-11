@@ -33,4 +33,6 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public boolean isValid(String emailUser, String password);
 
+    public int countNumbersApplications(String email);
+
 }

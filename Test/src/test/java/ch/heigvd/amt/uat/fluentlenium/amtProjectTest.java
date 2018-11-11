@@ -17,7 +17,7 @@ import org.fluentlenium.core.annotation.Page;
  */
 public class amtProjectTest extends FluentTest {
 
-  private final String baseUrl = "http://amtprojet:8080/myapp/";
+  private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
 
   @Page
   public LoginFluentPage loginPage;
@@ -111,6 +111,25 @@ public class amtProjectTest extends FluentTest {
     loginPage.typeEmailAddress("test@test2.com");
     loginPage.typePassword("1234");
     loginPage.clickSignin();
+    applicationsPage.isAt();
+  }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void itShouldBePossibleToAddApp() {
+    goTo(baseUrl);
+    loginPage.typeEmailAddress("test@test2.com");
+    loginPage.typePassword("1234");
+    loginPage.clickSignin();
+    goTo(baseUrl+applicationsPage.getUrl());
+    applicationsPage.clickAddApp();
+    /*
+    applicationsPage.clickAddApp();
+    applicationsPage.typeAppName("application Test");
+    applicationsPage.typeAppDescription("Application de testing");
+    applicationsPage.clickSubmitApp();
+    applicationsPage.clickModifyApp();
+    */
     applicationsPage.isAt();
   }
 

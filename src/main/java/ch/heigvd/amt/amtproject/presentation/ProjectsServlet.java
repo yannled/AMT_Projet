@@ -12,6 +12,7 @@ import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,8 +37,11 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         new VerifySession(request.getSession(), request, response).redirectIfNoUser();
 
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
+
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
-        applications = applicationDAO.getProjectsAll();
+        applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
         pagination = new Pagination(1,1);
 
         //PAGINATION
@@ -68,6 +72,12 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
+        HttpSession session = request.getSession();
+        User currentUser = (User)session.getAttribute("user");
+        long currentUserId = currentUser.getId();
+
         String action = request.getParameter("action");
         String name = "";
         String description = "";
@@ -107,7 +117,9 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
             name = request.getParameter("name");
             description = request.getParameter("description");
             Application application = new Application(name, description);
-            applicationDAO.create(application);
+            long idApp = applicationDAO.create(application);
+            if(idApp > 0)
+                applicationDAO.bindAppToUser(idApp,currentUserId);
         }
         else{
 

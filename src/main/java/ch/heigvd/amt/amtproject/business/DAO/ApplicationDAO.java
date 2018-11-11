@@ -25,6 +25,8 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
     private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
     private final String deleteProject = "DELETE FROM tbProject WHERE APIKey = ?";
     private final String deleteRelationBetweenAppAndUser = "DELETE FROM tbUserProject WHERE projectId = ?";
+    private final String getProjectsByUser = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
+    private final String bindAppToUser = "INSERT INTO tbUserProject (userId, projectId) VALUES (?,?)";
 
 
     @Resource(name = "jdbc/AMTProject")
@@ -43,6 +45,31 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
             ps.execute();
 
+            PreparedStatement ps2 = connection.prepareStatement(getProjectsByApiKey);
+            ps2.setInt(1, application.getApikey());
+
+            ps2.execute();
+            ResultSet rs = ps2.executeQuery();
+
+            if (rs.next()) {
+                return (long)rs.getInt("projectId");
+            }
+            return -1L;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Long bindAppToUser(long idApp, long idUser) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(bindAppToUser);
+
+            // insert data into statement.
+            ps.setInt(1, (int)idUser);
+            ps.setInt(2, (int)idApp);
+
+            ps.execute();
             return null;//rs.getLong(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -53,6 +80,30 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getProjects);
 
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+
+            List<Application> projectList = new ArrayList<>();
+            while (rs.next()) {
+                Application application = new Application();
+                application.setName(rs.getString("projectName"));
+                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setApikey(rs.getInt("APIKey"));
+                application.setApiSecret(rs.getString("APISecret"));
+
+                projectList.add(application);
+            }
+            return projectList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Application> getProjectsByUser(String email){
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getProjectsByUser);
+            ps.setString(1, email);
             ps.execute();
             ResultSet rs = ps.executeQuery();
 

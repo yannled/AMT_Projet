@@ -14,7 +14,7 @@ public class KeyGenerator {
 
     public static String generateRandomKey(){
         String uniqueID = UUID.randomUUID().toString();
-        uniqueID += String.valueOf(autoKey++);
+        uniqueID += String.valueOf(autoKey);
         return uniqueID;
     }
 

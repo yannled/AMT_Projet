@@ -14,4 +14,8 @@ public interface ApplicationDAOLocal extends IGenericDAO<Application> {
 
     public Application findByApiKey(int id);
 
+    public List<Application> getProjectsByUser(String email);
+
+    public Long bindAppToUser(long idApp, long idUser);
+
 }

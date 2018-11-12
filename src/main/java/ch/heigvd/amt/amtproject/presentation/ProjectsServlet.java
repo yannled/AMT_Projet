@@ -40,15 +40,11 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User)session.getAttribute("user");
 
-        // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
-        if(request.getParameterMap().containsKey("action") && request.getParameterMap().containsKey("userEmail")){
-          if(request.getParameter("action").equals("SHOWAPPUSER") && currentUser.isAdmin()){
-            VUE = VUE.concat("?action=").concat(request.getParameter("action")).concat("&userEmail=").concat(request.getParameter("userEmail"));
+        // Test if the request come from the admin View, if yes there is some query string defined and that's mean we
+        // we want to see the application of an other user.
+        // else we take our application
+        if(request.getParameterMap().containsKey("action") && request.getParameterMap().containsKey("userEmail") && request.getParameter("action").equals("SHOWAPPUSER") && currentUser.isAdmin()){
             applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
-          }
-          else{
-            applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
-          }
         }
         else{
           applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
@@ -81,7 +77,11 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", pagination.getCurrentPage());
 
-        request.getRequestDispatcher(VUE+"?page="+pagination.getCurrentPage()).forward(request, response);
+        // We give the attributes comming from the admin part (there will be tested if empty in the jsp file
+        request.setAttribute("action", request.getParameter("action"));
+        request.setAttribute("userEmail", request.getParameter("userEmail"));
+
+        request.getRequestDispatcher(VUE).forward(request, response);
       }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {

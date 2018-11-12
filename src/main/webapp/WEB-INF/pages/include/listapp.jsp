@@ -23,15 +23,18 @@
                 <td><c:out value="${ application.apikey }"/></td>
                 <td><c:out value="${ application.apiSecret }"/></td>
                 <td class="centerIcon">
-                    <button data-toggle="modal" id="modifyApp-${ application.apikey }" data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
+                    <button data-toggle="modal" id="modifyApp-${ application.apikey }"
+                            data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
                 </td>
                 <td class="centerIcon">
-                    <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i class="fas fa-trash-alt"></i></button>
+                    <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i
+                            class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
 
             <!-- START OF Modal Modify Application -->
-            <div class="modal fade" id="modifyApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
+            <div class="modal fade" id="modifyApp-${ application.apikey }" tabindex="-1" role="dialog"
+                 aria-labelledby="Modify Application"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -53,7 +56,8 @@
                                            value="<c:out value="${ application.name }"/>">
                                     <label for="ApplicationDescription">Application description</label>
                                     <textarea class="form-control" name="description"
-                                              id="ApplicationDescription" rows="5"><c:out value="${ application.description }"/></textarea>
+                                              id="ApplicationDescription" rows="5"><c:out
+                                            value="${ application.description }"/></textarea>
                                 </div>
 
                             </div>
@@ -68,7 +72,8 @@
             <!-- END OF Modal Modify Application -->
 
             <!-- START OF Modal DELETE Application -->
-            <div class="modal fade" id="deleteApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Delete Application"
+            <div class="modal fade" id="deleteApp-${ application.apikey }" tabindex="-1" role="dialog"
+                 aria-labelledby="Delete Application"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -112,6 +117,12 @@
                 <form action="projects" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage - 1}">
+                    <c:if test="${not empty action && not empty userEmail}">
+                        <input style="display: none" type="text" name="action" placeholder="action"
+                               value="${action}">
+                        <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                               value="${userEmail}">
+                    </c:if>
                     <button>Previous</button>
                 </form>
             </td>
@@ -128,6 +139,12 @@
                         <form action="projects" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
+                                <c:if test="${not empty action && not empty userEmail}">
+                                    <input style="display: none" type="text" name="action" placeholder="action"
+                                           value="${action}">
+                                    <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                                           value="${userEmail}">
+                                </c:if>
                                 <button class="font-weight-bold fs-20">${i}</button>
                             </td>
                         </form>
@@ -136,6 +153,12 @@
                         <form action="projects" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
+                                <c:if test="${not empty action && not empty userEmail}">
+                                    <input style="display: none" type="text" name="action" placeholder="action"
+                                           value="${action}">
+                                    <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                                           value="${userEmail}">
+                                </c:if>
                                 <button>${i}</button>
                             </td>
                         </form>
@@ -153,6 +176,12 @@
                 <form action="projects" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage + 1}">
+                    <c:if test="${not empty action && not empty userEmail}">
+                        <input style="display: none" type="text" name="action" placeholder="action"
+                               value="${action}">
+                        <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                               value="${userEmail}">
+                    </c:if>
                     <button>Next</button>
                 </form>
             </td>

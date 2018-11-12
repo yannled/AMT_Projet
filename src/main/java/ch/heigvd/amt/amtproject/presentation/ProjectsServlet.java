@@ -41,7 +41,19 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         User currentUser = (User)session.getAttribute("user");
 
         // TODO: RECUPRER LIST D APPLICATIONS POUR CE USER
-        applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
+        if(request.getParameterMap().containsKey("action") && request.getParameterMap().containsKey("userEmail")){
+          if(request.getParameter("action").equals("SHOWAPPUSER") && currentUser.isAdmin()){
+            VUE = VUE.concat("?action=").concat(request.getParameter("action")).concat("&userEmail=").concat(request.getParameter("userEmail"));
+            applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
+          }
+          else{
+            applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
+          }
+        }
+        else{
+          applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
+        }
+
         pagination = new Pagination(1,1);
 
         //PAGINATION
@@ -70,7 +82,7 @@ public class ProjectsServlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("currentPage", pagination.getCurrentPage());
 
         request.getRequestDispatcher(VUE+"?page="+pagination.getCurrentPage()).forward(request, response);
-    }
+      }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         new VerifySession(request.getSession(), request, response).redirectIfNoUser();

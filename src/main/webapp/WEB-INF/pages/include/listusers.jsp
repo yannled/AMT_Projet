@@ -14,6 +14,7 @@
       <th scope="col">E-mail</th>
       <th scope="col">Privilege</th>
       <th scope="col">Suspend</th>
+      <th scope="col">Show Application</th>
     </tr>
     <c:forEach items="${ users }" var="user" varStatus="counter">
       <tr>
@@ -22,19 +23,22 @@
         <td><c:out value="${ user.email }"/></td>
         <td>
           <button data-toggle="modal" data-target="#privilegeUser-${user.lastName}-${user.name}-${ counter.count }">
+            <i class="fas fa-pencil-alt"></i></button>
             ${user.admin ? 'Administrator' : 'User'}
-              <i class="fas fa-pencil-alt"></i></button>
         </td>
         <td>
           <button data-toggle="modal" data-target="#suspendUser-${user.lastName}-${user.name}-${ counter.count }">
+            <i class="fas fa-pencil-alt"></i>
             <display:column>
               <c:choose>
                 <c:when test="${user.state == 0}">Suspend</c:when>
                 <c:when test="${user.state == 1}">Active</c:when>
                 <c:when test="${user.state == 2}">hasChangePassword</c:when>
               </c:choose>
-            </display:column>
-            <i class="fas fa-pencil-alt"></i></button>
+            </display:column></button>
+        </td>
+        <td>
+          <a href="projects?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications</a>
         </td>
       </tr>
 

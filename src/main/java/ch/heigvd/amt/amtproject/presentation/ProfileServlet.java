@@ -2,11 +2,16 @@ package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
+import ch.heigvd.amt.amtproject.business.EmailSender;
+import ch.heigvd.amt.amtproject.business.KeyGenerator;
+import ch.heigvd.amt.amtproject.business.PasswordUtils;
+import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
 import sun.misc.IOUtils;
 import ch.heigvd.amt.amtproject.model.VerifySession;
 
 import javax.ejb.EJB;
+import javax.mail.MessagingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +20,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Blob;
 import java.util.Base64;
 import java.util.List;
@@ -25,6 +32,8 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     public static String PROFILE = "/WEB-INF/pages/profile.jsp";
 
+    @EJB
+    private EmailSender emailSender;
     @EJB
     private UserDAOLocal userDAO;
 
@@ -37,15 +46,15 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
         new VerifySession(request.getSession(), request, response).redirectIfNoUser();
 
         HttpSession session = request.getSession();
-        User currentUser = (User)session.getAttribute("user");
+        User currentUser = (User) session.getAttribute("user");
 
         //TODO get session user id
         long currentUserId = currentUser.getId();
 
         //TODO Get the current user
-        if(request.getParameter("modify") != null){
+        if (request.getParameter("modify") != null) {
             request.setAttribute("modify", true);
-        }else{
+        } else {
             request.setAttribute("modify", false);
         }
 
@@ -62,46 +71,72 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User currentUser = (User)session.getAttribute("user");
-
-        //TODO get session user id
+        User currentUser = (User) session.getAttribute("user");
         long currentUserId = currentUser.getId();
 
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
+        String action = request.getParameter("action");
 
-        Part filePart = request.getPart("avatar");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        InputStream fileContent = filePart.getInputStream();
 
-        if (fileName != null && !fileName.isEmpty()) {
+        switch (action) {
+            case "RESET":
+                try {
+                    // reset le mot de passe, l'envoie par mail et le change dans la base de donnée.
+                    String randPassword = KeyGenerator.generateRandomPassword(10);
+                    String hashPassword = PasswordUtils.generatePasswordHash(randPassword);
 
-            userDAO.updateAvatar(currentUserId, fileContent);
+                    userDAO.updatePassword(currentUserId, hashPassword);
+
+                    emailSender.sendNewPassword(currentUser, randPassword);
+
+                } catch (MessagingException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    throw new RuntimeException(e);
+                }
+
+                //
+                break;
+            case "MODIFY":
+
+                String firstName = request.getParameter("firstName");
+                String lastName = request.getParameter("lastName");
+                String email = request.getParameter("email");
+
+                Part filePart = request.getPart("avatar");
+                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                InputStream fileContent = filePart.getInputStream();
+
+                if (fileName != null && !fileName.isEmpty()) {
+
+                    userDAO.updateAvatar(currentUserId, fileContent);
+                }
+                userDAO.updateName(currentUserId, firstName, lastName);
+
+                // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
+                if (!userDAO.isExist(email)) {
+                    userDAO.updateEmail(currentUserId, email);
+                } else {
+
+                    User user = userDAO.findById(currentUserId);
+                    user.setEmail(email);
+                    request.setAttribute("currentUser", user);
+
+                    String emailError = "This email already exists";
+                    request.setAttribute("emailError", true);
+                    request.setAttribute("emailErrorText", emailError);
+                    request.setAttribute("modify", true);
+                    request.getRequestDispatcher(PROFILE).forward(request, response);
+                }
+
+                //Mettre à jour la session en fonction du changement de profil
+                currentUser.setName(firstName);
+                currentUser.setLastName(lastName);
+                currentUser.setEmail(email);
+                session.setAttribute("user", currentUser);
+                break;
+            default:
+                // TODO handle no vallue when post
+                break;
         }
-        userDAO.updateName(currentUserId, firstName, lastName);
 
-      // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
-        if(! userDAO.isExist(email)) {
-            userDAO.updateEmail(currentUserId, email);
-        }else{
-
-            User user = userDAO.findById(currentUserId);
-            user.setEmail(email);
-            request.setAttribute("currentUser", user);
-
-            String emailError = "This email already exists";
-            request.setAttribute("emailError", true);
-            request.setAttribute("emailErrorText", emailError);
-            request.setAttribute("modify", true);
-            request.getRequestDispatcher(PROFILE).forward(request, response);
-        }
-
-        //Mettre à jour la session en fonction du changement de profil
-        currentUser.setName(firstName);
-        currentUser.setLastName(lastName);
-        currentUser.setEmail(email);
-        session.setAttribute("user", currentUser);
 
         doGet(request, response);
     }

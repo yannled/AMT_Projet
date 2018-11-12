@@ -4,14 +4,18 @@ import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.Pagination;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.model.VerifySession;
+import ch.heigvd.amt.amtproject.business.EmailSender;
+
 
 import javax.ejb.EJB;
+import javax.mail.MessagingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+
 
 @WebServlet("/admin")
 public class AdminServlet extends javax.servlet.http.HttpServlet {
@@ -20,6 +24,8 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     private static String ADMIN = "/WEB-INF/pages/admin.jsp";
     private Pagination pagination;
 
+    @EJB
+    private EmailSender emailSender;
     @EJB
     private UserDAOLocal userDAO;
 
@@ -34,6 +40,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
 
         HttpSession session = request.getSession();
         User currentUser = (User)session.getAttribute("user");
+
 
         users = userDAO.findAll();
         //TODO use pagination structure to get a users list

@@ -24,6 +24,8 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private final String updateUserAdmin = "UPDATE tbUser SET privilegeId = (?) WHERE userEmail = (?)";
     private final String updateUserEmail = "UPDATE tbUser SET userEmail = (?) WHERE userId = (?)";
     private final String updateUserAvatar = "UPDATE tbUser SET userAvatar =(?) WHERE userId = (?)";
+    private final String updateUserPassword = "UPDATE tbUser SET userPassword =(?) WHERE userId = (?)";
+
 
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
     private final String getUsers = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser";
@@ -135,6 +137,21 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             // insert data into statement.
             ps.setBlob(1, avatarFile);
+            ps.setLong(2, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updatePassword(Long id, String password){
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(updateUserPassword);
+
+            // insert data into statement.
+            ps.setString(1, password);
             ps.setLong(2, id);
 
             ps.execute();

@@ -21,7 +21,7 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public void updateAvatar(Long id, InputStream fileContent);
 
-    public void updatePassword(Long id, String password);
+    public void updatePassword(Long id, String hashPassword);
 
     public String getAvatar(Long id);
 

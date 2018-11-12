@@ -146,12 +146,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     @Override
-    public void updatePassword(Long id, String password){
+    public void updatePassword(Long id, String hashPassword){
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(updateUserPassword);
 
             // insert data into statement.
-            ps.setString(1, password);
+            ps.setString(1, hashPassword);
             ps.setLong(2, id);
 
             ps.execute();

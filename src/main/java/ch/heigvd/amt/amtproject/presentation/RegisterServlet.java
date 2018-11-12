@@ -91,7 +91,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }
         else {
-            errorLastName.setValue(lastname);
+            errorPassword.setValue(password);
         }
 
         if (secondPassword.isEmpty()){
@@ -100,7 +100,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }
         else {
-            errorLastName.setValue(lastname);
+            errorSecondPassword.setValue(secondPassword);
         }
 
         //TODO : utiliser la fonction si dessous.

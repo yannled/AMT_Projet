@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 
-    <title>Profile</title>
+    <title>Home</title>
     <%@ include file="parts/meta.jsp" %>
     <%@ include file="parts/header.jsp" %>
 </head>

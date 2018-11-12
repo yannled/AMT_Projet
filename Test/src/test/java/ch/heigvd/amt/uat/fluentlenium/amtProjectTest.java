@@ -1,6 +1,7 @@
 package ch.heigvd.amt.uat.fluentlenium;
 
 import ch.heigvd.amt.uat.fluentlenium.pages.ApplicationsFluentPage;
+import ch.heigvd.amt.uat.fluentlenium.pages.HomeFluentPage;
 import ch.heigvd.amt.uat.fluentlenium.pages.LoginFluentPage;
 import ch.heigvd.amt.uat.fluentlenium.pages.RegisterFluentPage;
 import io.probedock.client.annotations.ProbeTest;
@@ -11,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.fluentlenium.core.annotation.Page;
 
+import static org.fluentlenium.core.filter.MatcherConstructor.contains;
+
 /**
  *
  * @author Olivier Liechti (olivier.liechti@heig-vd.ch)
@@ -18,6 +21,9 @@ import org.fluentlenium.core.annotation.Page;
 public class amtProjectTest extends FluentTest {
 
   private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
+
+  private final String TEST_EMAIL_OK = "test3@gmail.com";
+  private final String TEST_PASSWORD_OK = "1234";
 
   @Page
   public LoginFluentPage loginPage;
@@ -27,6 +33,9 @@ public class amtProjectTest extends FluentTest {
 
   @Page
   public ApplicationsFluentPage applicationsPage;
+
+  @Page
+  public HomeFluentPage homePage;
 
   @Test
   @ProbeTest(tags = "WebUI")
@@ -61,11 +70,11 @@ public class amtProjectTest extends FluentTest {
   public void itShouldBePossibleToRegister() {
     goTo(baseUrl+registerPage.getUrl());
     registerPage.isAt();
-    registerPage.typeEmailAddress("test@test2.com");
+    registerPage.typeEmailAddress(TEST_EMAIL_OK);
     registerPage.typeFirstName("Testeur");
     registerPage.typeLastName("test");
-    registerPage.typeFirstPassword("1234");
-    registerPage.typeSecondPassword1("1234");
+    registerPage.typeFirstPassword(TEST_PASSWORD_OK);
+    registerPage.typeSecondPassword1(TEST_PASSWORD_OK);
     registerPage.clickRegister();
     loginPage.isAt();
   }
@@ -108,28 +117,26 @@ public class amtProjectTest extends FluentTest {
   public void itShouldBePossibleToLogIn() {
     goTo(baseUrl);
     loginPage.isAt();
-    loginPage.typeEmailAddress("test@test2.com");
-    loginPage.typePassword("1234");
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
     loginPage.clickSignin();
-    applicationsPage.isAt();
+    homePage.isAt();
   }
 
   @Test
   @ProbeTest(tags = "WebUI")
   public void itShouldBePossibleToAddApp() {
     goTo(baseUrl);
-    loginPage.typeEmailAddress("test@test2.com");
-    loginPage.typePassword("1234");
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
     loginPage.clickSignin();
     goTo(baseUrl+applicationsPage.getUrl());
     applicationsPage.clickAddApp();
-    /*
     applicationsPage.clickAddApp();
     applicationsPage.typeAppName("application Test");
     applicationsPage.typeAppDescription("Application de testing");
     applicationsPage.clickSubmitApp();
-    applicationsPage.clickModifyApp();
-    */
+    assertThat(applicationsPage.pageSource()).contains("application Test");
     applicationsPage.isAt();
   }
 

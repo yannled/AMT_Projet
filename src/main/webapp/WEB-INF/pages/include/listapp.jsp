@@ -23,11 +23,11 @@
                 <td><c:out value="${ application.apikey }"/></td>
                 <td><c:out value="${ application.apiSecret }"/></td>
                 <td class="centerIcon">
-                    <button data-toggle="modal" id="modifyApp-${ application.apikey }"
+                    <button data-toggle="modal" id="modifyAppButton-${ application.apikey }"
                             data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
                 </td>
                 <td class="centerIcon">
-                    <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i
+                    <button data-toggle="modal" id="deleteAppButton-${ application.apikey }" data-target="#deleteApp-${ application.apikey }"><i
                             class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
@@ -63,7 +63,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button id="submitAppModify" type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </form>
                     </div>
@@ -96,7 +96,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button id="submitAppDelete" type="submit" class="btn btn-danger">Delete</button>
                             </div>
                         </form>
                     </div>
@@ -123,7 +123,7 @@
                         <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                value="${userEmail}">
                     </c:if>
-                    <button>Previous</button>
+                    <button id="previousPage">Previous</button>
                 </form>
             </td>
         </div>
@@ -182,7 +182,7 @@
                         <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                value="${userEmail}">
                     </c:if>
-                    <button>Next</button>
+                    <button id="nextPage">Next</button>
                 </form>
             </td>
         </div>

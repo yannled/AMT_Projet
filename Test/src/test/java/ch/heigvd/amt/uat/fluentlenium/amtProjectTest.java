@@ -6,11 +6,15 @@ import ch.heigvd.amt.uat.fluentlenium.pages.LoginFluentPage;
 import ch.heigvd.amt.uat.fluentlenium.pages.RegisterFluentPage;
 import io.probedock.client.annotations.ProbeTest;
 import org.fluentlenium.adapter.FluentTest;
+import org.junit.Before;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.fluentlenium.core.annotation.Page;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.fluentlenium.core.filter.MatcherConstructor.contains;
 
@@ -36,6 +40,11 @@ public class amtProjectTest extends FluentTest {
 
   @Page
   public HomeFluentPage homePage;
+
+  @Before
+  public void information(){
+    System.out.println("Be sure to haven't any projects in you database before tring the test !!!");
+  }
 
   @Test
   @ProbeTest(tags = "WebUI")
@@ -125,19 +134,91 @@ public class amtProjectTest extends FluentTest {
 
   @Test
   @ProbeTest(tags = "WebUI")
-  public void itShouldBePossibleToAddApp() {
+  public void itShouldBePossibleToAddAppAndFindIt() {
+    final String appName = "application Test";
     goTo(baseUrl);
     loginPage.typeEmailAddress(TEST_EMAIL_OK);
     loginPage.typePassword(TEST_PASSWORD_OK);
     loginPage.clickSignin();
     goTo(baseUrl+applicationsPage.getUrl());
     applicationsPage.clickAddApp();
-    applicationsPage.clickAddApp();
-    applicationsPage.typeAppName("application Test");
+    await().atMost(2, TimeUnit.SECONDS).until("#addApp").areDisplayed();
+    applicationsPage.typeAppName(appName);
     applicationsPage.typeAppDescription("Application de testing");
     applicationsPage.clickSubmitApp();
-    assertThat(applicationsPage.pageSource()).contains("application Test");
+    assertThat(applicationsPage.pageSource()).contains(appName);
     applicationsPage.isAt();
+  }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void itShouldBePossibleToModifyAppAndFindIt() {
+    final String appName = "application Test Modify";
+    goTo(baseUrl);
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
+    loginPage.clickSignin();
+    goTo(baseUrl+applicationsPage.getUrl());
+    applicationsPage.clickModifyApp();
+    await().atMost(2, TimeUnit.SECONDS).until("#modifyApp-0").areDisplayed();
+    applicationsPage.typeAppName(appName);
+    applicationsPage.typeAppDescription("Application de testing modify");
+    applicationsPage.clickSubmitAppModify();
+    assertThat(applicationsPage.pageSource()).contains(appName);
+    applicationsPage.isAt();
+  }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void itShouldBePossibleToDeleteApp() {
+    final String appName = "application Test Modify";
+    goTo(baseUrl);
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
+    loginPage.clickSignin();
+    goTo(baseUrl+applicationsPage.getUrl());
+    applicationsPage.clickDeleteApp();
+    await().atMost(2, TimeUnit.SECONDS).until("#deleteApp-0").areDisplayed();
+    applicationsPage.clickSubmitDeleteApp();
+    assertThat(applicationsPage.pageSource()).doesNotContain(appName);
+    applicationsPage.isAt();
+  }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void itShouldCreateALotOfApplicationsThenBrowseBetweenPagesThenLogoutThenRetryToShowApps() {
+    final int numberOfApplicationsToCreate = 25;
+    String appName = "";
+    goTo(baseUrl);
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
+    loginPage.clickSignin();
+    goTo(baseUrl+applicationsPage.getUrl());
+
+    // Create some applications
+    for (int i = 0; i < numberOfApplicationsToCreate; i++){
+      appName = "application Test" + Integer.toString(i);
+      applicationsPage.clickAddApp();
+      await().atMost(2, TimeUnit.SECONDS).until("#addApp").areDisplayed();
+      applicationsPage.typeAppName(appName);
+      applicationsPage.typeAppDescription("Application de testing" + Integer.toString(i));
+      applicationsPage.clickSubmitApp();
+    }
+    applicationsPage.isAt();
+
+    // Try to go to next pagination number
+    applicationsPage.goToNextPageOfApplication();
+    applicationsPage.goToNextPageOfApplication();
+    applicationsPage.goToPreviousPageOfApplication();
+    applicationsPage.isAt();
+
+    // Logout
+    goTo(baseUrl+"logout");
+    loginPage.isAt();
+
+    // Try to access application page
+    goTo(baseUrl+applicationsPage.getUrl());
+    loginPage.isAt();
   }
 
   @Override

@@ -62,13 +62,17 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             errorEmail.setValue(email);
         }
 
-        if (userDAO.isExist(email)) {
-            errorEmail.setErrorText( "email already exists");
-            errorEmail.setError(true);
-            syntaxOK = false;
+        try {
+            if (userDAO.isExist(email)) {
+                errorEmail.setErrorText("email already exists");
+                errorEmail.setError(true);
+                syntaxOK = false;
+            } else {
+                errorEmail.setValue(email);
+            }
         }
-        else {
-            errorEmail.setValue(email);
+        catch (Exception e){
+            response.getWriter().println("There was a problem when we test if this email already exist");
         }
 
         if (name.equals("")){
@@ -113,13 +117,6 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             errorSecondPassword.setValue(secondPassword);
         }
 
-        //TODO : utiliser la fonction si dessous.
-        /*if(userDAO.isExist(email)){
-            errorEmail.setErrorText( "email already use !");
-            errorEmail.setError(true);
-            syntaxOK = false;
-        }*/
-
         // we set a default avatar to the user database for a new registered user
         String defaultAvatarPath = getServletContext().getRealPath("images/defaultAvatar.png");
         InputStream inputStream = new DataInputStream(new FileInputStream(new File(defaultAvatarPath)));
@@ -145,9 +142,10 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
                 User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1, base64Avatar);
                 userDAO.create(user);
 
-            }catch (NoSuchAlgorithmException | InvalidKeySpecException e){
+            }catch (NoSuchAlgorithmException | InvalidKeySpecException | RuntimeException e){
                 // TODO: make a better error handle
                 System.out.print(e.getMessage());
+                response.getWriter().println("There was a problem when we create this user or when we generate the hash of this password.");
             }
 
 

@@ -149,7 +149,7 @@
             <form action="profile" method="post">
                 <input class="hide" type="text" name="action" value="RESET">
                 <div class="modal-body">
-
+                After resetting your password, you'll get an email with a random password. After reconnection, you will be requested to choose a new one.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

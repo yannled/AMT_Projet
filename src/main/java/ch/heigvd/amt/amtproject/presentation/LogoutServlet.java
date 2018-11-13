@@ -17,9 +17,6 @@ public class LogoutServlet extends javax.servlet.http.HttpServlet {
 
     public static String LOGIN = "/WEB-INF/pages/login.jsp";
 
-    @EJB
-    private UserDAOLocal userDAO;
-
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);

@@ -4,6 +4,8 @@ import ch.heigvd.amt.amtproject.model.Application;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.sql.DataSource;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOLocal {
 
     private final String createApplication = "INSERT INTO tbProject (projectName, projectDescrition ,APIKey, APISecret) VALUES (?,?,?,?)";

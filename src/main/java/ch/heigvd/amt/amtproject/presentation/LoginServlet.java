@@ -61,32 +61,33 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         }
 
         if (syntaxOK) {
-            //request.getRequestDispatcher("projects");
-            //return;
-            //TODO : Faire les tests si dessous avec la base de donnée
 
-            if(userDAO.isValid(email, password)) {
+            try {
+                if (userDAO.isValid(email, password)) {
 
-                //Créer une session si credentials validés
-                HttpSession session = request.getSession();
-                User currentUser = userDAO.findByIdEmail(email);
-                session.setAttribute("user", currentUser);
+                    //Créer une session si credentials validés
+                    HttpSession session = request.getSession();
+                    User currentUser = userDAO.findByIdEmail(email);
+                    session.setAttribute("user", currentUser);
 
-                // si le status est changedPassword redirect to change password
-                // TODO use enums for status
-                if(currentUser.getState() == 2){
-                    request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                    // si le status est changedPassword redirect to change password
+                    // TODO use enums for status
+                    if (currentUser.getState() == 2) {
+                        request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                    }
+
+                    request.getRequestDispatcher(HOME).forward(request, response);
+                    return;
+                } else {
+                    errorPassword.setErrorText("wrong password");
+                    errorPassword.setError(true);
+                    // TODO correct message, should be more explicit if user not exits -> bad email or wrong password
+                    errorEmail.setErrorText("email not found");
+                    errorEmail.setError(true);
                 }
-
-                request.getRequestDispatcher(HOME).forward(request, response);
-                return;
             }
-            else{
-                errorPassword.setErrorText("wrong password");
-                errorPassword.setError(true);
-                // TODO correct message, should be more explicit if user not exits -> bad email or wrong password
-                errorEmail.setErrorText( "email not found");
-                errorEmail.setError(true);
+            catch (Exception e){
+                response.getWriter().println("There was a problem when test if the login informations were valid or when we get the user in the database");
             }
 
         }

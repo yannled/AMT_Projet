@@ -3,6 +3,8 @@ import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
@@ -14,6 +16,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userPassword, privilegeId, statusId, userAvatar) VALUES (?,?,?,?,?,?,?)";

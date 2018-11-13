@@ -22,7 +22,7 @@ import java.util.List;
 @WebServlet("/applications")
 public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
 
-    public static String VUE = "/WEB-INF/pages/projects.jsp";
+    public static String VUE = "/WEB-INF/pages/applications.jsp";
     private List<Application> applications;
     private Pagination pagination;
 

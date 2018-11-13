@@ -23,8 +23,9 @@
         <td><c:out value="${ user.email }"/></td>
         <td>
           <button data-toggle="modal" data-target="#privilegeUser-${user.lastName}-${user.name}-${ counter.count }">
-            <i class="fas fa-pencil-alt"></i></button>
+            <i class="fas fa-pencil-alt"></i>
             ${user.admin ? 'Administrator' : 'User'}
+          </button>
         </td>
         <td>
           <button data-toggle="modal" data-target="#suspendUser-${user.lastName}-${user.name}-${ counter.count }">
@@ -35,7 +36,8 @@
                 <c:when test="${user.state == 1}">Active</c:when>
                 <c:when test="${user.state == 2}">hasChangePassword</c:when>
               </c:choose>
-            </display:column></button>
+            </display:column>
+          </button>
         </td>
         <td>
           <a href="applications?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications</a>

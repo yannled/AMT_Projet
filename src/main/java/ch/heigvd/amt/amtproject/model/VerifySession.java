@@ -14,7 +14,7 @@ public class VerifySession {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 
-    private static String PROJECTS = "/WEB-INF/pages/projects.jsp";
+    private static String PROJECTS = "/WEB-INF/pages/applications.jsp";
     private static String LOGIN = "/WEB-INF/pages/login.jsp";
 
     public VerifySession(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -44,7 +44,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="projects" method="post">
+                        <form action="applications" method="post">
                             <input class="hide" type="text" name="action" value="MODIFY">
                             <input class="hide" type="text" name="apiKey" value=<c:out
                                     value="${ application.apikey }"/>>
@@ -83,7 +83,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="projects" method="post">
+                        <form action="applications" method="post">
                             <input class="hide" type="text" name="action" value="DELETE">
                             <input class="hide" type="text" name="apiKey" value=<c:out
                                     value="${ application.apikey }"/>>
@@ -114,7 +114,7 @@
     <c:if test="${currentPage != 1}">
         <div class="mr-3">
             <td>
-                <form action="projects" method="get">
+                <form action="applications" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage - 1}">
                     <c:if test="${not empty action && not empty userEmail}">
@@ -136,7 +136,7 @@
             <c:forEach begin="1" end="${noOfPages}" var="i">
                 <c:choose>
                     <c:when test="${currentPage eq i}">
-                        <form action="projects" method="get">
+                        <form action="applications" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
                                 <c:if test="${not empty action && not empty userEmail}">
@@ -150,7 +150,7 @@
                         </form>
                     </c:when>
                     <c:otherwise>
-                        <form action="projects" method="get">
+                        <form action="applications" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
                                 <c:if test="${not empty action && not empty userEmail}">
@@ -173,7 +173,7 @@
     <c:if test="${currentPage lt noOfPages}">
         <div class="ml-3">
             <td>
-                <form action="projects" method="get">
+                <form action="applications" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage + 1}">
                     <c:if test="${not empty action && not empty userEmail}">

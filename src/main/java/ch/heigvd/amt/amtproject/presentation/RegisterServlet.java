@@ -24,6 +24,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
     public String REGISTER = "/WEB-INF/pages/register.jsp";
     public String LOGIN = "/WEB-INF/pages/login.jsp";
 
+
     @EJB
     private UserDAOLocal userDAO;
 
@@ -54,6 +55,15 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
         if (!email.contains("@")) {
             errorEmail.setErrorText( "bad email structure !");
+            errorEmail.setError(true);
+            syntaxOK = false;
+        }
+        else {
+            errorEmail.setValue(email);
+        }
+
+        if (userDAO.isExist(email)) {
+            errorEmail.setErrorText( "email already exists");
             errorEmail.setError(true);
             syntaxOK = false;
         }

@@ -190,16 +190,6 @@
             <form action="profile" method="post">
                 <input class="hide" type="text" name="action" value="RESET">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="selectUser">Select the User</label>
-                        <select name="selectUser" id="selectUser">
-                            <c:forEach items="${users}" var="userValue">
-                                <option value="${userValue.email}">
-                                        ${userValue.lastName}-${userValue.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
 
                 </div>
                 <div class="modal-footer">

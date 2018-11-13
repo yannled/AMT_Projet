@@ -102,7 +102,6 @@ public class PwdChangeServlet extends javax.servlet.http.HttpServlet {
             return;
         }
 
-
         errors.add(errorOldPassword);
         errors.add(errorPassword);
         errors.add(errorPasswordRepeat);

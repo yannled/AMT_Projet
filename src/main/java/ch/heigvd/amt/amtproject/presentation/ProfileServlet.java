@@ -31,6 +31,7 @@ import static javax.xml.transform.OutputKeys.ENCODING;
 public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
     public static String PROFILE = "/WEB-INF/pages/profile.jsp";
+    public static String LOGOUT = "/WEB-INF/pages/logout.jsp";
 
     @EJB
     private EmailSender emailSender;
@@ -87,6 +88,10 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                     userDAO.updatePassword(currentUserId, hashPassword);
 
                     emailSender.sendNewPassword(currentUser, randPassword);
+
+                    currentUser.setState(2);
+                    userDAO.updateState(currentUser);
+
 
                 } catch (MessagingException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                     throw new RuntimeException(e);

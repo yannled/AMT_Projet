@@ -18,8 +18,10 @@ import java.util.List;
 @WebServlet("/login")
 public class LoginServlet extends javax.servlet.http.HttpServlet {
 
-    public static String VUE = "/WEB-INF/pages/login.jsp";
+    public static String LOGIN = "/WEB-INF/pages/login.jsp";
     public static String HOME = "/WEB-INF/pages/home.jsp";
+    public static String PSWCHANGE = "/WEB-INF/pages/pswchange.jsp";
+
 
     @EJB
     private UserDAOLocal userDAO;
@@ -30,7 +32,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(LOGIN).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
@@ -70,7 +72,13 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                 User currentUser = userDAO.findByIdEmail(email);
                 session.setAttribute("user", currentUser);
 
-                response.sendRedirect("home");
+                // si le status est changedPassword redirect to change password
+                // TODO use enums for status
+                if(currentUser.getState() == 2){
+                    request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                }
+
+                request.getRequestDispatcher(HOME).forward(request, response);
                 return;
             }
             else{
@@ -87,6 +95,6 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         errors.add(errorPassword);
 
         request.setAttribute("errors", errors);
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(LOGIN).forward(request, response);
     }
 }

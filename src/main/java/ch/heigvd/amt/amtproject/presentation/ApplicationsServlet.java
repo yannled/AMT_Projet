@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@WebServlet("/projects")
-public class ProjectsServlet extends javax.servlet.http.HttpServlet {
+@WebServlet("/applications")
+public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
 
     public static String VUE = "/WEB-INF/pages/projects.jsp";
     private List<Application> applications;

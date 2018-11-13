@@ -38,7 +38,7 @@
             </display:column></button>
         </td>
         <td>
-          <a href="projects?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications</a>
+          <a href="applications?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications</a>
         </td>
       </tr>
 

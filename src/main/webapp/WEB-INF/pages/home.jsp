@@ -18,7 +18,7 @@
                 <nav class="navbar navbar-left">
                     <ul>
                         <li><a href="profile">Profile</a></li>
-                        <li><a href="projects">Applications</a></li>
+                        <li><a href="applications">Applications</a></li>
                         <c:if test="${isAdmin}">
                             <li><a href="admin">manage Users</a></li>
                             <li><a href="#waitingForThis">manage Applictions</a></li>

@@ -105,9 +105,6 @@
                     <option value="1" ${user.state == 1 ? 'selected' : ''}>
                       Active
                     </option>
-                    <option value="2" ${user.state == 2 ? 'selected' : ''}>
-                      hasChangePassword
-                    </option>
                   </select>
                 </div>
               </div>

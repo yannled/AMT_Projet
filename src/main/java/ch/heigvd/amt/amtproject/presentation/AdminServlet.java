@@ -1,6 +1,8 @@
 package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
+import ch.heigvd.amt.amtproject.business.KeyGenerator;
+import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import ch.heigvd.amt.amtproject.model.Pagination;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.model.VerifySession;
@@ -14,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 
@@ -79,38 +83,68 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         String privilege = "";
         String email = "";
         String status = "";
+        User userToUpdate;
 
-        if(action.equals("MODIFYPrivilege")){
-            email = request.getParameter("email");
-            privilege = request.getParameter("privilege");
-            User userToUpdate = userDAO.findByIdEmail(email);
+        switch (action) {
 
-            if(userToUpdate != null) {
+            case "MODIFYPrivilege":
+              email = request.getParameter("email");
+              privilege = request.getParameter("privilege");
+              userToUpdate = userDAO.findByIdEmail(email);
+
+              if (userToUpdate != null) {
                 userToUpdate.setAdmin(Integer.parseInt(privilege) == 1);
                 userDAO.updateAdmin(userToUpdate);
-            }
-            else{
+              } else {
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
-            }
-        }
+              }
+              break;
 
-        else if(action.equals("MODIFYStatus")){
-            email = request.getParameter("email");
-            status = request.getParameter("status");
+            case "MODIFYStatus":
+              email = request.getParameter("email");
+              status = request.getParameter("status");
 
-            User userToUpdate = userDAO.findByIdEmail(email);
+              userToUpdate = userDAO.findByIdEmail(email);
 
-            if(userToUpdate != null) {
+              if (userToUpdate.getState() == 2) {
+                //Blocking force modification of a user by administrateur
+                // when user is in instance to change password
+              }
+              else if (userToUpdate != null) {
                 userToUpdate.setState(Integer.parseInt(status));
                 userDAO.updateState(userToUpdate);
-            }
-            else{
+              } else {
                 //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
-            }
-        }
-        else{
+              }
+              break;
 
-      }
+          case "RESET":
+              try {
+                  // reset le mot de passe, l'envoie par mail et le change dans la base de donnée.
+                  String randPassword = KeyGenerator.generateRandomPassword(10);
+                  String hashPassword = PasswordUtils.generatePasswordHash(randPassword);
+
+                  email = request.getParameter("email");
+                  userToUpdate = userDAO.findByIdEmail(email);
+
+                  userDAO.updatePassword(userToUpdate.getId(), hashPassword);
+
+                  emailSender.sendNewPassword(userToUpdate, randPassword);
+
+                  userToUpdate.setState(2);
+                  userDAO.updateState(userToUpdate);
+
+
+                } catch (MessagingException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    throw new RuntimeException(e);
+                }
+
+              //
+              break;
+          default:
+              // TODO handle no vallue when post
+              break;
+    }
         doGet(request, response);
     }
 }

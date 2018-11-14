@@ -3,6 +3,8 @@ import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
@@ -14,6 +16,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Stateless
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     private final String createUser = "INSERT INTO tbUser (userFirstName, userLastName ,userEmail, userPassword, privilegeId, statusId, userAvatar) VALUES (?,?,?,?,?,?,?)";
@@ -24,6 +27,8 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     private final String updateUserAdmin = "UPDATE tbUser SET privilegeId = (?) WHERE userEmail = (?)";
     private final String updateUserEmail = "UPDATE tbUser SET userEmail = (?) WHERE userId = (?)";
     private final String updateUserAvatar = "UPDATE tbUser SET userAvatar =(?) WHERE userId = (?)";
+    private final String updateUserPassword = "UPDATE tbUser SET userPassword =(?) WHERE userId = (?)";
+
 
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
     private final String getUsersByProjectId = "SELECT userFirstName, userLastName FROM tbUser INNER JOIN tbUserProject WHERE tbUser.userId = tbUserProject.userId AND tbUserProject.projectId = (?)";
@@ -39,7 +44,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     DataSource dataSource;
 
     @Override
-    public Long create(User user) {
+    public Long create(User user) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(createUser);
 
@@ -56,7 +61,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             return null;//rs.getLong(1);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
@@ -71,7 +76,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     @Override
-    public void updateState(User user){
+    public void updateState(User user) throws Exception {
       try (Connection connection = dataSource.getConnection()) {
         PreparedStatement ps = connection.prepareStatement(updateUserState);
 
@@ -80,12 +85,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         ps.setString(2, user.getEmail());
         ps.execute();
       } catch (SQLException e) {
-        throw new RuntimeException(e);
+        throw new Exception(e);
       }
     }
 
     @Override
-    public void updateAdmin(User user){
+    public void updateAdmin(User user) throws Exception {
       try (Connection connection = dataSource.getConnection()) {
         PreparedStatement ps = connection.prepareStatement(updateUserAdmin);
 
@@ -94,12 +99,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         ps.setString(2, user.getEmail());
         ps.execute();
       } catch (SQLException e) {
-        throw new RuntimeException(e);
+        throw new Exception(e);
       }
     }
 
     @Override
-    public void updateName(Long id, String firstName, String lastName) {
+    public void updateName(Long id, String firstName, String lastName) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(updateUserName);
 
@@ -110,12 +115,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             ps.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
     @Override
-    public void updateEmail(Long id, String email) {
+    public void updateEmail(Long id, String email) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(updateUserEmail);
 
@@ -125,12 +130,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             ps.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
     @Override
-    public void updateAvatar(Long id, InputStream avatarFile) {
+    public void updateAvatar(Long id, InputStream avatarFile) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(updateUserAvatar);
 
@@ -140,7 +145,22 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             ps.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
+        }
+    }
+
+    @Override
+    public void updatePassword(Long id, String hashPassword) throws Exception {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(updateUserPassword);
+
+            // insert data into statement.
+            ps.setString(1, hashPassword);
+            ps.setLong(2, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            throw new Exception(e);
         }
     }
 
@@ -152,7 +172,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
     // source : https://www.codejava.net/coding/how-to-display-images-from-database-in-jsp-page-with-java-servlet
     @Override
-    public String getAvatar(Long id) {
+    public String getAvatar(Long id) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getAvatar);
 
@@ -172,7 +192,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             return base64Avatar;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
@@ -182,7 +202,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(Long id) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUserById);
 
@@ -195,11 +215,11 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
-    public User findByIdEmail(String userEmail) {
+    public User findByIdEmail(String userEmail) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUserByEmail);
 
@@ -215,12 +235,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             return user;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUsers);
 
@@ -234,7 +254,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             return users;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
@@ -261,8 +281,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         }
     }
 
-
-    public boolean isValid(String emailUser, String password) {
+    public boolean isValid(String emailUser, String password) throws Exception {
         String email;
         String passwordHash;
         try (Connection connection = dataSource.getConnection()) {
@@ -283,12 +302,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             return PasswordUtils.validatePassword(password, passwordHash);
 
         } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
 
     }
 
-    public boolean isExist(String userEmail){
+    public boolean isExist(String userEmail) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getCountUserEmail);
 
@@ -300,11 +319,11 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 return false;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
-    public int countNumbersApplications(String userEmail){
+    public int countNumbersApplications(String userEmail) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(countNbrOfApplications);
 
@@ -316,11 +335,11 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
-    private String blobToBase64(Blob blob) {
+    private String blobToBase64(Blob blob) throws Exception {
         try {
             String base64Str;
             InputStream inputStream = blob.getBinaryStream();
@@ -341,22 +360,22 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             return base64Str;
         } catch (SQLException | IOException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
-    private Blob base64ToBlob(String base64Str) {
+    private Blob base64ToBlob(String base64Str) throws Exception {
         try {
             byte[] buffer =  Base64.getDecoder().decode(base64Str);
 
             return new SerialBlob(buffer);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 
 
-    private User rsToUser(ResultSet rs) {
+    private User rsToUser(ResultSet rs) throws Exception {
         try {
             User user = new User();
             user.setId(rs.getLong("userId"));
@@ -375,7 +394,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new Exception(e);
         }
     }
 }

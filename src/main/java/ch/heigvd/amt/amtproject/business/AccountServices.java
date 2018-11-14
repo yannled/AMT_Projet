@@ -12,7 +12,7 @@ public class AccountServices {
     @EJB
     UserDAO userDAO;
 
-    public int suspendAccount(String emailUserToSuspend) throws RightException {
+    public int suspendAccount(String emailUserToSuspend) throws Exception {
         User user = userDAO.findByIdEmail(emailUserToSuspend);
         if(!user.isAdmin()){
             throw new RightException("You need to be admin to suspend an account");
@@ -24,7 +24,7 @@ public class AccountServices {
         return 1;
     }
 
-    public int resetPassword(String emailAdministrator, String emailUserToReset, int length ) throws RightException {
+    public int resetPassword(String emailAdministrator, String emailUserToReset, int length ) throws Exception {
         User administrator = userDAO.findByIdEmail(emailAdministrator);
         User user = userDAO.findByIdEmail(emailUserToReset);
         if(!administrator.isAdmin()){
@@ -38,7 +38,7 @@ public class AccountServices {
         return 1;
     }
 
-    public int changePrivilege(String emailAdministrator, String emailUserToChangePrivilege, int newState ) throws RightException {
+    public int changePrivilege(String emailAdministrator, String emailUserToChangePrivilege, int newState ) throws Exception {
         User administrator = userDAO.findByIdEmail(emailAdministrator);
         User user = userDAO.findByIdEmail(emailUserToChangePrivilege);
         if(!administrator.isAdmin()){

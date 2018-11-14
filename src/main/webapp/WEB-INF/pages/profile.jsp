@@ -18,8 +18,6 @@
                 <nav class="navbar navbar-left">
                     <ul>
                         <li><a data-toggle="modal" data-target="#resetPassw">Reset Password</a></li>
-                        <li><a data-toggle="modal" data-target="#changePrivilege">Change Privilege</a></li>
-                        <li><a data-toggle="modal" data-target="#changeSuspend">Suspend Account</a></li>
                         <li><a href="profile?modify">Modify Profile</a></li>
                     </ul>
                 </nav>
@@ -76,23 +74,11 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Account Type</td>
-                                                            <c:if test="${ currentUser.admin }">
-                                                                <td>Admin</td>
-                                                            </c:if>
-                                                            <c:if test="${ !currentUser.admin }">
-                                                                <td>User</td>
-                                                            </c:if>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Number of applications</td>
-                                                            <td>${nbrApplications}</td>
-                                                        </tr>
-                                                        <tr>
-                                                        <tr>
                                                             <td>Avatar</td>
-                                                            <td><input type="file" name="avatar" /></td>
+                                                            <td><input type="file" name="avatar" /><br><p>Pictures greater than 160 ko, are not supported.</p></td>
+
                                                         </tr>
+
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -146,43 +132,18 @@
 
                     </div>
                 </div>
-
-
-                <!--
-                    <form action="profile" method="post">
-                        <input class="hide" type="text" name="action" value="MODIFY">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="selectUser">Lastname </label>
-                                <input type="text" class="form-control" id="Lastname" name="name" aria-describedby="Lastname"
-                                       value="${ currentUser.lastName }">
-                                <label for="selectUser">FirstName </label>
-                                <input type="text" class="form-control" id="FirstName" name="firstName" aria-describedby="FirstName"
-                                       value="${ currentUser.name }">
-                                <label for="selectUser">Email </label>
-                                <input type="text" class="form-control" id="email" name="email" aria-describedby="email"
-                                       value="${ currentUser.email }">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Modify</button>
-                        </div>
-                    </form>
-
-                   -->
             </div>
         </div>
     </div>
 </div>
 
-<!-- START OF Modal RESET Application -->
+<!-- START OF Modal RESET Password -->
 <div class="modal fade" id="resetPassw" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="resetPassword">Reset password</h5>
+                <h5 class="modal-title" id="resetPassword">Confirme Password Reset ?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -190,17 +151,7 @@
             <form action="profile" method="post">
                 <input class="hide" type="text" name="action" value="RESET">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="selectUser">Select the User</label>
-                        <select name="selectUser" id="selectUser">
-                            <c:forEach items="${users}" var="userValue">
-                                <option value="${userValue.email}">
-                                        ${userValue.lastName}-${userValue.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
+                After resetting your password, you'll get an email with a random password. After reconnection, you will be requested to choose a new one.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -210,96 +161,7 @@
         </div>
     </div>
 </div>
-<!-- END OF Modal RESET Application -->
-
-<!-- START OF Modal PRIVILEGE Application -->
-<div class="modal fade" id="changePrivilege" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="changePriv">Change privilege</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="profile" method="post">
-                <input class="hide" type="text" name="action" value="RESET">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="selectUser2">Select the User</label>
-                        <select name="selectUser" id="selectUser2">
-                            <c:forEach items="${users}" var="userValue">
-                                <option value="${userValue.email}">
-                                        ${userValue.lastName}-${userValue.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <label for="choosePriv">Select the User</label>
-                        <select name="selectUser" id="choosePriv">
-                            <option value="0">
-                                Administrator
-                            </option>
-                            <option value="1">
-                                User
-                            </option>
-                        </select>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Change Privilege</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- END OF Modal PRIVILEGE Application -->
-
-<!-- START OF Modal PRIVILEGE Application -->
-<div class="modal fade" id="changeSuspend" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="suspend">Change Suspend</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="profile" method="post">
-                <input class="hide" type="text" name="action" value="RESET">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="selectUser3">Select the User</label>
-                        <select name="selectUser" id="selectUser3">
-                            <c:forEach items="${users}" var="userValue">
-                                <option value="${userValue.email}">
-                                        ${userValue.lastName}-${userValue.name}
-                                </option>
-                            </c:forEach>
-                        </select>
-                        <label for="choosePriv">Select the User</label>
-                        <select name="selectUser" id="chooseSuspend">
-                            <option value="0">
-                                Suspend
-                            </option>
-                            <option value="1">
-                                Active
-                            </option>
-                        </select>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Change Privilege</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- END OF Modal RESET Password -->
 
 <%@ include file="parts/footer.jsp" %>
 

@@ -18,8 +18,10 @@ import java.util.List;
 @WebServlet("/login")
 public class LoginServlet extends javax.servlet.http.HttpServlet {
 
-    public static String VUE = "/WEB-INF/pages/login.jsp";
+    public static String LOGIN = "/WEB-INF/pages/login.jsp";
     public static String HOME = "/WEB-INF/pages/home.jsp";
+    public static String PSWCHANGE = "/WEB-INF/pages/pswchange.jsp";
+
 
     @EJB
     private UserDAOLocal userDAO;
@@ -30,7 +32,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(LOGIN).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
@@ -59,26 +61,35 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         }
 
         if (syntaxOK) {
-            //request.getRequestDispatcher("projects");
-            //return;
-            //TODO : Faire les tests si dessous avec la base de donnée
 
-            if(userDAO.isValid(email, password)) {
+            try {
+                if (userDAO.isValid(email, password)) {
 
-                //Créer une session si credentials validés
-                HttpSession session = request.getSession();
-                User currentUser = userDAO.findByIdEmail(email);
-                session.setAttribute("user", currentUser);
+                    //Créer une session si credentials validés
+                    HttpSession session = request.getSession();
+                    User currentUser = userDAO.findByIdEmail(email);
+                    session.setAttribute("user", currentUser);
 
-                response.sendRedirect("home");
-                return;
+                    // si le status est changedPassword redirect to change password
+                    // TODO use enums for status
+                    if (currentUser.getState() == 2) {
+                        request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                    }
+
+                    request.getRequestDispatcher(HOME).forward(request, response);
+                    return;
+                } else {
+                    errorPassword.setErrorText("wrong password");
+                    errorPassword.setError(true);
+                    // TODO correct message, should be more explicit if user not exits -> bad email or wrong password
+                    errorEmail.setErrorText("email not found");
+                    errorEmail.setError(true);
+                }
             }
-            else{
-                errorPassword.setErrorText("wrong password");
-                errorPassword.setError(true);
-                // TODO correct message, should be more explicit if user not exits -> bad email or wrong password
-                errorEmail.setErrorText( "email not found");
-                errorEmail.setError(true);
+            catch (Exception e){
+                request.setAttribute("error","There was a problem when test if the login informations were valid or when we get the user in the database");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
         }
@@ -87,6 +98,6 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         errors.add(errorPassword);
 
         request.setAttribute("errors", errors);
-        request.getRequestDispatcher(VUE).forward(request, response);
+        request.getRequestDispatcher(LOGIN).forward(request, response);
     }
 }

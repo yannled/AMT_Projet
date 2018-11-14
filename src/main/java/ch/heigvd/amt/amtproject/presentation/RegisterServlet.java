@@ -24,6 +24,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
     public String REGISTER = "/WEB-INF/pages/register.jsp";
     public String LOGIN = "/WEB-INF/pages/login.jsp";
 
+
     @EJB
     private UserDAOLocal userDAO;
 
@@ -61,6 +62,21 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             errorEmail.setValue(email);
         }
 
+        try {
+            if (userDAO.isExist(email)) {
+                errorEmail.setErrorText("email already exists");
+                errorEmail.setError(true);
+                syntaxOK = false;
+            } else {
+                errorEmail.setValue(email);
+            }
+        }
+        catch (Exception e){
+            request.setAttribute("error","There was a problem when we test if this email already exist");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
+        }
+
         if (name.equals("")){
             errorName.setErrorText("name empty !");
             errorName.setError(true);
@@ -91,7 +107,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }
         else {
-            errorLastName.setValue(lastname);
+            errorPassword.setValue(password);
         }
 
         if (secondPassword.isEmpty()){
@@ -100,15 +116,8 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             syntaxOK = false;
         }
         else {
-            errorLastName.setValue(lastname);
+            errorSecondPassword.setValue(secondPassword);
         }
-
-        //TODO : utiliser la fonction si dessous.
-        /*if(userDAO.isExist(email)){
-            errorEmail.setErrorText( "email already use !");
-            errorEmail.setError(true);
-            syntaxOK = false;
-        }*/
 
         // we set a default avatar to the user database for a new registered user
         String defaultAvatarPath = getServletContext().getRealPath("images/defaultAvatar.png");
@@ -135,9 +144,12 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
                 User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1, base64Avatar);
                 userDAO.create(user);
 
-            }catch (NoSuchAlgorithmException | InvalidKeySpecException e){
+            }catch (Exception e){
                 // TODO: make a better error handle
                 System.out.print(e.getMessage());
+                request.setAttribute("error","There was a problem when we create this user or when we generate the hash of this password.");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
 

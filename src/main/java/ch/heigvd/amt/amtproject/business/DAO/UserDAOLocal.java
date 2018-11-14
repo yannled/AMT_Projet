@@ -30,6 +30,8 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public User findByIdEmail(String userEmail) throws Exception;
 
+    public List<User> findAllByProjectId(Long projectId);
+
     public List<User> findAll() throws Exception;
 
     public boolean isExist(String userEmail) throws Exception;

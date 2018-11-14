@@ -18,7 +18,7 @@
         </tr>
         <c:forEach items="${ applications }" var="application" varStatus="counter">
             <tr>
-                <td><c:out value="${ application.name }"/></td>
+                <td> <a target="_blank" href="./details_project?idProject=<c:out value="${ application.id }"/>"><c:out value="${ application.name }"/></a></td>
                 <td><c:out value="${ application.description }"/></td>
                 <td><c:out value="${ application.apikey }"/></td>
                 <td><c:out value="${ application.apiSecret }"/></td>
@@ -55,8 +55,8 @@
                                        value="${userEmail}">
                             </c:if>
                             <c:if test="${currentPage != 1}">
-                              <input style="display: none" type="text" name="value" placeholder="value"
-                                     value="${currentPage}">
+                                <input style="display: none" type="text" name="value" placeholder="value"
+                                       value="${currentPage}">
                             </c:if>
                             <div class="modal-body">
                                 <div class="form-group">
@@ -103,10 +103,10 @@
                                 <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                        value="${userEmail}">
                             </c:if>
-                          <c:if test="${currentPage != 1}">
-                              <input style="display: none" type="text" name="value" placeholder="value"
-                                     value="${currentPage}">
-                          </c:if>
+                            <c:if test="${currentPage != 1}">
+                                <input style="display: none" type="text" name="value" placeholder="value"
+                                       value="${currentPage}">
+                            </c:if>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <h6> Are you sure to delete this application ? : <strong><c:out

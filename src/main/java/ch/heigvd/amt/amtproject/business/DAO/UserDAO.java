@@ -31,6 +31,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
 
     private final String getUserEmailPassword = "SELECT userEmail, userPassword FROM tbUser WHERE userEmail = (?)";
+    private final String getUsersByProjectId = "SELECT userFirstName, userLastName FROM tbUser INNER JOIN tbUserProject WHERE tbUser.userId = tbUserProject.userId AND tbUserProject.projectId = (?)";
     private final String getUsers = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser";
     private final String getUserById = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userId = (?)";
     private final String getUserByEmail = "SELECT userId, userLastName, userFirstName, userEmail, privilegeId, statusId, userAvatar FROM  tbUser WHERE userEmail = (?)";
@@ -246,7 +247,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ResultSet rs = ps.executeQuery();
 
             List<User> users = new ArrayList<>();
-            int i = 0;
             while (rs.next()) {
                 User user = this.rsToUser(rs);
                 users.add(user);
@@ -255,6 +255,29 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
         } catch (SQLException e) {
             throw new Exception(e);
+        }
+    }
+
+    @Override
+    public List<User> findAllByProjectId(Long projectId) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getUsersByProjectId);
+
+            ps.setLong(1, projectId);
+            ResultSet rs = ps.executeQuery();
+
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User curUser = new User();
+                curUser.setLastName(rs.getString("userLastName"));
+                curUser.setName(rs.getString("userFirstName"));
+                users.add(curUser);
+            }
+            System.out.println("FindUsers " + users);
+            return users;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

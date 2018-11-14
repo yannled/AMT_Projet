@@ -9,7 +9,7 @@ services :
       - "4848:4848"
       - "8080:8080"
     volumes:
-      - ./deployments:/opt/payara41/deployments
+      - ./deployments:/opt/payara5/deployments
     links:
       - db
 

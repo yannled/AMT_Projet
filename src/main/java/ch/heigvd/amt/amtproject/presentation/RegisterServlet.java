@@ -72,7 +72,9 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             }
         }
         catch (Exception e){
-            response.getWriter().println("There was a problem when we test if this email already exist \n" + e);
+            request.setAttribute("error","There was a problem when we test if this email already exist");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
         if (name.equals("")){
@@ -145,7 +147,9 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
             }catch (NoSuchAlgorithmException | InvalidKeySpecException | RuntimeException e){
                 // TODO: make a better error handle
                 System.out.print(e.getMessage());
-                response.getWriter().println("There was a problem when we create this user or when we generate the hash of this password. \n" + e);
+                request.setAttribute("error","There was a problem when we create this user or when we generate the hash of this password.");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
 

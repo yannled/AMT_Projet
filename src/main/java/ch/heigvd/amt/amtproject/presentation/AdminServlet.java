@@ -48,7 +48,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         try {
             users = userDAO.findAll();
         }catch (Exception e) {
-            response.getWriter().println("There was a problem when we get all the users" + e);
+            request.setAttribute("error","There was a problem when we get all the users");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
         //TODO use pagination structure to get a users list
         pagination = new Pagination(1,1);
@@ -104,7 +106,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
                         throw new Exception("apiApplication envoyé par le formulaire introuvable dans la liste d'applications");
                     }
                 } catch (Exception e) {
-                    response.getWriter().println("There was a problem when modify the privilege of a user" + e);
+                    request.setAttribute("error","There was a problem when modify the privilege of a user");
+                    request.setAttribute("errorContent",e.getMessage());
+                    request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
               break;
 
@@ -127,7 +131,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
                         throw new Exception("apiApplication envoyé par le formulaire introuvable dans la liste d'applications");
                     }
                 } catch (Exception e) {
-                    response.getWriter().println("There was a problem when modify the status of a user" + e);
+                    request.setAttribute("error","There was a problem when modify the status of a user");
+                    request.setAttribute("errorContent",e.getMessage());
+                    request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
               break;
 
@@ -149,7 +155,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
 
 
                 } catch (Exception e) {
-                  response.getWriter().println("There was a problem when we reset the password of a user" + e);
+                  request.setAttribute("error","There was a problem when we reset the password of a user");
+                  request.setAttribute("errorContent",e.getMessage());
+                  request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
               break;
           default:

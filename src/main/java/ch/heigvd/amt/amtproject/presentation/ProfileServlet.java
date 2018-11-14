@@ -70,7 +70,9 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
             request.setAttribute("nbrApplications", numberOfApplications);
             request.getRequestDispatcher(PROFILE).forward(request, response);
         } catch (Exception e) {
-            response.getWriter().println("There was a problem when we get the user and his informations from the database \n" + e);
+            request.setAttribute("error","There was a problem when we get the user and his informations from the database");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
     }
 
@@ -98,7 +100,9 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
 
                 } catch (Exception e) {
-                    response.getWriter().println("There was a problem when the user reset his password" + e);
+                    request.setAttribute("error","There was a problem when the user reset his password");
+                    request.setAttribute("errorContent",e.getMessage());
+                    request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
 
                 //

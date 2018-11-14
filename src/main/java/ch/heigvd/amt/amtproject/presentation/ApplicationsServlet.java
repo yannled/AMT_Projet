@@ -113,7 +113,9 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                     throw new Exception();
                 }
             } catch (Exception e) {
-                response.getWriter().println("There was a problem when we send the modify form \n " + e);
+                request.setAttribute("error","There was a problem when we send the modify form ");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
         } else if (action.equals("DELETE")) {
             try {
@@ -128,7 +130,9 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                     throw new Exception();
                 }
             } catch (Exception e) {
-                response.getWriter().println("There was a problem when we send the delete form \n " + e);
+                request.setAttribute("error","There was a problem when we send the delete form");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
         } else if (action.equals("ADD")) {
@@ -144,7 +148,9 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                     throw new Exception();
                 }
             } catch (Exception e) {
-                response.getWriter().println("There was a problem when we send the Add form \n " + e);
+                request.setAttribute("error","There was a problem when we send the Add form");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
             doGet(request, response);
         }

@@ -63,6 +63,6 @@ public class ApplicationsFluentPage extends AbstractMVCDemoFluentPage {
     click(submitAppToModify);
   }
   public String getUrl() {
-    return "projects";
+    return "applications";
   }
 }

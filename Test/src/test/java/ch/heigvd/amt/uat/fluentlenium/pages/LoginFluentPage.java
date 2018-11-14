@@ -15,7 +15,7 @@ public class LoginFluentPage extends AbstractMVCDemoFluentPage {
 
   @Override
   public void isAt() {
-    assertThat(title()).isEqualTo("Login Page");
+    assertThat(title()).isEqualTo("Login");
   }
 
   public void typeEmailAddress(String email) {

@@ -87,7 +87,9 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                 }
             }
             catch (Exception e){
-                response.getWriter().println("There was a problem when test if the login informations were valid or when we get the user in the database");
+                request.setAttribute("error","There was a problem when test if the login informations were valid or when we get the user in the database");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
         }

@@ -62,10 +62,16 @@ public class PwdChangeServlet extends javax.servlet.http.HttpServlet {
         }
 
         // if old password is not validate
-        if (!userDAO.isValid(currentUser.getEmail(), oldPassword)){
-            errorOldPassword.setErrorText("Wrong password");
-            errorOldPassword.setError(true);
-            syntaxOK = false;
+        try {
+            if (!userDAO.isValid(currentUser.getEmail(), oldPassword)) {
+                errorOldPassword.setErrorText("Wrong password");
+                errorOldPassword.setError(true);
+                syntaxOK = false;
+            }
+        }catch (Exception e){
+            request.setAttribute("error","There was a problem when verify if the credentials were valid");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
         if(!password.equals(passwordRepeat)){
@@ -94,8 +100,10 @@ public class PwdChangeServlet extends javax.servlet.http.HttpServlet {
                 userDAO.updatePassword(currentUserId, PasswordUtils.generatePasswordHash(password));
                 currentUser.setState(1);
                 userDAO.updateState(currentUser);
-            }catch(NoSuchAlgorithmException | InvalidKeySpecException e){
-                throw new RuntimeException(e);
+            }catch(Exception e){
+                request.setAttribute("error","There was a problem when we update the user password or his state");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
 
             request.getRequestDispatcher(HOME).forward(request, response);

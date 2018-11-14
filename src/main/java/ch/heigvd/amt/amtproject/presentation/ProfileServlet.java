@@ -66,15 +66,21 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
             request.setAttribute("modify", false);
         }
 
-        User user = userDAO.findById(currentUserId);
-        int numberOfApplications = userDAO.countNumbersApplications(user.getEmail());
-        String base64Avatar = userDAO.getAvatar(currentUserId);
-        user.setBase64Avatar(base64Avatar);
+        try {
+            User user = userDAO.findById(currentUserId);
+            int numberOfApplications = userDAO.countNumbersApplications(user.getEmail());
+            String base64Avatar = userDAO.getAvatar(currentUserId);
+            user.setBase64Avatar(base64Avatar);
 
-        request.setAttribute("isAdmin", user.isAdmin());
-        request.setAttribute("currentUser", user);
-        request.setAttribute("nbrApplications", numberOfApplications);
-        request.getRequestDispatcher(PROFILE).forward(request, response);
+            request.setAttribute("isAdmin", user.isAdmin());
+            request.setAttribute("currentUser", user);
+            request.setAttribute("nbrApplications", numberOfApplications);
+            request.getRequestDispatcher(PROFILE).forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error","There was a problem when we get the user and his informations from the database");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
+        }
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
@@ -100,17 +106,19 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                     userDAO.updateState(currentUser);
 
 
-                } catch (MessagingException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    request.setAttribute("error","There was a problem when the user reset his password");
+                    request.setAttribute("errorContent",e.getMessage());
+                    request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
 
                 //
                 break;
             case "MODIFY":
-
-                String firstName = request.getParameter("firstName");
-                String lastName = request.getParameter("lastName");
-                String email = request.getParameter("email");
+                try {
+                    String firstName = request.getParameter("firstName");
+                    String lastName = request.getParameter("lastName");
+                    String email = request.getParameter("email");
 
                 Part filePart = request.getPart("avatar");
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -134,7 +142,6 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                 userDAO.updateName(currentUserId, firstName, lastName);
 
                 // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
-                // unless it is the current user's email
                 if (!userDAO.isExist(email) || currentUser.getEmail().equals(email)) {
                     userDAO.updateEmail(currentUserId, email);
                 } else {
@@ -155,6 +162,11 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                 currentUser.setLastName(lastName);
                 currentUser.setEmail(email);
                 session.setAttribute("user", currentUser);
+} catch (Exception e){
+                    request.setAttribute("error","There was a problem when the user modify his profile");
+                    request.setAttribute("errorContent",e.getMessage());
+                    request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
+                }
                 break;
             default:
                 // TODO handle no vallue when post

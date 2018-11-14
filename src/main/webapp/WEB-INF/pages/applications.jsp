@@ -16,7 +16,9 @@
                 <div class="projects-left">
                     <nav class="navbar navbar-left">
                     <ul>
-                        <li><a id="addAppLink" data-toggle="modal" data-target="#addApp">Add Application</a></li>
+                        <c:if test="${empty showUser && empty userEmail}">
+                            <li><a id="addAppLink" data-toggle="modal" data-target="#addApp">Add Application</a></li>
+                        </c:if>
                     </ul>
                     </nav>
                 </div>

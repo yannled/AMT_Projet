@@ -48,6 +48,16 @@
                             <input class="hide" type="text" name="action" value="MODIFY">
                             <input class="hide" type="text" name="apiKey" value=<c:out
                                     value="${ application.apikey }"/>>
+                            <c:if test="${not empty showUser && not empty userEmail}">
+                                <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                                       value="${showUser}">
+                                <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                                       value="${userEmail}">
+                            </c:if>
+                            <c:if test="${currentPage != 1}">
+                              <input style="display: none" type="text" name="value" placeholder="value"
+                                     value="${currentPage}">
+                            </c:if>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="ApplicationName">Application name</label>
@@ -87,6 +97,16 @@
                             <input class="hide" type="text" name="action" value="DELETE">
                             <input class="hide" type="text" name="apiKey" value=<c:out
                                     value="${ application.apikey }"/>>
+                            <c:if test="${not empty showUser && not empty userEmail}">
+                                <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                                       value="${showUser}">
+                                <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
+                                       value="${userEmail}">
+                            </c:if>
+                          <c:if test="${currentPage != 1}">
+                              <input style="display: none" type="text" name="value" placeholder="value"
+                                     value="${currentPage}">
+                          </c:if>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <h6> Are you sure to delete this application ? : <strong><c:out
@@ -117,9 +137,9 @@
                 <form action="applications" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage - 1}">
-                    <c:if test="${not empty action && not empty userEmail}">
-                        <input style="display: none" type="text" name="action" placeholder="action"
-                               value="${action}">
+                    <c:if test="${not empty showUser && not empty userEmail}">
+                        <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                               value="${showUser}">
                         <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                value="${userEmail}">
                     </c:if>
@@ -139,9 +159,9 @@
                         <form action="applications" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
-                                <c:if test="${not empty action && not empty userEmail}">
-                                    <input style="display: none" type="text" name="action" placeholder="action"
-                                           value="${action}">
+                                <c:if test="${not empty showUser && not empty userEmail}">
+                                    <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                                           value="${showUser}">
                                     <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                            value="${userEmail}">
                                 </c:if>
@@ -153,9 +173,9 @@
                         <form action="applications" method="get">
                             <td>
                                 <input style="display: none" type="text" name="value" placeholder="value" value="${i}">
-                                <c:if test="${not empty action && not empty userEmail}">
-                                    <input style="display: none" type="text" name="action" placeholder="action"
-                                           value="${action}">
+                                <c:if test="${not empty showUser && not empty userEmail}">
+                                    <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                                           value="${showUser}">
                                     <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                            value="${userEmail}">
                                 </c:if>
@@ -176,9 +196,9 @@
                 <form action="applications" method="get">
                     <input style="display: none" type="text" name="value" placeholder="value"
                            value="${currentPage + 1}">
-                    <c:if test="${not empty action && not empty userEmail}">
-                        <input style="display: none" type="text" name="action" placeholder="action"
-                               value="${action}">
+                    <c:if test="${not empty showUser && not empty userEmail}">
+                        <input style="display: none" type="text" name="showUser" placeholder="showUser"
+                               value="${showUser}">
                         <input style="display: none" type="text" name="userEmail" placeholder="userEmail"
                                value="${userEmail}">
                     </c:if>

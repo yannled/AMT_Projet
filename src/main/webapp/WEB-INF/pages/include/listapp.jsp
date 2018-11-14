@@ -10,16 +10,14 @@
     <table class="table table-striped">
         <tr>
             <th scope="col">Application Name</th>
-            <th scope="col">description</th>
             <th scope="col">API key</th>
             <th scope="col">APIsecret</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Remove</th>
+            <th scope="col" class="centerIcon">Edit</th>
+            <th scope="col" class="centerIcon">Remove</th>
         </tr>
         <c:forEach items="${ applications }" var="application" varStatus="counter">
             <tr>
                 <td> <a target="_blank" href="./details_project?idProject=<c:out value="${ application.id }"/>"><c:out value="${ application.name }"/></a></td>
-                <td><c:out value="${ application.description }"/></td>
                 <td><c:out value="${ application.apikey }"/></td>
                 <td><c:out value="${ application.apiSecret }"/></td>
                 <td class="centerIcon">

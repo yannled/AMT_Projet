@@ -21,7 +21,6 @@
                         <li><a href="applications">Applications</a></li>
                         <c:if test="${isAdmin}">
                             <li><a href="admin">manage Users</a></li>
-                            <li><a href="#waitingForThis">manage Applictions</a></li>
                         </c:if>
                     </ul>
                 </nav>

@@ -126,6 +126,8 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                     String lastName = request.getParameter("lastName");
                     String email = request.getParameter("email");
 
+                    Boolean changeAvatar = false;
+                    InputStream is = null;
                     Part filePart = request.getPart("avatar");
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     InputStream fileContent = filePart.getInputStream();
@@ -139,17 +141,16 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
                         System.out.print(imgSize);
 
-                        InputStream is = new ByteArrayInputStream(os.toByteArray());
+                        is = new ByteArrayInputStream(os.toByteArray());
 
                         if (imgSize < 50000) {
-                            userDAO.updateAvatar(currentUserId, is);
+                            changeAvatar = true;
                         }
                     }
-                    userDAO.updateName(currentUserId, firstName, lastName);
 
                     // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
                     if (!userDAO.isExist(email) || currentUser.getEmail().equals(email)) {
-                        userDAO.updateEmail(currentUserId, email);
+                        userDAO.updateProfil(currentUser, is, changeAvatar, email, firstName, lastName);
                     } else {
 
                         User user = userDAO.findById(currentUserId);

@@ -5,8 +5,10 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.imageio.ImageIO;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -396,5 +398,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updateProfil(User currentUser, InputStream is, Boolean changeAvatar, String email, String firstName, String lastName){
+        if(changeAvatar)
+            updateAvatar(currentUser.getId(), is);
+        updateEmail(currentUser.getId(), email);
+        updateName(currentUser.getId(), firstName, lastName);
     }
 }

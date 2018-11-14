@@ -40,4 +40,6 @@ public interface UserDAOLocal extends IGenericDAO<User> {
 
     public int countNumbersApplications(String email) throws Exception;
 
+    public void updateProfil(User currentUser, InputStream is, Boolean changeAvatar, String email, String firstName, String lastName);
+
 }

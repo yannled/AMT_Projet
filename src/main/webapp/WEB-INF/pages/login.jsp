@@ -44,6 +44,11 @@
                     <span class="focus-input100"></span>
                 </div>
 
+              <!-- Test Active -->
+              <c:if test="${errors[2].error}">
+                <div class="centerIcon alert alert-danger">${errors[2].errorText}</div>
+              </c:if>
+
                 <div class="container-login100-form-btn">
                     <button id="buttonSubmit" class="login100-form-btn">
                         Enter

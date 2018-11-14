@@ -284,7 +284,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     public boolean isValid(String emailUser, String password) {
-        String email;
         String passwordHash;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUserEmailPassword);
@@ -295,7 +294,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ps.execute();
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                email = rs.getString("userEmail");
                 passwordHash = rs.getString("userPassword");
             } else {
                 return false;

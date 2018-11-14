@@ -23,9 +23,10 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             "ORDER BY projectId OFFSET 10 * ((?) - 1) ROWS FETCH NEXT 10 ROWS ONLY;";
     private final String getProjects = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject";
     private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
+    private final String getProjectById = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE projectId = (?)";
     private final String deleteProject = "DELETE FROM tbProject WHERE APIKey = ?";
     private final String deleteRelationBetweenAppAndUser = "DELETE FROM tbUserProject WHERE projectId = ?";
-    private final String getProjectsByUser = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
+    private final String getProjectsByUser = "SELECT tbProject.projectId, projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
     private final String bindAppToUser = "INSERT INTO tbUserProject (userId, projectId) VALUES (?,?)";
 
 
@@ -110,6 +111,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             List<Application> projectList = new ArrayList<>();
             while (rs.next()) {
                 Application application = new Application();
+                application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
                 application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
                 application.setApikey(rs.getInt("APIKey"));
@@ -215,12 +217,33 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     @Override
     public Application findById(Long id) {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getProjectById);
+
+            // insert data into statement.
+            ps.setLong(1, id);
+
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            Application application = new Application();
+            while (rs.next()) {
+                application.setId(rs.getInt("projectId"));
+                application.setName(rs.getString("projectName"));
+                application.setDescription(rs.getString("projectDescrition"));
+                application.setApikey(rs.getInt("APIKey"));
+                application.setApiSecret(rs.getString("APISecret"));
+            }
+
+            return application;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Application findByApiKey(int apiKey) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(getProjectsByApiKey);
+            PreparedStatement ps = connection.prepareStatement(getProjectById);
 
             // insert data into statement.
             ps.setInt(1, apiKey);

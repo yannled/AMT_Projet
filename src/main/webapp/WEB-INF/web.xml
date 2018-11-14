@@ -21,8 +21,8 @@
   </servlet-mapping>
 
 
-  <!-- Configuration du timeout de session à 1 minute pour tests -->
+  <!-- Configuration du timeout de session à 5 minutes-->
   <session-config>
-    <session-timeout>1</session-timeout>
+    <session-timeout>5</session-timeout>
   </session-config>
 </web-app>

@@ -6,101 +6,99 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div>
-    <table class="table table-striped">
+<table class="table table-striped">
+    <tr>
+        <th scope="col">Application Name</th>
+        <th scope="col">description</th>
+        <th scope="col">API key</th>
+        <th scope="col">APIsecret</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Remove</th>
+    </tr>
+    <c:forEach items="${ applications }" var="application" varStatus="counter">
         <tr>
-            <th scope="col">Application Name</th>
-            <th scope="col">description</th>
-            <th scope="col">API key</th>
-            <th scope="col">APIsecret</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Remove</th>
+            <td> <a target="_blank" href="./details_project?idProject=<c:out value="${ application.id }"/>"><c:out value="${ application.name }"/></a></td>
+            <td><c:out value="${ application.description }"/></td>
+            <td><c:out value="${ application.apikey }"/></td>
+            <td><c:out value="${ application.apiSecret }"/></td>
+            <td class="centerIcon">
+                <button data-toggle="modal" id="modifyApp-${ application.apikey }" data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
+            </td>
+            <td class="centerIcon">
+                <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i class="fas fa-trash-alt"></i></button>
+            </td>
         </tr>
-        <c:forEach items="${ applications }" var="application" varStatus="counter">
-            <tr>
-                <td><c:out value="${ application.name }"/></td>
-                <td><c:out value="${ application.description }"/></td>
-                <td><c:out value="${ application.apikey }"/></td>
-                <td><c:out value="${ application.apiSecret }"/></td>
-                <td class="centerIcon">
-                    <button data-toggle="modal" id="modifyApp-${ application.apikey }" data-target="#modifyApp-${ application.apikey }"><i class="fas fa-pencil-alt"></i></button>
-                </td>
-                <td class="centerIcon">
-                    <button data-toggle="modal" data-target="#deleteApp-${ application.apikey }"><i class="fas fa-trash-alt"></i></button>
-                </td>
-            </tr>
 
-            <!-- START OF Modal Modify Application -->
-            <div class="modal fade" id="modifyApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modifyApplication">Modify Application</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="projects" method="post">
-                            <input class="hide" type="text" name="action" value="MODIFY">
-                            <input class="hide" type="text" name="apiKey" value=<c:out
-                                    value="${ application.apikey }"/>>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="ApplicationName">Application name</label>
-                                    <input type="text" class="form-control" id="ApplicationName" name="name"
-                                           aria-describedby="application name"
-                                           value="<c:out value="${ application.name }"/>">
-                                    <label for="ApplicationDescription">Application description</label>
-                                    <textarea class="form-control" name="description"
-                                              id="ApplicationDescription" rows="5"><c:out value="${ application.description }"/></textarea>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
+        <!-- START OF Modal Modify Application -->
+        <div class="modal fade" id="modifyApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifyApplication">Modify Application</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <form action="projects" method="post">
+                        <input class="hide" type="text" name="action" value="MODIFY">
+                        <input class="hide" type="text" name="apiKey" value=<c:out
+                                value="${ application.apikey }"/>>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="ApplicationName">Application name</label>
+                                <input type="text" class="form-control" id="ApplicationName" name="name"
+                                       aria-describedby="application name"
+                                       value="<c:out value="${ application.name }"/>">
+                                <label for="ApplicationDescription">Application description</label>
+                                <textarea class="form-control" name="description"
+                                          id="ApplicationDescription" rows="5"><c:out value="${ application.description }"/></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!-- END OF Modal Modify Application -->
+        </div>
+        <!-- END OF Modal Modify Application -->
 
-            <!-- START OF Modal DELETE Application -->
-            <div class="modal fade" id="deleteApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Delete Application"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteApplication">Delete Application</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="projects" method="post">
-                            <input class="hide" type="text" name="action" value="DELETE">
-                            <input class="hide" type="text" name="apiKey" value=<c:out
-                                    value="${ application.apikey }"/>>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <h6> Are you sure to delete this application ? : <strong><c:out
-                                            value="${ application.name }"/></strong></h6>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </div>
-                        </form>
+        <!-- START OF Modal DELETE Application -->
+        <div class="modal fade" id="deleteApp-${ application.apikey }" tabindex="-1" role="dialog" aria-labelledby="Delete Application"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteApplication">Delete Application</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <form action="projects" method="post">
+                        <input class="hide" type="text" name="action" value="DELETE">
+                        <input class="hide" type="text" name="apiKey" value=<c:out
+                                value="${ application.apikey }"/>>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <h6> Are you sure to delete this application ? : <strong><c:out
+                                        value="${ application.name }"/></strong></h6>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!-- END OF Modal DELETE Application -->
-        </c:forEach>
-    </table>
-</div>
+        </div>
+        <!-- END OF Modal DELETE Application -->
+    </c:forEach>
+</table>
 
 <!-- PAGINATION -->
 

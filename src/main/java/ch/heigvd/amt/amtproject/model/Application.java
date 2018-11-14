@@ -3,6 +3,7 @@ package ch.heigvd.amt.amtproject.model;
 import ch.heigvd.amt.amtproject.business.KeyGenerator;
 
 public class Application {
+    private int id;
     private String name;
     private String description;
     private String apiSecret;
@@ -16,6 +17,10 @@ public class Application {
         this.apikey = KeyGenerator.generateNumberKey();
         this.apiSecret = KeyGenerator.generateRandomKey();
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
         return name;

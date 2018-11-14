@@ -14,6 +14,7 @@
       <th scope="col">E-mail</th>
       <th scope="col">Privilege</th>
       <th scope="col">Suspend</th>
+      <th scope="col">Password</th>
       <th scope="col">Show Application</th>
     </tr>
     <c:forEach items="${ users }" var="user" varStatus="counter">
@@ -40,7 +41,10 @@
           </button>
         </td>
         <td>
-          <a href="applications?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications</a>
+          <button data-toggle="modal" data-target="#resetPassw-${user.lastName}-${user.name}-${counter.count}"><i class="fas fa-refresh"></i> Reset</button>
+        </td>
+        <td>
+          <a href="applications?action=SHOWAPPUSER&userEmail=<c:out value="${ user.email }"/>">List of applications <i class="fas fa-external-link"></i> </a>
         </td>
       </tr>
 
@@ -100,25 +104,54 @@
                 <div class="form-group">
                   <p><c:out value="${user.email}"/></p>
                   <label for="status">Select the Status</label><br>
-                  <select class="custom-select" name="status" id="status">
+                  <select class="custom-select" name="status" id="status" ${user.state == 2 ? 'disabled' : ''}>
                     <option value="0" ${user.state == 0 ? 'selected' : ''} >
                       Suspend
                     </option>
                     <option value="1" ${user.state == 1 ? 'selected' : ''}>
                       Active
                     </option>
+                    ${user.state == 2 ? '<option value="2" selected>hasChangePassword</option>' : ''}
                   </select>
                 </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger">Change Status</button>
+                <button type="submit" class="btn btn-danger" ${user.state == 2 ? 'disabled' : ''}>Change Status</button>
               </div>
             </form>
           </div>
         </div>
       </div>
       <!-- END OF Modal Modify User Status -->
+
+      <!-- START OF Modal RESET Password -->
+      <div class="modal fade" id="resetPassw-${user.lastName}-${user.name}-${counter.count}" tabindex="-1" role="dialog" aria-labelledby="Modify Application"
+           aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="resetPassword">Confirme Password Reset ?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="admin" method="post">
+              <input class="hide" type="text" name="action" value="RESET">
+              <input class="hide" type="text" name="email" value=<c:out value="${ user.email }"/>>
+              <div class="modal-body">
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Reset Password</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- END OF Modal RESET Password -->
+
 
     </c:forEach>
   </table>

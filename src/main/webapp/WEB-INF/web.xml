@@ -21,8 +21,8 @@
   </servlet-mapping>
 
 
-  <!-- Configuration du timeout de session à 5 minutes-->
+
   <session-config>
-    <session-timeout>5</session-timeout>
+    <session-timeout>30</session-timeout>
   </session-config>
 </web-app>

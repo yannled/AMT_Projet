@@ -144,7 +144,7 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
                 User user = new User(name, lastname, PasswordUtils.generatePasswordHash(password), email, false, 1, base64Avatar);
                 userDAO.create(user);
 
-            }catch (NoSuchAlgorithmException | InvalidKeySpecException | RuntimeException e){
+            }catch (Exception e){
                 // TODO: make a better error handle
                 System.out.print(e.getMessage());
                 request.setAttribute("error","There was a problem when we create this user or when we generate the hash of this password.");

@@ -41,12 +41,17 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
         // Test if the request come from the admin View, if yes there is some query string defined and that's mean we
         // we want to see the application of an other user.
         // else we take our application
-        if(request.getParameterMap().containsKey("showUser") && request.getParameterMap().containsKey("userEmail") && request.getParameter("showUser").equals("SHOWUSER") && currentUser.isAdmin()){
+        try {
+            if (request.getParameterMap().containsKey("showUser") && request.getParameterMap().containsKey("userEmail") && request.getParameter("showUser").equals("SHOWUSER") && currentUser.isAdmin()) {
 
-            applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
-        }
-        else{
-          applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
+                applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
+            } else {
+                applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
+            }
+        }catch (Exception e){
+            request.setAttribute("error","There was a problem when we get the project of the user");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
         pagination = new Pagination(1,1);

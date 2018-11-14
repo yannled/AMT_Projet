@@ -62,10 +62,16 @@ public class PwdChangeServlet extends javax.servlet.http.HttpServlet {
         }
 
         // if old password is not validate
-        if (!userDAO.isValid(currentUser.getEmail(), oldPassword)){
-            errorOldPassword.setErrorText("Wrong password");
-            errorOldPassword.setError(true);
-            syntaxOK = false;
+        try {
+            if (!userDAO.isValid(currentUser.getEmail(), oldPassword)) {
+                errorOldPassword.setErrorText("Wrong password");
+                errorOldPassword.setError(true);
+                syntaxOK = false;
+            }
+        }catch (Exception e){
+            request.setAttribute("error","There was a problem when verify if the credentials were valid");
+            request.setAttribute("errorContent",e.getMessage());
+            request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
         if(!password.equals(passwordRepeat)){

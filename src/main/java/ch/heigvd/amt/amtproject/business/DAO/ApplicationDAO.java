@@ -37,7 +37,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
     DataSource dataSource;
 
     @Override
-    public Long create(Application application) throws Exception {
+    public Long create(Application application){
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(createApplication);
 
@@ -61,11 +61,11 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             return -1L;
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
-    public Long bindAppToUser(long idApp, long idUser) throws Exception {
+    public Long bindAppToUser(long idApp, long idUser){
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(bindAppToUser);
 
@@ -76,11 +76,11 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             ps.execute();
             return null;//rs.getLong(1);
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
-    public List<Application> getProjectsAll() throws Exception {
+    public List<Application> getProjectsAll() {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getProjects);
 
@@ -100,11 +100,11 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             return projectList;
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
-    public List<Application> getProjectsByUser(String email) throws Exception {
+    public List<Application> getProjectsByUser(String email) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getProjectsByUser);
             ps.setString(1, email);
@@ -125,12 +125,12 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             return projectList;
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
     // TODO could be used to get only the requested pages from the database
-    public List<Application> getProjectsPage(int pageNumber) throws Exception {
+    public List<Application> getProjectsPage(int pageNumber) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getProjectsByPage);
 
@@ -154,7 +154,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             return projectList;
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -164,7 +164,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
     }
 
     @Override
-    public void update(Application application) throws Exception {
+    public void update(Application application) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(modifyApplication);
 
@@ -177,12 +177,12 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             ps.execute();
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void delete(Application application) throws Exception {
+    public void delete(Application application) {
         int idApplication = 0;
         try (Connection connection = dataSource.getConnection()) {
 
@@ -208,8 +208,9 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             deleteApp.setInt(1, application.getApikey());
 
             deleteApp.execute();
+
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -244,9 +245,9 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
         }
     }
 
-    public Application findByApiKey(int apiKey) throws Exception {
+    public Application findByApiKey(int apiKey) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(getProjectById);
+            PreparedStatement ps = connection.prepareStatement(getProjectsByApiKey);
 
             // insert data into statement.
             ps.setInt(1, apiKey);
@@ -264,7 +265,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             return application;
 
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 

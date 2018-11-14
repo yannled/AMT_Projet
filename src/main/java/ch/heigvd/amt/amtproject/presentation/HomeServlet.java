@@ -1,18 +1,13 @@
 package ch.heigvd.amt.amtproject.presentation;
 
-import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.User;
 import ch.heigvd.amt.amtproject.model.VerifySession;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
 
 @WebServlet("/home")
 public class HomeServlet extends javax.servlet.http.HttpServlet {

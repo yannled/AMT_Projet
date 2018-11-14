@@ -2,8 +2,10 @@ package ch.heigvd.amt.amtproject.business.DAO;
 
 import ch.heigvd.amt.amtproject.model.Application;
 
+import javax.ejb.Local;
 import java.util.List;
 
+@Local
 public interface ApplicationDAOLocal extends IGenericDAO<Application> {
 
     public Long create(Application project) throws Exception;

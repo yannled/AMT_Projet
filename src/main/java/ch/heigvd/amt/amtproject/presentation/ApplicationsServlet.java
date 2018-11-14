@@ -108,6 +108,7 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                 description = request.getParameter("description");
 
                 Application myApplicationToModify = applicationDAO.findByApiKey(Integer.parseInt(apiKey));
+                System.out.println("######################################################################### " + myApplicationToModify.getName());
 
                 if (myApplicationToModify != null) {
                     myApplicationToModify.setName(name);
@@ -119,7 +120,7 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                 }
             } catch (Exception e) {
                 request.setAttribute("error","There was a problem when we send the modify form ");
-                request.setAttribute("errorContent",e.getMessage());
+                request.setAttribute("errorContent", e.getMessage());
                 request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
         } else if (action.equals("DELETE")) {
@@ -157,7 +158,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                 request.setAttribute("errorContent",e.getMessage());
                 request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
-            doGet(request, response);
         }
         doGet(request, response);
     }

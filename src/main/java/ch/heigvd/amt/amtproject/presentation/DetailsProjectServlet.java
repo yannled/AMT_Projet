@@ -47,9 +47,9 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
                 application = applicationDAO.findById(idProject);
                 users = userDAO.findAllByProjectId(idProject);
             }catch(Exception e) {
-                System.out.println("Erreur de requête: " + e.getStackTrace());
-                application = null;
-                users = null;
+                request.setAttribute("error","There was a problem when we get the details of an application");
+                request.setAttribute("errorContent",e.getMessage());
+                request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
             }
         }
 

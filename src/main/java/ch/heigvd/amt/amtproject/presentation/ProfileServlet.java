@@ -11,6 +11,7 @@ import ch.heigvd.amt.amtproject.model.User;
 import sun.misc.IOUtils;
 import ch.heigvd.amt.amtproject.model.VerifySession;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
@@ -26,6 +27,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Blob;
@@ -44,6 +47,9 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
     private EmailSender emailSender;
     @EJB
     private UserDAOLocal userDAO;
+
+    @Resource
+    private UserTransaction userTransaction;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -77,8 +83,8 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
             request.setAttribute("nbrApplications", numberOfApplications);
             request.getRequestDispatcher(PROFILE).forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("error","There was a problem when we get the user and his informations from the database");
-            request.setAttribute("errorContent",e.getMessage());
+            request.setAttribute("error", "There was a problem when we get the user and his informations from the database");
+            request.setAttribute("errorContent", e.getMessage());
             request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
     }
@@ -107,8 +113,8 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
 
                 } catch (Exception e) {
-                    request.setAttribute("error","There was a problem when the user reset his password");
-                    request.setAttribute("errorContent",e.getMessage());
+                    request.setAttribute("error", "There was a problem when the user reset his password");
+                    request.setAttribute("errorContent", e.getMessage());
                     request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
 
@@ -120,51 +126,51 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                     String lastName = request.getParameter("lastName");
                     String email = request.getParameter("email");
 
-                Part filePart = request.getPart("avatar");
-                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                InputStream fileContent = filePart.getInputStream();
+                    Part filePart = request.getPart("avatar");
+                    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                    InputStream fileContent = filePart.getInputStream();
 
-                if (fileName != null && !fileName.isEmpty()) {
+                    if (fileName != null && !fileName.isEmpty()) {
 
-                    BufferedImage sourceImage = ImageIO.read(fileContent);
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    ImageIO.write(sourceImage, "jpeg", os);
-                    long imgSize = os.size();
+                        BufferedImage sourceImage = ImageIO.read(fileContent);
+                        ByteArrayOutputStream os = new ByteArrayOutputStream();
+                        ImageIO.write(sourceImage, "jpeg", os);
+                        long imgSize = os.size();
 
-                    System.out.print(imgSize);
+                        System.out.print(imgSize);
 
-                    InputStream is = new ByteArrayInputStream(os.toByteArray());
+                        InputStream is = new ByteArrayInputStream(os.toByteArray());
 
-                    if (imgSize < 50000){
-                        userDAO.updateAvatar(currentUserId, is);
+                        if (imgSize < 50000) {
+                            userDAO.updateAvatar(currentUserId, is);
+                        }
                     }
-                }
-                userDAO.updateName(currentUserId, firstName, lastName);
+                    userDAO.updateName(currentUserId, firstName, lastName);
 
-                // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
-                if (!userDAO.isExist(email) || currentUser.getEmail().equals(email)) {
-                    userDAO.updateEmail(currentUserId, email);
-                } else {
+                    // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
+                    if (!userDAO.isExist(email) || currentUser.getEmail().equals(email)) {
+                        userDAO.updateEmail(currentUserId, email);
+                    } else {
 
-                    User user = userDAO.findById(currentUserId);
-                    user.setEmail(email);
-                    request.setAttribute("currentUser", user);
+                        User user = userDAO.findById(currentUserId);
+                        user.setEmail(email);
+                        request.setAttribute("currentUser", user);
 
-                    String emailError = "This email already exists";
-                    request.setAttribute("emailError", true);
-                    request.setAttribute("emailErrorText", emailError);
-                    request.setAttribute("modify", true);
-                    request.getRequestDispatcher(PROFILE).forward(request, response);
-                }
+                        String emailError = "This email already exists";
+                        request.setAttribute("emailError", true);
+                        request.setAttribute("emailErrorText", emailError);
+                        request.setAttribute("modify", true);
+                        request.getRequestDispatcher(PROFILE).forward(request, response);
+                    }
 
-                //Mettre à jour la session en fonction du changement de profil
-                currentUser.setName(firstName);
-                currentUser.setLastName(lastName);
-                currentUser.setEmail(email);
-                session.setAttribute("user", currentUser);
-} catch (Exception e){
-                    request.setAttribute("error","There was a problem when the user modify his profile");
-                    request.setAttribute("errorContent",e.getMessage());
+                    //Mettre à jour la session en fonction du changement de profil
+                    currentUser.setName(firstName);
+                    currentUser.setLastName(lastName);
+                    currentUser.setEmail(email);
+                    session.setAttribute("user", currentUser);
+                } catch (Exception e) {
+                    request.setAttribute("error", "There was a problem when the user modify his profile");
+                    request.setAttribute("errorContent", e.getMessage());
                     request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
                 }
                 break;

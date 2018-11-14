@@ -69,6 +69,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                     HttpSession session = request.getSession();
                     User currentUser = userDAO.findByIdEmail(email);
                     session.setAttribute("user", currentUser);
+                    request.setAttribute("isAdmin", currentUser.isAdmin());
 
                     // si le status est changedPassword redirect to change password
                     // TODO use enums for status

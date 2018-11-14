@@ -246,7 +246,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     public Application findByApiKey(int apiKey) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(getProjectById);
+            PreparedStatement ps = connection.prepareStatement(getProjectsByApiKey);
 
             // insert data into statement.
             ps.setInt(1, apiKey);

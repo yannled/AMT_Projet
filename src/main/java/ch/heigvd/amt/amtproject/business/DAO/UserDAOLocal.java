@@ -3,6 +3,7 @@ package ch.heigvd.amt.amtproject.business.DAO;
 import ch.heigvd.amt.amtproject.model.User;
 
 import javax.ejb.Local;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.List;
 

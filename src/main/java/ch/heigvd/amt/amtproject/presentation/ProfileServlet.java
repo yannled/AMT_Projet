@@ -3,6 +3,7 @@ package ch.heigvd.amt.amtproject.presentation;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.business.EmailSender;
+import ch.heigvd.amt.amtproject.business.ImageUtils;
 import ch.heigvd.amt.amtproject.business.KeyGenerator;
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import ch.heigvd.amt.amtproject.model.Application;
@@ -11,12 +12,17 @@ import sun.misc.IOUtils;
 import ch.heigvd.amt.amtproject.model.VerifySession;
 
 import javax.ejb.EJB;
+import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Part;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
@@ -26,6 +32,7 @@ import java.sql.Blob;
 import java.util.Base64;
 import java.util.List;
 
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static javax.xml.transform.OutputKeys.ENCODING;
 
 public class ProfileServlet extends javax.servlet.http.HttpServlet {
@@ -111,12 +118,24 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
 
                 if (fileName != null && !fileName.isEmpty()) {
 
-                    userDAO.updateAvatar(currentUserId, fileContent);
+                    BufferedImage sourceImage = ImageIO.read(fileContent);
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    ImageIO.write(sourceImage, "jpeg", os);
+                    long imgSize = os.size();
+
+                    System.out.print(imgSize);
+
+                    InputStream is = new ByteArrayInputStream(os.toByteArray());
+
+                    if (imgSize < 50000){
+                        userDAO.updateAvatar(currentUserId, is);
+                    }
                 }
                 userDAO.updateName(currentUserId, firstName, lastName);
 
                 // if new inserted email already exists we prevent a runtime error at database insert and inform the user to change it.
-                if (!userDAO.isExist(email)) {
+                // unless it is the current user's email
+                if (!userDAO.isExist(email) || currentUser.getEmail().equals(email)) {
                     userDAO.updateEmail(currentUserId, email);
                 } else {
 

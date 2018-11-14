@@ -14,21 +14,10 @@
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <%@ include file="parts/nav.jsp" %>
         <div class="wrap-main">
-            <div class="projects-left">
-                <nav class="navbar navbar-left">
-                    <ul>
-                        <li><a href="profile">Profile</a></li>
-                        <li><a href="applications">Applications</a></li>
-                        <c:if test="${isAdmin}">
-                            <li><a href="admin">manage Users</a></li>
-                        </c:if>
-                    </ul>
-                </nav>
-            </div>
             <div class="projects-right">
-                <div class="col-md-10 col-lg-10 toppad" >
-                    <h1> Welcome to our Application ${currentUser.name} ${currentUser.lastName}</h1>
-                    <p>developped by Joel Schar | Patrick Neto | Steve Henriquet | Yann Lederrey</p>
+                <div class="app-title" >
+                    <h1> Welcome to Game Town </h1>
+                    <p>Project developped by Joel Schar,  Patrick Neto, Steve Henriquet and Yann Lederrey !</p>
                 </div>
             </div>
         </div>

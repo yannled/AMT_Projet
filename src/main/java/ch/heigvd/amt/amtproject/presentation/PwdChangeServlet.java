@@ -94,8 +94,8 @@ public class PwdChangeServlet extends javax.servlet.http.HttpServlet {
                 userDAO.updatePassword(currentUserId, PasswordUtils.generatePasswordHash(password));
                 currentUser.setState(1);
                 userDAO.updateState(currentUser);
-            }catch(NoSuchAlgorithmException | InvalidKeySpecException e){
-                throw new RuntimeException(e);
+            }catch(Exception e){
+                response.getWriter().println("There was a problem when we update the user password or his state \n" + e);
             }
 
             request.getRequestDispatcher(HOME).forward(request, response);

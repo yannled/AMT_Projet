@@ -59,15 +59,19 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
             request.setAttribute("modify", false);
         }
 
-        User user = userDAO.findById(currentUserId);
-        int numberOfApplications = userDAO.countNumbersApplications(user.getEmail());
-        String base64Avatar = userDAO.getAvatar(currentUserId);
-        user.setBase64Avatar(base64Avatar);
+        try {
+            User user = userDAO.findById(currentUserId);
+            int numberOfApplications = userDAO.countNumbersApplications(user.getEmail());
+            String base64Avatar = userDAO.getAvatar(currentUserId);
+            user.setBase64Avatar(base64Avatar);
 
-        request.setAttribute("isAdmin", user.isAdmin());
-        request.setAttribute("currentUser", user);
-        request.setAttribute("nbrApplications", numberOfApplications);
-        request.getRequestDispatcher(PROFILE).forward(request, response);
+            request.setAttribute("isAdmin", user.isAdmin());
+            request.setAttribute("currentUser", user);
+            request.setAttribute("nbrApplications", numberOfApplications);
+            request.getRequestDispatcher(PROFILE).forward(request, response);
+        } catch (Exception e) {
+            response.getWriter().println("There was a problem when we get the user and his informations from the database \n" + e);
+        }
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {

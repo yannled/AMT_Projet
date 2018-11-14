@@ -75,8 +75,10 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Avatar</td>
-                                                            <td><input type="file" name="avatar" /></td>
+                                                            <td><input type="file" name="avatar" /><br><p>Pictures greater than 160 ko, are not supported.</p></td>
+
                                                         </tr>
+
                                                         </tbody>
                                                     </table>
                                                 </div>

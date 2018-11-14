@@ -45,8 +45,11 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User)session.getAttribute("user");
 
-
-        users = userDAO.findAll();
+        try {
+            users = userDAO.findAll();
+        }catch (Exception e) {
+            response.getWriter().println("There was a problem when we get all the users" + e);
+        }
         //TODO use pagination structure to get a users list
         pagination = new Pagination(1,1);
 
@@ -88,34 +91,44 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         switch (action) {
 
             case "MODIFYPrivilege":
-              email = request.getParameter("email");
-              privilege = request.getParameter("privilege");
-              userToUpdate = userDAO.findByIdEmail(email);
+                try {
+                    email = request.getParameter("email");
+                    privilege = request.getParameter("privilege");
+                    userToUpdate = userDAO.findByIdEmail(email);
 
-              if (userToUpdate != null) {
-                userToUpdate.setAdmin(Integer.parseInt(privilege) == 1);
-                userDAO.updateAdmin(userToUpdate);
-              } else {
-                //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
-              }
+                    if (userToUpdate != null) {
+                        userToUpdate.setAdmin(Integer.parseInt(privilege) == 1);
+                        userDAO.updateAdmin(userToUpdate);
+                    } else {
+                        //apiApplication envoyé par le formulaire introuvable dans la liste d'applications
+                        throw new Exception("apiApplication envoyé par le formulaire introuvable dans la liste d'applications");
+                    }
+                } catch (Exception e) {
+                    response.getWriter().println("There was a problem when modify the privilege of a user" + e);
+                }
               break;
 
+
             case "MODIFYStatus":
-              email = request.getParameter("email");
-              status = request.getParameter("status");
+                try {
+                    email = request.getParameter("email");
+                    status = request.getParameter("status");
 
-              userToUpdate = userDAO.findByIdEmail(email);
+                    userToUpdate = userDAO.findByIdEmail(email);
 
-              if (userToUpdate.getState() == 2) {
-                //Blocking force modification of a user by administrateur
-                // when user is in instance to change password
-              }
-              else if (userToUpdate != null) {
-                userToUpdate.setState(Integer.parseInt(status));
-                userDAO.updateState(userToUpdate);
-              } else {
-                //TODO ERREUR : apiApplication envoyé par le formulaire introuvable dans la liste d'applications
-              }
+                    if (userToUpdate.getState() == 2) {
+                        //Blocking force modification of a user by administrateur
+                        // when user is in instance to change password
+                    } else if (userToUpdate != null) {
+                        userToUpdate.setState(Integer.parseInt(status));
+                        userDAO.updateState(userToUpdate);
+                    } else {
+                        //apiApplication envoyé par le formulaire introuvable dans la liste d'applications
+                        throw new Exception("apiApplication envoyé par le formulaire introuvable dans la liste d'applications");
+                    }
+                } catch (Exception e) {
+                    response.getWriter().println("There was a problem when modify the status of a user" + e);
+                }
               break;
 
           case "RESET":
@@ -135,11 +148,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
                   userDAO.updateState(userToUpdate);
 
 
-                } catch (MessagingException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                  response.getWriter().println("There was a problem when we reset the password of a user" + e);
                 }
-
-              //
               break;
           default:
               // TODO handle no vallue when post

@@ -299,3 +299,4 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   - test numéro 3 : on ré-essaie d'accéder à la page "Applications" sans que nous soyons connecté.
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
     - Si la problématique n'est pas gérée, on est redirigé sur "Applications".
+

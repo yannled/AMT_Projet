@@ -131,6 +131,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        throw new RuntimeException("EXPLOSIONNNNNNN !!!!");
     }
 
     @Override

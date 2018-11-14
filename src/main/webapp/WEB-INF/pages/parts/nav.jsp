@@ -12,7 +12,7 @@
             <li><a href="home">Home</a></li>
             <li><a href="applications">Applications</a></li>
             <c:if test="${isAdmin}">
-                <li><a href="admin">App Developers</a></li>
+                <li><a href="admin">Manage User</a></li>
             </c:if>
         </ul>
         <ul class="ml-auto">

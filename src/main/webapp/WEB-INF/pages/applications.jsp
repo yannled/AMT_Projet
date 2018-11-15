@@ -13,15 +13,15 @@
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <%@ include file="parts/nav.jsp" %>
             <div class="wrap-main">
-                <div class="projects-left">
-                    <nav class="navbar navbar-left">
-                    <ul>
-                        <c:if test="${empty showUser && empty userEmail}">
+                <c:if test="${empty showUser && empty userEmail}">
+                    <div class="projects-left">
+                        <nav class="navbar navbar-left">
+                        <ul>
                             <li><a id="addAppLink" data-toggle="modal" data-target="#addApp">Add Application</a></li>
-                        </c:if>
-                    </ul>
-                    </nav>
-                </div>
+                        </ul>
+                        </nav>
+                    </div>
+                </c:if>
                 <div class="projects-right">
                     <%@ include file="include/listapp.jsp" %>
                 </div>

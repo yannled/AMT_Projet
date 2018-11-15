@@ -61,9 +61,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
         try {
             if (request.getParameterMap().containsKey("showUser") && request.getParameterMap().containsKey("userEmail") && request.getParameter("showUser").equals("SHOWUSER") && currentUser.isAdmin()) {
                 email = request.getParameter("userEmail");
-                //applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
-            } else {
-                //applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
             }
 
             System.out.print("currentpage : " + currentPage + "records per page " + recordPerPage);
@@ -76,6 +73,26 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
             request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
+<<<<<<< HEAD
+=======
+        // define number of applications per page
+        //pagination.setRecordsPerPage(recordPerPage, applications.size());
+
+        // define if a page is choose
+        //if(request.getParameter("value") != null)
+        //    pagination.setCurrentPage(Integer.parseInt(request.getParameter("value")));
+
+        // define position of first Element and last element
+        //int firstElement = pagination.getFirstElement();
+        //int lastElement = pagination.getLastElement(applications.size());
+
+        // define a sublist with element to show
+        //List<Application> tempList = applications.subList(firstElement,lastElement);
+
+        //int noOfRecords = applications.size();
+        //int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / pagination.getRecordsPerPage());
+
+>>>>>>> 9f59a9791429cab0c577530a2288f04eadbee4d5
         int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / recordPerPage);
 
         request.setAttribute("isAdmin", currentUser.isAdmin());
@@ -99,7 +116,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("pageEnd", pageEnd);
 
         // We give the attributes comming from the admin part (there will be tested if empty in the jsp file
-
         request.setAttribute("showUser", request.getParameter("showUser"));
         request.setAttribute("userEmail", request.getParameter("userEmail"));
 

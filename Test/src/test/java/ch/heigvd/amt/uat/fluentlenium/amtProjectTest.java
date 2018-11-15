@@ -26,7 +26,7 @@ public class amtProjectTest extends FluentTest {
 
   private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
 
-  private final String TEST_EMAIL_OK = "test3@gmail.com";
+  private final String TEST_EMAIL_OK = "test@gmail.com";
   private final String TEST_PASSWORD_OK = "1234";
 
   @Page
@@ -220,6 +220,28 @@ public class amtProjectTest extends FluentTest {
     // Try to access application page
     goTo(baseUrl+applicationsPage.getUrl());
     loginPage.isAt();
+  }
+
+  @Test
+  @ProbeTest(tags = "WebUI")
+  public void ItShouldCreateAlotOfApplicationForPaginationTest() {
+    final int numberOfApplicationsToCreate = 1000;
+    String appName = "";
+    goTo(baseUrl);
+    loginPage.typeEmailAddress(TEST_EMAIL_OK);
+    loginPage.typePassword(TEST_PASSWORD_OK);
+    loginPage.clickSignin();
+    goTo(baseUrl+applicationsPage.getUrl());
+
+    // Create some applications
+    for (int i = 0; i < numberOfApplicationsToCreate; i++){
+      appName = "application Test" + Integer.toString(i);
+      applicationsPage.clickAddApp();
+      await().atMost(2, TimeUnit.SECONDS).until("#addApp").areDisplayed();
+      applicationsPage.typeAppName(appName);
+      applicationsPage.typeAppDescription("Application de testing" + Integer.toString(i));
+      applicationsPage.clickSubmitApp();
+    }
   }
 
   @Override

@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "INSERT INTO tbProject (projectName, projectDescription, projectCreationDate, APIKey, APISecret)
+         VALUES" >> insertfile.txt
+
+for((i=1; i<=50000; i++))
+	do echo "('ApplicationTest"$i"', 'Description ', NOW(),"$i", 'a"$i"'),">> insertfile.txt
+done
+
+echo "('ApplicationTest"$i"', 'Description ', NOW(),50001, 'a50001');">> insertfile.txt
+
+echo "INSERT INTO tbUserProject (userId, projectId) VALUES" >> insertfile.txt
+
+for((i=1; i<=50000; i++))
+	do echo "('2','"$i"'),">> insertfile.txt
+done
+echo "('2','50001');">> insertfile.txt
+echo "terminé"

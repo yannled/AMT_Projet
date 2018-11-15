@@ -11,7 +11,7 @@
             <td></td>
         <tr style="max-height: 150px">
             <td><strong>Description</strong></td>
-            <td style="word-break: break-all; height: 150px">
+            <td style="word-break: break-all; height: 400px; width: 800px">
                 <div style="overflow-y:scroll; height:100%">
                     ${ application.description }
                 </div>

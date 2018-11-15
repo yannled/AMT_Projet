@@ -166,6 +166,7 @@ public class amtProjectTest extends FluentTest {
     applicationsPage.clickSubmitAppModify();
     assertThat(applicationsPage.pageSource()).contains(appName);
     applicationsPage.isAt();
+
   }
 
   @Test

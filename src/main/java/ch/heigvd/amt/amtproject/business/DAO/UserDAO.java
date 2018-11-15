@@ -58,7 +58,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             ps.execute();
 
-            return null;//rs.getLong(1);
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -131,7 +131,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        throw new RuntimeException("EXPLOSSSSIONNN");
     }
 
     @Override
@@ -273,7 +272,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 curUser.setName(rs.getString("userFirstName"));
                 users.add(curUser);
             }
-            System.out.println("FindUsers " + users);
             return users;
 
         } catch (SQLException e) {
@@ -282,7 +280,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
     }
 
     public boolean isValid(String emailUser, String password) {
-        String email;
         String passwordHash;
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(getUserEmailPassword);
@@ -293,7 +290,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
             ps.execute();
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                email = rs.getString("userEmail");
                 passwordHash = rs.getString("userPassword");
             } else {
                 return false;
@@ -396,5 +392,12 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updateProfil(User currentUser, InputStream is, Boolean changeAvatar, String email, String firstName, String lastName){
+        if(changeAvatar)
+            updateAvatar(currentUser.getId(), is);
+        updateEmail(currentUser.getId(), email);
+        updateName(currentUser.getId(), firstName, lastName);
     }
 }

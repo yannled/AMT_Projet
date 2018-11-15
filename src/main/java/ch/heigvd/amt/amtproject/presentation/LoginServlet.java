@@ -42,6 +42,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         List<Error> errors = new ArrayList<>();
         Error errorPassword = new Error();
         Error errorEmail = new Error();
+        Error errorInactive = new Error();
 
         boolean syntaxOK = true;
 
@@ -73,12 +74,18 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
 
                     // si le status est changedPassword redirect to change password
                     // TODO use enums for status
-                    if (currentUser.getState() == 2) {
-                        request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                    switch (currentUser.getState()) {
+                        case 0:
+                            errorInactive.setErrorText("Inactive account.<br> Contact an administrator!");
+                            errorInactive.setError(true);
+                            break;
+                        case 1:
+                            request.getRequestDispatcher(HOME).forward(request, response);
+                            break;
+                        case 2:
+                            request.getRequestDispatcher(PSWCHANGE).forward(request, response);
+                            break;
                     }
-
-                    request.getRequestDispatcher(HOME).forward(request, response);
-                    return;
                 } else {
                     errorPassword.setErrorText("wrong password");
                     errorPassword.setError(true);
@@ -97,6 +104,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
 
         errors.add(errorEmail);
         errors.add(errorPassword);
+        errors.add(errorInactive);
 
         request.setAttribute("errors", errors);
         request.getRequestDispatcher(LOGIN).forward(request, response);

@@ -6,6 +6,35 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 - Création de compte
 - Gestion de ses applications
 
+### Effectuer les tests :
+
+1. Accédez aux tests se trouvant dans le dossier "Test" sur le repository github.
+
+2. Ouvrez les tests avec le pom.xml
+
+3. Installez le webdriver Chorme : http://chromedriver.chromium.org/getting-started
+
+4. Dans le fichier `amtProjectTest.java` modifier la méthode `getDefaultDriver` avec le liens de votre driver que vous venez d'installer :
+
+   ```java
+   @Override
+   public WebDriver getDefaultDriver() {
+     //return new FirefoxDriver();
+     System.setProperty("webdriver.chrome.driver", "/home/zutt/Documents/sync/Heig/AMT/ChromeDriver/chromedriver");
+     return new ChromeDriver();
+   }
+   ```
+
+5. Dans le fichier `amtProjectTest.java` modifier le baseUrl pour qu'il pointe sur votre site web en développement:
+
+   ```java
+   private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
+   ```
+
+5. Assurez vous d'avoir une base de donnée sans projets existant (afin de ne pas bloquer les tests et avoir de duplication de ApiKey)
+
+6. Lancez les tests et vérifier qu'ils soient tous passé correctement.
+
 ### Tests effectués :
 
 - ```java

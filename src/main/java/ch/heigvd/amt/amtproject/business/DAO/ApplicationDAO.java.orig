@@ -1,5 +1,9 @@
 package ch.heigvd.amt.amtproject.business.DAO;
+<<<<<<< HEAD
+
 import ch.heigvd.amt.amtproject.business.PasswordUtils;
+=======
+>>>>>>> a7a44e560e1784bc641da972c04711b156c81dde
 import ch.heigvd.amt.amtproject.model.Application;
 
 import javax.annotation.Resource;
@@ -7,8 +11,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.sql.DataSource;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,8 +24,6 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     private final String createApplication = "INSERT INTO tbProject (projectName, projectDescrition ,APIKey, APISecret) VALUES (?,?,?,?)";
     private final String modifyApplication = "UPDATE tbProject SET projectName = ?, projectDescrition = ? WHERE APIKey = ? AND APISecret = ?";
-    private final String getProjectsByPage = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject   " +
-            "ORDER BY projectId OFFSET 10 * ((?) - 1) ROWS FETCH NEXT 10 ROWS ONLY;";
     private final String getProjects = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject";
     private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
     private final String getProjectById = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE projectId = (?)";
@@ -64,7 +64,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             ResultSet rs = ps2.executeQuery();
 
             if (rs.next()) {
-                return (long)rs.getInt("projectId");
+                return (long) rs.getInt("projectId");
             }
             return -1L;
 
@@ -73,13 +73,13 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
         }
     }
 
-    public Long bindAppToUser(long idApp, long idUser){
+    public Long bindAppToUser(long idApp, long idUser) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(bindAppToUser);
 
             // insert data into statement.
-            ps.setInt(1, (int)idUser);
-            ps.setInt(2, (int)idApp);
+            ps.setInt(1, (int) idUser);
+            ps.setInt(2, (int) idApp);
 
             ps.execute();
             return null;
@@ -99,7 +99,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             while (rs.next()) {
                 Application application = new Application();
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -124,7 +124,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
                 Application application = new Application();
                 application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -240,6 +240,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public Application findById(Long id) {

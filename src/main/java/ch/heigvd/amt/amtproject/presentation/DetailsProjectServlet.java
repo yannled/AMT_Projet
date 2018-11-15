@@ -1,7 +1,6 @@
 package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAOLocal;
-import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
@@ -13,12 +12,12 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @WebServlet("/details_project")
 public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
     private Application application = null;
-    private List<User> users;
+    private List<User> usersOfProject;
+    private List<User> allUsers;
     private static String DETAILS_PROJECT = "/WEB-INF/pages/details_project.jsp";
 
     @EJB
@@ -43,9 +42,9 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
         if(idRequest != "") {
             try {
                 Long idProject = Long.parseLong(idRequest);
-                System.out.println("idProject : " + idProject);
                 application = applicationDAO.findById(idProject);
-                users = userDAO.findAllByProjectId(idProject);
+                usersOfProject = userDAO.findAllByProjectId(idProject);
+                allUsers = userDAO.findAll();
             }catch(Exception e) {
                 request.setAttribute("error","There was a problem when we get the details of an application");
                 request.setAttribute("errorContent",e.getMessage());
@@ -53,13 +52,25 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
             }
         }
 
-        System.out.println("Users doGet : " + users);
         request.setAttribute("application", application);
-        request.setAttribute("users", users);
+        request.setAttribute("users", usersOfProject);
+        request.setAttribute("allUsers", allUsers);
         request.getRequestDispatcher(DETAILS_PROJECT).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
+        Long idAddUser = Long.parseLong(request.getParameter("addUser"));
+        Long idProjectid = Long.parseLong(request.getParameter("idProject"));
+
+        //Add a new user to a project
+        try {
+            applicationDAO.bindAppToUser(idProjectid, idAddUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         doGet(request, response);
     }
 }

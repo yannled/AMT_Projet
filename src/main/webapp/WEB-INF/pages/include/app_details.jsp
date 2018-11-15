@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: p-stackouses
-  Date: 10/19/18
-  Time: 10:59 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="projects-right">
@@ -13,25 +6,47 @@
     <c:if test="${not empty application.name}">
     <table class="table table-striped">
         <tr>
-            <th scope="col">Application Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Developers</th>
-            <th scope="col">API key</th>
-            <th scope="col">APIsecret</th>
+            <td><strong>Application</strong></td>
+            <td>${application.name}</td>
+            <td></td>
+        <tr style="max-height: 150px">
+            <td><strong>Description</strong></td>
+            <td style="word-break: break-all; height: 150px">
+                <div style="overflow-y:scroll; height:100%">
+                    ${ application.description }
+                </div>
+            </td>
+            <td></td>
         </tr>
-        <tr>
-            <td>${ application.name }</td>
-            <td><c:out value="${ application.description }"/></td>
-            <c:if test="${not empty users}">
+        <c:if test="${not empty users}">
+            <tr>
+                <td><strong>Developpers</strong></td>
                 <td>
-                <c:forEach items="${ users }" var="user" varStatus="counter">
-                        <c:out value="${ user.lastName }"/>
-                        <c:out value=" ${ user.name }"/>
-                </c:forEach>
+                    <c:forEach items="${ users }" var="user" varStatus="counter">
+                       ${user.name} ${user.lastName} <br/>
+                    </c:forEach>
                 </td>
-            </c:if>
-            <td><c:out value="${ application.apikey }"/></td>
-            <td><c:out value="${ application.apiSecret }"/></td>
+                <td>
+                    <form action="details_project?idProject=${application.id}" method="post">
+                        <select name="addUser">
+                            <c:forEach items="${ allUsers }" var="user" varStatus="counter">
+                                <option name="${user.id}" value="${user.id}">${user.name} ${user.lastName}</option>>
+                            </c:forEach>
+                        </select>
+                        <button type="submit" class="btn btn-danger">Add User</button>
+                    </form>
+                </td>
+            </tr>
+        </c:if>
+        <tr>
+            <td><strong>API Key</strong></td>
+            <td>${application.apikey}</td>
+            <td></td>
+        </tr
+        <tr>
+            <td><strong>API Secret Key</strong></td>
+            <td>${application.apiSecret}</td>
+            <td></td>
         </tr>
     </table>
     </c:if>

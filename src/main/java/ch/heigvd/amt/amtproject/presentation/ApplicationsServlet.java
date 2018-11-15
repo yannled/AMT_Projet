@@ -12,8 +12,6 @@ import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -118,9 +116,9 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
         long currentUserId = currentUser.getId();
 
         String action = request.getParameter("action");
-        String name = "";
-        String description = "";
-        String apiKey = "";
+        String name;
+        String description;
+        String apiKey;
 
         if (action.equals("MODIFY")) {
             try {
@@ -129,7 +127,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                 description = request.getParameter("description");
 
                 Application myApplicationToModify = applicationDAO.findByApiKey(Integer.parseInt(apiKey));
-                System.out.println("######################################################################### " + myApplicationToModify.getName());
 
                 if (myApplicationToModify != null) {
                     myApplicationToModify.setName(name);

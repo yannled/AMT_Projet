@@ -7,12 +7,9 @@ import ch.heigvd.amt.amtproject.model.User;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -146,7 +143,6 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
             }catch (Exception e){
                 // TODO: make a better error handle
-                System.out.print(e.getMessage());
                 request.setAttribute("error","There was a problem when we create this user or when we generate the hash of this password.");
                 request.setAttribute("errorContent",e.getMessage());
                 request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);

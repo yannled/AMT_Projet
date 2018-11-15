@@ -1,12 +1,8 @@
 package ch.heigvd.amt.amtproject.presentation;
 
-import ch.heigvd.amt.amtproject.model.User;
-import ch.heigvd.amt.amtproject.model.VerifySession;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/error")

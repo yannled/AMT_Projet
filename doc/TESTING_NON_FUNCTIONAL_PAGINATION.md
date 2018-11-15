@@ -49,9 +49,9 @@ La pagination côté servlet signifie que l'on charge toutes les applications de
 
 Ici on test avec 50'000 applications générées et 10 applications par page. 
 
-![1542290594681](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000Serveur.png)
+![1542290594681](./img/test50000Serveur.png)
 
-![1542290692558](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000ServeurZoom.png)
+![1542290692558](./img/test50000ServeurZoom.png)
 
 On voit que le chargement entier se termine après environ 500ms.
 
@@ -59,7 +59,7 @@ Plus précisément il faut 234ms pour charger le contenu de la page applications
 
 Etat des mes resources lors de ce test, mais rien n'est très parlant.
 
-![1542271974431](/home/zutt/.config/Typora/typora-user-images/1542271974431.png)
+![1542271974431](./img/resource.png)
 
 
 
@@ -69,9 +69,9 @@ La pagination SQL signifie que l'on charge seulement les applications que l'on v
 
 Ici on test avec 50'000 applications générées et 10 applications par page. 
 
-![1542290293501](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000ServeurSQL.png)
+![1542290293501](./img/test50000ServeurSQL.png)
 
-![1542290345240](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000ServeurSQLZoom.png)
+![1542290345240](./img/test50000ServeurSQLZoom.png)
 
 On voit que le chargement entier se termine après environ 400ms. Ce qui ne fait pas une grande différence.
 
@@ -83,13 +83,13 @@ Avec seulement 2 applications chargée par page la différence est minimum par r
 
 
 
-![1542290903421](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000ServeurSQLZoom2App.png)
+![1542290903421](./img/test50000ServeurSQLZoom2App.png)
 
 #### Avec 30 applications par page :
 
 Avec seulement 30 applications chargée par page le temps de chargement est légérement plus long mais de peu.
 
-![1542291042027](/home/zutt/Documents/sync/Heig/AMT/AMT_Projet/doc/img/test50000ServeurSQLZoom30App.png)
+![1542291042027](./img/test50000ServeurSQLZoom30App.png)
 
 ### Conclusion
 

@@ -29,28 +29,36 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
     private final String getProjectById = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE projectId = (?)";
     private final String deleteProject = "DELETE FROM tbProject WHERE APIKey = ?";
     private final String deleteRelationBetweenAppAndUser = "DELETE FROM tbUserProject WHERE projectId = ?";
-    private final String getProjectsByUser = "SELECT tbProject.projectId, projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
+    private final String getProjectsByUser = "SELECT tbProject.projectId , projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
     private final String bindAppToUser = "INSERT INTO tbUserProject (userId, projectId) VALUES (?,?)";
+    private final String getAppCount = "SELECT count(*) AS total FROM tbProject";
+    private final String getAppsByUserPaging = "SELECT tbProject.projectId, projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId " +
+            "JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?) LIMIT ? OFFSET ?";
+    private final String getMaxAppKey = "SELECT MAX(APIKey) AS maxKey FROM tbProject";
 
 
     @Resource(name = "jdbc/AMTProject")
     DataSource dataSource;
 
     @Override
-    public Long create(Application application){
+    public Long create(Application application) {
+        int nextApikey = getLastApiKey() + 1;
+
+        System.out.print(nextApikey);
+
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(createApplication);
 
             // insert data into statement.
             ps.setString(1, application.getName());
             ps.setString(2, application.getDescription());
-            ps.setInt(3, application.getApikey());
+            ps.setInt(3, nextApikey);
             ps.setString(4, application.getApiSecret());
 
             ps.execute();
 
             PreparedStatement ps2 = connection.prepareStatement(getProjectsByApiKey);
-            ps2.setInt(1, application.getApikey());
+            ps2.setInt(1, nextApikey);
 
             ps2.execute();
             ResultSet rs = ps2.executeQuery();
@@ -74,7 +82,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             ps.setInt(2, (int)idApp);
 
             ps.execute();
-            return null;//rs.getLong(1);
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -90,6 +98,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             List<Application> projectList = new ArrayList<>();
             while (rs.next()) {
                 Application application = new Application();
+                application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
                 application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
                 application.setApikey(rs.getInt("APIKey"));
@@ -129,20 +138,24 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
         }
     }
 
-    // TODO could be used to get only the requested pages from the database
-    public List<Application> getProjectsPage(int pageNumber) {
+    public List<Application> getAppByPage(String email, int pageNumber, int pageSize) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(getProjectsByPage);
+            PreparedStatement ps = connection.prepareStatement(getAppsByUserPaging);
 
             // insert data into statement.
-            ps.setInt(1, pageNumber);
+            ps.setString(1, email);
+            ps.setInt(2, pageSize);
+            ps.setInt(3, (pageNumber-1) * pageSize);
 
             ps.execute();
             ResultSet rs = ps.executeQuery();
 
+            System.out.print(rs);
+
             List<Application> projectList = new ArrayList<>();
             while (rs.next()) {
                 Application application = new Application();
+                application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
                 application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
@@ -216,7 +229,18 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
 
     @Override
     public long count() {
-        return 0;
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getAppCount);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -268,6 +292,23 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int getLastApiKey(){
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(getMaxAppKey);
+
+            ps.execute();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maxKey");
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public List<Application> findAll() {

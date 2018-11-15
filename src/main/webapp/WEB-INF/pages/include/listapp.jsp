@@ -144,7 +144,7 @@
     The when condition does not display a link for the current page--%>
     <table class="pagination-table" border="0" cellpadding="5" cellspacing="5">
         <tr>
-            <c:forEach begin="1" end="${noOfPages}" var="i">
+            <c:forEach begin="${pageBegin}" end="${pageEnd}" var="i">
                 <c:choose>
                     <c:when test="${currentPage eq i}">
                         <form action="applications" method="get">

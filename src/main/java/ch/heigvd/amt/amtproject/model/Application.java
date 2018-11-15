@@ -15,10 +15,6 @@ public class Application {
         KeyGenerator kg = new KeyGenerator();
         this.name = name;
         this.description = description;
-        System.out.print("hoho");
-        //this.apikey = kg.generateNumberKey();
-        System.out.print("haha");
-
         this.apiSecret = kg.generateRandomKey();
     }
 

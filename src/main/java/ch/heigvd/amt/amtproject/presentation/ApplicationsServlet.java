@@ -43,6 +43,8 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
 
         //PAGINATION
         int recordPerPage = 10;
+        // defines the number of pages in the list of choices before and after the current.
+        int nbPageArroundCurrent = 5;
 
         if(request.getParameter("value") != null) {
             currentPage = Integer.parseInt(request.getParameter("value"));
@@ -59,9 +61,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
         try {
             if (request.getParameterMap().containsKey("showUser") && request.getParameterMap().containsKey("userEmail") && request.getParameter("showUser").equals("SHOWUSER") && currentUser.isAdmin()) {
                 email = request.getParameter("userEmail");
-                //applications = applicationDAO.getProjectsByUser(request.getParameter("userEmail"));
-            } else {
-                //applications = applicationDAO.getProjectsByUser(currentUser.getEmail());
             }
 
             System.out.print("currentpage : " + currentPage + "records per page " + recordPerPage);
@@ -74,34 +73,29 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
             request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
-        //pagination = new Pagination(1,1);
-
-        // define number of applications per page
-        //pagination.setRecordsPerPage(recordPerPage, applications.size());
-
-        // define if a page is choose
-        //if(request.getParameter("value") != null)
-        //    pagination.setCurrentPage(Integer.parseInt(request.getParameter("value")));
-
-        // define position of first Element and last element
-        //int firstElement = pagination.getFirstElement();
-        //int lastElement = pagination.getLastElement(applications.size());
-
-        // define a sublist with element to show
-        //List<Application> tempList = applications.subList(firstElement,lastElement);
-
-        //int noOfRecords = applications.size();
-        //int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / pagination.getRecordsPerPage());
-
         int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / recordPerPage);
 
         request.setAttribute("isAdmin", currentUser.isAdmin());
         request.setAttribute("applications", applications);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", currentPage);
+        int pageBegin;
+        int pageEnd;
+        if(currentPage - nbPageArroundCurrent <= 0){
+            pageBegin = 1;
+        } else {
+            pageBegin = currentPage - nbPageArroundCurrent ;
+        }
+        if(currentPage + nbPageArroundCurrent >= noOfPages){
+            pageEnd = noOfPages;
+        } else {
+            pageEnd = currentPage + nbPageArroundCurrent;
+        }
+
+        request.setAttribute("pageBegin", pageBegin);
+        request.setAttribute("pageEnd", pageEnd);
 
         // We give the attributes comming from the admin part (there will be tested if empty in the jsp file
-
         request.setAttribute("showUser", request.getParameter("showUser"));
         request.setAttribute("userEmail", request.getParameter("userEmail"));
 

@@ -74,8 +74,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
             request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);
         }
 
-        //pagination = new Pagination(1,1);
-
         // define number of applications per page
         //pagination.setRecordsPerPage(recordPerPage, applications.size());
 

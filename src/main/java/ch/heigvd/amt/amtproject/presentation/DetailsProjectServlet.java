@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 @WebServlet("/details_project")
 public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
     private Application application = null;
-    private List<User> users;
+    private List<User> usersOfProject;
+    private List<User> allUsers;
     private static String DETAILS_PROJECT = "/WEB-INF/pages/details_project.jsp";
 
     @EJB
@@ -45,7 +46,8 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
                 Long idProject = Long.parseLong(idRequest);
                 System.out.println("idProject : " + idProject);
                 application = applicationDAO.findById(idProject);
-                users = userDAO.findAllByProjectId(idProject);
+                usersOfProject = userDAO.findAllByProjectId(idProject);
+                allUsers = userDAO.findAll();
             }catch(Exception e) {
                 request.setAttribute("error","There was a problem when we get the details of an application");
                 request.setAttribute("errorContent",e.getMessage());
@@ -53,13 +55,25 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
             }
         }
 
-        System.out.println("Users doGet : " + users);
         request.setAttribute("application", application);
-        request.setAttribute("users", users);
+        request.setAttribute("users", usersOfProject);
+        request.setAttribute("allUsers", allUsers);
         request.getRequestDispatcher(DETAILS_PROJECT).forward(request, response);
     }
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+        new VerifySession(request.getSession(), request, response).redirectIfNoUser();
+
+        Long idAddUser = Long.parseLong(request.getParameter("addUser"));
+        Long idProjectid = Long.parseLong(request.getParameter("idProject"));
+
+        //Add a new user to a project
+        try {
+            applicationDAO.bindAppToUser(idProjectid, idAddUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         doGet(request, response);
     }
 }

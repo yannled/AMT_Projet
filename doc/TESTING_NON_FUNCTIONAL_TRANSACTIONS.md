@@ -4,7 +4,7 @@
 
 ### Implémentation de la gestion des transactions :
 
-- Pour gérer les transaction nous avons utilisé l'annotation suivante :
+- Pour gérer les transaction, nous avons utilisé l'annotation suivante :
 
   `@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)`
 
@@ -14,7 +14,7 @@
 
 ### Erreur générée : 
 
-Dans la méthode `updateEmail` du `UserDAO.java` j'ai manuellement throw une excecption:
+Dans la méthode `updateEmail` du `UserDAO.java`, j'ai manuellement throw une excecption:
 
 ```java
 @Override
@@ -34,7 +34,7 @@ public void updateEmail(Long id, String email) {
 }
 ```
 
-Cette méthode est utilisée dans la méthode `updateProfile` du `UserDAO`
+Cette méthode est utilisée dans la méthode `updateProfile` du `UserDAO`:
 
 ```java
 public void updateProfil(User currentUser, InputStream is, Boolean changeAvatar, String email, String firstName, String lastName){
@@ -45,7 +45,7 @@ public void updateProfil(User currentUser, InputStream is, Boolean changeAvatar,
 }
 ```
 
-Cette dernière méthode est utilisée dans le `ProfileServlet.java`
+Cette dernière méthode est utilisée dans le `ProfileServlet.java`:
 
 ```java
 case "MODIFY":
@@ -105,13 +105,13 @@ case "MODIFY":
 
 ### Resumé du test :
 
-Lors que l'on est sur la page `Profile` et qu'on modifie son profile, si on modifie l'email de l'utilisateur . L'erreur précédement ajoutée dans la méthode `updateEmail` va throw une exception et nous seront redirigé sur la page d'erreur. Ensuite si on revient sur la page de profile, on remarque que la transaction  bien eu lieu et que l'email n'a pas été modifié ainsi que les autres champs.
+Lorsque l'on est sur la page `Profile` et qu'on modifie son profil, si on modifie l'email de l'utilisateur, l'erreur précédemment ajoutée dans la méthode `updateEmail` va throw une exception et nous seront redirigés sur la page d'erreur. Ensuite, si on revient sur la page de profil, on remarque que la transaction a bien eu lieu et que l'email n'a pas été modifié ainsi que les autres champs.
 
 ### Etapes des tests avec screenshots
 
 1. On se connecte et on va sur la page : http://amtprojet:8080/amtprojetRemote/profile
 
-2. On clic sur "Modify Profile"
+2. On clique sur "Modify Profile"
 
 3. Valeurs initiales : 
 
@@ -121,13 +121,13 @@ Lors que l'on est sur la page `Profile` et qu'on modifie son profile, si on modi
 
    ![1542222041512](./img/profileModify.png)
 
-5. On clic sur "Apply" On sait qu'un erreur va être levée dans l'application du changement d'email.
+5. On clique sur "Apply". On sait qu'une erreur va être levée dans l'application du changement d'email.
 
 6. On arrive sur la page suivante : 
 
    ![1542222136971](./img/errorProfile.png)
 
-7. Ensuite si on retourne sur la page de profile, on remarque que les valeurs n'ont pas été modifiée et donc le rollback à fonctionné :
+7. Ensuite, si on retourne sur la page de profil, on remarque que les valeurs n'ont pas été modifiées et donc le rollback a fonctionné :
 
    ![1542222189083](./img/newProfile.png)
 

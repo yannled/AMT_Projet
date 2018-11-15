@@ -1,6 +1,6 @@
 # Test fonctionnels
 
-Nous avons crée des tests permettant de vérifier le bon fonctionement de squelette principal de notre application, c'est à dire : 
+Nous avons crée des tests permettant de vérifier le bon fonctionnement de squelette principal de notre application, c'est-à-dire : 
 
 - Login
 - Création de compte
@@ -8,13 +8,13 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
 ### Effectuer les tests :
 
-1. Accédez aux tests se trouvant dans le dossier "Test" sur le repository github.
+1. Accédez aux tests se trouvant dans le dossier "Test" sur le repository Github.
 
 2. Ouvrez les tests avec le pom.xml
 
-3. Installez le webdriver Chorme : http://chromedriver.chromium.org/getting-started
+3. Installez le webdriver Chrome : http://chromedriver.chromium.org/getting-started
 
-4. Dans le fichier `amtProjectTest.java` modifier la méthode `getDefaultDriver` avec le liens de votre driver que vous venez d'installer :
+4. Dans le fichier `amtProjectTest.java`, modifiez la méthode `getDefaultDriver` avec le lien de votre driver que vous venez d'installer :
 
    ```java
    @Override
@@ -25,15 +25,15 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
    }
    ```
 
-5. Dans le fichier `amtProjectTest.java` modifier le baseUrl pour qu'il pointe sur votre site web en développement:
+5. Dans le fichier `amtProjectTest.java`, modifiez le `baseUrl` pour qu'il pointe sur votre site web en développement:
 
    ```java
    private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
    ```
 
-5. Assurez vous d'avoir une base de donnée sans projets existant (afin de ne pas bloquer les tests et avoir de duplication de ApiKey)
+5. Assurez-vous d'avoir une base de donnée sans projets existant (afin de ne pas bloquer les tests et avoir de duplication de ApiKey)
 
-6. Lancez les tests et vérifier qu'ils soient tous passé correctement.
+6. Lancez les tests et vérifiez qu'ils soient tous passés correctement.
 
 ### Tests effectués :
 
@@ -55,7 +55,7 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Register"
   - Problématique testée : Email manquant dans le formulaire de création de compte 
-  - test principal effectué : page chargée à la fin de la création de compte
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Register".
     - Si la problématique n'est pas gérée, on est redirigé sur "Home".
 
@@ -78,7 +78,7 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Register"
   - Problématique testée : premier password et second password différents dans le formulaire de création de compte. 
-  - test principal effectué : page chargée à la fin de la création de compte
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Register".
     - Si la problématique n'est pas gérée, on est redirigé sur "Home".
 
@@ -100,7 +100,7 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Register"
   - Problématique testée : création d'un compte fonctionnelle.
-  - test principal effectué : page chargée à la fin de la création de compte
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Home".
     - Si la problématique n'est pas gérée, on est redirigé sur "Register".
 
@@ -119,7 +119,7 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Login"
   - Problématique testée : login avec un email invalide : (sans @)
-  - test principal effectué : page chargée à la fin de la création de compte
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
     - Si la problématique n'est pas gérée, on est redirigé sur "Home".
 
@@ -137,13 +137,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   ```
 
   - Page testée : "Login"
-
   - Problématique testée : login sans adresse email.
-
-  - test principal effectué : page chargée à la fin de la création de compte
-
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
-
     - Si la problématique n'est pas gérée, on est redirigé sur "Home".
 
 - ```java
@@ -160,13 +156,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   ```
 
   - Page testée : "Login"
-
   - Problématique testée : login sans mot de passe.
-
-  - test principal effectué : page chargée à la fin de la création de compte
-
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
-
     - Si la problématique n'est pas gérée, on est redirigé sur "Home".
 
 - ```java
@@ -184,11 +176,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Login"
   - Problématique testée : login fonctionnel
-  - test principal effectué : page chargée à la fin de la création de compte
+  - Test principal effectué : page chargée à la fin de la création de compte
     - Si le test est fonctionnel, on est redirigé sur la page "Home".
     - Si la problématique n'est pas gérée, on est redirigé sur "Login".
-
-
 
 - ```java
   @Test
@@ -211,13 +201,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   ```
 
   - Page testée : "Applications"
-
   - Problématique testée : ajout d'une application et test si l'application existe.
-
-  - test principal effectué : nous testons si nous retrouvons l'application  précédement créée dans la liste d'applications.
-
+  - Test principal effectué : nous testons si nous retrouvons l'application  précédement créée dans la liste d'applications.
     - Si le test est fonctionnel, l'assertion est accéptée.
-
     - Si la problématique n'est pas gérée, l'assertion va générer une erreur.
 
 - ```java
@@ -241,13 +227,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   ```
 
   - Page testée : "Applications"
-
   - Problématique testée : modification d'une application et test si l'application existe.
-
-  - test principal effectué : nous testons si nous retrouvons l'application  précédement modifiée dans la liste d'applications.
-
+  - Test principal effectué : nous testons si nous retrouvons l'application  précédement modifiée dans la liste d'applications.
     - Si le test est fonctionnel, l'assertion est accéptée.
-
     - Si la problématique n'est pas gérée, l'assertion va générer une erreur.
 
 - ```java
@@ -269,13 +251,9 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
   ```
 
   - Page testée : "Applications"
-
   - Problématique testée : suppression d'une application et test si l'application n'existe pas.
-
-  - test principal effectué : nous verifions que nous retrouvions  pas l'application précédement supprimée dans la liste d'applications.
-
+  - Test principal effectué : nous verifions que nous retrouvions  pas l'application précédement supprimée dans la liste d'applications.
     - Si le test est fonctionnel, l'assertion est accéptée.
-
     - Si la problématique n'est pas gérée, l'assertion va générer une erreur.
 
 - ```java
@@ -319,13 +297,13 @@ Nous avons crée des tests permettant de vérifier le bon fonctionement de squel
 
   - Page testée : "Login" , "Applications"
   - Problématique testée : Login avec un utilisateur précédement créé, création de plusieurs applications, déplacement avec les boutons de pagination, logout puis vérification que ne puissions plus accéder à la liste d'applications.
-  - test numéro 1 : Nous vérifions que après la création des applications nous sommes toujours sur la page app et que nous puissions naviguer avec les boutons de pagination.
+  - Test numéro 1 : Nous vérifions que après la création des applications, nous sommes toujours sur la page app et que nous puissions naviguer avec les boutons de pagination.
     - Si le test est fonctionnel, on est redirigé sur la page "Applications?value=<<monNuméroDePage>>".
     - Si la problématique n'est pas gérée, on est redirigé sur "Applications".
-  - test numéro 2 : On se logout et on vérifie qu'on se trouve sur la bonne page.
+  - Test numéro 2 : On se logout et on vérifie qu'on se trouve sur la bonne page.
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
     - Si la problématique n'est pas gérée, on est redirigé sur "Applications".
-  - test numéro 3 : on ré-essaie d'accéder à la page "Applications" sans que nous soyons connecté.
+  - Test numéro 3 : on ré-essaie d'accéder à la page "Applications" sans que nous soyons connecté.
     - Si le test est fonctionnel, on est redirigé sur la page "Login".
     - Si la problématique n'est pas gérée, on est redirigé sur "Applications".
 

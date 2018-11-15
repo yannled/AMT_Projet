@@ -2,7 +2,7 @@ Gestion de la pagination
 
 ### Problème sans pagination
 
-Sans la pagination, la page devrait télécharger l'intégralité des informations de la base de données et les afficher sur une seule page ce qui rendrait le cahrgement très long, les données à gérer très lourdes et surchargerait visuelement la page.
+Sans la pagination, la page devrait télécharger l'intégralité des informations de la base de données et les afficher sur une seule page ce qui rendrait le chargement très long, les données à gérer très lourdes et surchargerait visuelement la page.
 
 ### Utilité de la pagination
 
@@ -10,7 +10,7 @@ La pagination permet de diminuer les quantités affichées sur une page ce qui e
 
 ### Test sur la pagination
 
-Pour tester cela, on a fait uns script un script bash pour générer des entrée SQL :
+Pour tester cela, on a fait un script bash pour générer des entrées SQL :
 
 ```bash
 #!/bin/bash
@@ -34,11 +34,11 @@ echo "terminé"
 
 **Pour l'utiliser :** 
 
-1. rendre ce fichier exécutable : `chmod a+x <monscript>`
-2. exécuter son script `./<monscript>`
-3. ouvrez le script de base de donnée `02-AMTProjectDatabaseInsert.sql`
-   - enlever les insert dans `tbProject` et dans `tbUserProject`
-4. Envoyez les données générée dans `02-AMTProjectDatabaseInsert.sql`
+1. Rendez ce fichier exécutable : `chmod a+x <monscript>`
+2. Exécutez son script `./<monscript>`
+3. Ouvrez le script de base de données `02-AMTProjectDatabaseInsert.sql`
+   - enlever les inserts dans `tbProject` et dans `tbUserProject`
+4. Envoyez les données générées dans `02-AMTProjectDatabaseInsert.sql`
    - Pour cela : `cat insertfile.txt >> 02-AMTProjectDatabaseInsert.sql`
 
 
@@ -55,9 +55,9 @@ Ici on test avec 50'000 applications générées et 10 applications par page.
 
 On voit que le chargement entier se termine après environ 500ms.
 
-Plus précisément il faut 234ms pour charger le contenu de la page applications.
+Plus précisément, il faut 234ms pour charger le contenu de la page applications.
 
-Etat des mes resources lors de ce test, mais rien n'est très parlant.
+Etat de mes resources lors de ce test, mais rien n'est très parlant.
 
 ![1542271974431](./img/resource.png)
 
@@ -75,11 +75,11 @@ Ici on test avec 50'000 applications générées et 10 applications par page.
 
 On voit que le chargement entier se termine après environ 400ms. Ce qui ne fait pas une grande différence.
 
-Par contre si on regarde que la partie chargement de la page applications, là on dimininue fortement le temps de chargement qui descent à 56ms.
+Par contre, si on regarde que la partie chargement de la page applications, là on dimininue fortement le temps de chargement qui descent à 56ms.
 
 #### Avec 2 applications par page : 
 
-Avec seulement 2 applications chargée par page la différence est minimum par rappot à 10 applications par page.
+Avec seulement 2 applications chargée par page, la différence est minimum par rappot à 10 applications par page.
 
 
 
@@ -87,21 +87,21 @@ Avec seulement 2 applications chargée par page la différence est minimum par r
 
 #### Avec 30 applications par page :
 
-Avec seulement 30 applications chargée par page le temps de chargement est légérement plus long mais de peu.
+Avec seulement 30 applications chargée par page, le temps de chargement est légérement plus long mais de peu.
 
 ![1542291042027](./img/test50000ServeurSQLZoom30App.png)
 
 ### Conclusion
 
-Première conclusion, les valeurs de temps de chargement des page n'est vérifie pas que le chargement des applications depuis la base de donnée, mais aussi l'affichage du Dom de la page, Le jsp a été le même pour chaque test mais si on affiche plus ou moins d'applications le chargement peut en être impacté.
+Première conclusion, les valeurs de temps de chargement des pages vérifie le chargement des applications depuis la base de données et aussi l'affichage du DOM de la page. Le jsp a été le même pour chaque test mais si on affiche plus ou moins d'applications, le chargement peut en être impacté.
 
-Deuxièmement l'amélioration que l'on a fait sur la pagination en passant d'une pagination côté servlet à une pagination côté SQL à bel et bien amélioré le temps de réponse.
+Deuxièmement, l'amélioration que l'on a fait sur la pagination en passant d'une pagination côté servlet à une pagination côté SQL à bel et bien amélioré le temps de réponse.
 
-troisièment, plus la base de données est remplie, plus cette différence sera visible. Nous pensons aussi que si nous passions par le réseau entre la base de donnée et notre code et non pas en local, ces différences seraient plus marquées.
+Troisièment, plus la base de données est remplie, plus cette différence sera visible. Nous pensons aussi que si nous passions par le réseau entre la base de données et notre code et non pas en local, ces différences seraient plus marquées.
 
 ### Code de pagination serveur
 
-On remarque que l'on récupère toutes les applications de la base de donnée pour chaque requête Get.
+On remarque que l'on récupère toutes les applications de la base de données pour chaque requête Get.
 
 ```java
 protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {

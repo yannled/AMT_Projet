@@ -1,2 +1,2 @@
-FROM mysql:5.7.23
+FROM mysql:latest
 ADD scripts/ /docker-entrypoint-initdb.d/

@@ -1,24 +1,34 @@
 package ch.heigvd.amt.amtproject.business;
 
+import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAOLocal;
+import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
+import ch.heigvd.amt.amtproject.model.Application;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.ejb.EJB;
 import java.util.UUID;
 
 public class KeyGenerator {
 
-    private static int autoKey = 0;
 
-    public static int generateNumberKey(){
-        return autoKey++;
+   /* public int generateNumberKey() {
+        try {
+            return applicationDAO.getLastApiKey() + 1;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }*/
+
+    public String generateRandomKey() {
+        try {
+            String uniqueID = UUID.randomUUID().toString();
+            return uniqueID;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
-    public static String generateRandomKey(){
-        String uniqueID = UUID.randomUUID().toString();
-        uniqueID += String.valueOf(autoKey);
-        return uniqueID;
-    }
-
-    public static String generateRandomPassword(int length){
+    public static String generateRandomPassword(int length) {
         if (length < 6)
             throw new IllegalArgumentException("min size = 6");
         return RandomStringUtils.randomAlphabetic(length);

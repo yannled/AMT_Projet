@@ -12,10 +12,14 @@ public class Application {
     public Application(){}
 
     public Application(String name, String description){
+        KeyGenerator kg = new KeyGenerator();
         this.name = name;
         this.description = description;
-        this.apikey = KeyGenerator.generateNumberKey();
-        this.apiSecret = KeyGenerator.generateRandomKey();
+        System.out.print("hoho");
+        //this.apikey = kg.generateNumberKey();
+        System.out.print("haha");
+
+        this.apiSecret = kg.generateRandomKey();
     }
 
     public int getId() { return id; }

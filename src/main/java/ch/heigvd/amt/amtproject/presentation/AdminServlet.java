@@ -10,14 +10,11 @@ import ch.heigvd.amt.amtproject.business.EmailSender;
 
 
 import javax.ejb.EJB;
-import javax.mail.MessagingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 
@@ -85,9 +82,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        String privilege = "";
-        String email = "";
-        String status = "";
+        String privilege;
+        String email;
+        String status;
         User userToUpdate;
 
         switch (action) {

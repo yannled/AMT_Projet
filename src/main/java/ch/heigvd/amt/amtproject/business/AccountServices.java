@@ -19,8 +19,6 @@ public class AccountServices {
         }
         user.setState(0);
         userDAO.update(user);
-        // TODO : suspenssion du compte
-        // Return 1 if win 0 il error
         return 1;
     }
 
@@ -30,11 +28,9 @@ public class AccountServices {
         if(!administrator.isAdmin()){
             throw new RightException("You need to be admin to suspend an account");
         }
-        // TODO: reset la password du compte.
         String newPassword = KeyGenerator.generateRandomPassword(length);
         user.setPassword(newPassword);
         userDAO.update(user);
-        // Return 1 if win 0 il error
         return 1;
     }
 
@@ -44,10 +40,8 @@ public class AccountServices {
         if(!administrator.isAdmin()){
             throw new RightException("You need to be admin to suspend an account");
         }
-        // TODO: reset la password du compte.
         user.setState(newState);
         userDAO.update(user);
-        // Return 1 if win 0 il error
         return 1;
     }
 }

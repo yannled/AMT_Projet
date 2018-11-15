@@ -1,7 +1,6 @@
 package ch.heigvd.amt.amtproject.presentation;
 
 import ch.heigvd.amt.amtproject.business.DAO.ApplicationDAOLocal;
-import ch.heigvd.amt.amtproject.business.DAO.UserDAO;
 import ch.heigvd.amt.amtproject.business.DAO.UserDAOLocal;
 import ch.heigvd.amt.amtproject.model.Application;
 import ch.heigvd.amt.amtproject.model.User;
@@ -13,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @WebServlet("/details_project")
 public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {

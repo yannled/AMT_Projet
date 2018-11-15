@@ -12,9 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.security.KeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 

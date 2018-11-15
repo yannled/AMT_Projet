@@ -1,9 +1,5 @@
 package ch.heigvd.amt.amtproject.model;
 
-import ch.heigvd.amt.amtproject.business.KeyGenerator;
-
-import javax.naming.Name;
-
 public class User {
 
     private Long id;

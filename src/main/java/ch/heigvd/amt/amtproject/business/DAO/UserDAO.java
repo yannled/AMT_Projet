@@ -5,10 +5,8 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.imageio.ImageIO;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -60,7 +58,7 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
 
             ps.execute();
 
-            return null;//rs.getLong(1);
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

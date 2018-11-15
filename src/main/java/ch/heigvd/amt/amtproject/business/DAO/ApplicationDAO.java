@@ -1,5 +1,4 @@
 package ch.heigvd.amt.amtproject.business.DAO;
-import ch.heigvd.amt.amtproject.business.PasswordUtils;
 import ch.heigvd.amt.amtproject.model.Application;
 
 import javax.annotation.Resource;
@@ -7,8 +6,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.sql.DataSource;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -74,7 +71,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             ps.setInt(2, (int)idApp);
 
             ps.execute();
-            return null;//rs.getLong(1);
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +88,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             while (rs.next()) {
                 Application application = new Application();
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -116,7 +113,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
                 Application application = new Application();
                 application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescrition"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 

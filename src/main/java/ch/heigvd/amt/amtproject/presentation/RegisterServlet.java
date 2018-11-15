@@ -7,12 +7,9 @@ import ch.heigvd.amt.amtproject.model.User;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;

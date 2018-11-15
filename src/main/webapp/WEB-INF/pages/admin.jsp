@@ -14,13 +14,6 @@
     <div class="container-login100" style="background-image: url('images/bg-02.jpg');">
         <%@ include file="parts/nav.jsp" %>
             <div class="wrap-main">
-                <div class="projects-left">
-                    <nav class="navbar navbar-left">
-                    <ul>
-                        <li><a data-toggle="modal" data-target="#action">action</a></li>
-                    </ul>
-                    </nav>
-                </div>
                 <div class="projects-right">
                     <%@ include file="include/listusers.jsp" %>
                 </div>

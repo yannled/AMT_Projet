@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS tbUser (
 CREATE TABLE IF NOT EXISTS tbProject (
 	projectId INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	projectName varchar(255) NOT NULL,
-    projectDescrition TEXT,
+    projectDescription TEXT,
 	projectCreationDate datetime DEFAULT CURRENT_TIMESTAMP,
 	APIKey INT UNSIGNED NOT NULL UNIQUE,
 	APISecret varchar(255) NOT NULL UNIQUE

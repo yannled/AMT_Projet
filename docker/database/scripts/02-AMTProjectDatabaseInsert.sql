@@ -18,7 +18,7 @@ VALUES ('Schar', 'Joel', 'joel.schar@heig-vd.ch', '1000:6e159ff5f267d11c3fb1ce46
 
 
 
-INSERT INTO tbProject (projectName, projectDescrition, projectCreationDate, APIKey, APISecret)
+INSERT INTO tbProject (projectName, projectDescription, projectCreationDate, APIKey, APISecret)
          VALUES
 ('ApplicationTest1', 'Description ', NOW(),1, 'a1'),
 ('ApplicationTest2', 'Description ', NOW(),2, 'a2'),

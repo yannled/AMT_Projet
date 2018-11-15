@@ -37,7 +37,7 @@
           <button data-toggle="modal" data-target="#resetPassw-${user.lastName}-${user.name}-${counter.count}"><i class="fas fa-refresh"></i> Reset</button>
         </td>
         <td>
-          <a href="applications?showUser=SHOWUSER&userEmail=<c:out value="${ user.email }"/>">List of applications <i class="fas fa-external-link"></i> </a>
+          <a href="applications?showUser=SHOWUSER&userEmail=<c:out value="${ user.email }"/>">List of applications <i class="fas fa-link"></i> </a>
         </td>
       </tr>
 

@@ -14,7 +14,7 @@ Pour tester cela, on a fait uns script un script bash pour générer des entrée
 
 ```bash
 #!/bin/bash
-echo "INSERT INTO tbProject (projectName, projectDescrition, projectCreationDate, APIKey, APISecret)
+echo "INSERT INTO tbProject (projectName, projectDescription, projectCreationDate, APIKey, APISecret)
          VALUES" >> insertfile.txt
 
 for((i=1; i<=50000; i++))

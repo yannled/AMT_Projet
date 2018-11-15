@@ -20,19 +20,19 @@ import java.util.List;
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOLocal {
 
-    private final String createApplication = "INSERT INTO tbProject (projectName, projectDescrition ,APIKey, APISecret) VALUES (?,?,?,?)";
-    private final String modifyApplication = "UPDATE tbProject SET projectName = ?, projectDescrition = ? WHERE APIKey = ? AND APISecret = ?";
-    private final String getProjectsByPage = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject   " +
+    private final String createApplication = "INSERT INTO tbProject (projectName, projectDescription ,APIKey, APISecret) VALUES (?,?,?,?)";
+    private final String modifyApplication = "UPDATE tbProject SET projectName = ?, projectDescription = ? WHERE APIKey = ? AND APISecret = ?";
+    private final String getProjectsByPage = "SELECT projectName, projectDescription, projectCreationDate, APIKey, APISecret FROM tbProject   " +
             "ORDER BY projectId OFFSET 10 * ((?) - 1) ROWS FETCH NEXT 10 ROWS ONLY;";
-    private final String getProjects = "SELECT projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject";
-    private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
-    private final String getProjectById = "SELECT projectId, projectName, projectDescrition, APIKey,  APISecret FROM tbProject WHERE projectId = (?)";
+    private final String getProjects = "SELECT projectName, projectDescription, projectCreationDate, APIKey, APISecret FROM tbProject";
+    private final String getProjectsByApiKey = "SELECT projectId, projectName, projectDescription, APIKey,  APISecret FROM tbProject WHERE APIKey = (?)";
+    private final String getProjectById = "SELECT projectId, projectName, projectDescription, APIKey,  APISecret FROM tbProject WHERE projectId = (?)";
     private final String deleteProject = "DELETE FROM tbProject WHERE APIKey = ?";
     private final String deleteRelationBetweenAppAndUser = "DELETE FROM tbUserProject WHERE projectId = ?";
-    private final String getProjectsByUser = "SELECT tbProject.projectId , projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
+    private final String getProjectsByUser = "SELECT tbProject.projectId , projectName, projectDescription, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?)";
     private final String bindAppToUser = "INSERT INTO tbUserProject (userId, projectId) VALUES (?,?)";
     private final String getAppCount = "SELECT count(*) AS total FROM tbProject";
-    private final String getAppsByUserPaging = "SELECT tbProject.projectId, projectName, projectDescrition, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId " +
+    private final String getAppsByUserPaging = "SELECT tbProject.projectId, projectName, projectDescription, projectCreationDate, APIKey, APISecret FROM tbProject JOIN tbUserProject on tbUserProject.projectId = tbProject.projectId " +
             "JOIN tbUser on tbUser.userId = tbUserProject.userId WHERE tbUser.userEmail = (?) LIMIT ? OFFSET ?";
     private final String getMaxAppKey = "SELECT MAX(APIKey) AS maxKey FROM tbProject";
 
@@ -100,7 +100,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
                 Application application = new Application();
                 application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescription")); // TODO correct projectDescription name in database
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -125,7 +125,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
                 Application application = new Application();
                 application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition")); // TODO correct projectDescription name in database
+                application.setDescription(rs.getString("projectDescription")); // TODO correct projectDescription name in database
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -157,7 +157,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
                 Application application = new Application();
                 application.setId(rs.getInt("tbProject.projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition"));
+                application.setDescription(rs.getString("projectDescription"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
 
@@ -257,7 +257,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             while (rs.next()) {
                 application.setId(rs.getInt("projectId"));
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition"));
+                application.setDescription(rs.getString("projectDescription"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
             }
@@ -281,7 +281,7 @@ public class ApplicationDAO implements IGenericDAO<Application>, ApplicationDAOL
             Application application = new Application();
             while (rs.next()) {
                 application.setName(rs.getString("projectName"));
-                application.setDescription(rs.getString("projectDescrition"));
+                application.setDescription(rs.getString("projectDescription"));
                 application.setApikey(rs.getInt("APIKey"));
                 application.setApiSecret(rs.getString("APISecret"));
             }

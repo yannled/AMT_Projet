@@ -9,35 +9,35 @@ import java.util.List;
 @Local
 public interface UserDAOLocal extends IGenericDAO<User> {
 
-    Long create(User user) throws Exception;
+    Long create(User user) ;
 
-    void updateState(User user) throws Exception;
+    void updateState(User user) ;
 
-    void updateAdmin(User user) throws Exception;
+    void updateAdmin(User user) ;
 
-    void updateName(Long id, String firstName, String lastName) throws Exception;
+    void updateName(Long id, String firstName, String lastName) ;
 
-    void updateEmail(Long id, String email) throws Exception;
+    void updateEmail(Long id, String email) ;
 
-    void updateAvatar(Long id, InputStream fileContent) throws Exception;
+    void updateAvatar(Long id, InputStream fileContent) ;
 
-    void updatePassword(Long id, String hashPassword) throws Exception;
+    void updatePassword(Long id, String hashPassword) ;
 
-    String getAvatar(Long id) throws Exception;
+    String getAvatar(Long id) ;
 
-    User findById(Long id) throws Exception;
+    User findById(Long id) ;
 
-    User findByIdEmail(String userEmail) throws Exception;
+    User findByIdEmail(String userEmail) ;
 
     List<User> findAllByProjectId(Long projectId);
 
-    List<User> findAll() throws Exception;
+    List<User> findAll() ;
 
-    boolean isExist(String userEmail) throws Exception;
+    boolean isExist(String userEmail) ;
 
-    boolean isValid(String emailUser, String password) throws Exception;
+    boolean isValid(String emailUser, String password) ;
 
-    int countNumbersApplications(String email) throws Exception;
+    int countNumbersApplications(String email) ;
 
     void updateProfil(User currentUser, InputStream is, Boolean changeAvatar, String email, String firstName, String lastName);
 

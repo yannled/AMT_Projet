@@ -143,7 +143,6 @@ public class RegisterServlet extends javax.servlet.http.HttpServlet {
 
             }catch (Exception e){
                 // TODO: make a better error handle
-                System.out.print(e.getMessage());
                 request.setAttribute("error","There was a problem when we create this user or when we generate the hash of this password.");
                 request.setAttribute("errorContent",e.getMessage());
                 request.getRequestDispatcher(ErrorServlet.ERROR).forward(request, response);

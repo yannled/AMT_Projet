@@ -272,7 +272,6 @@ public class UserDAO implements IGenericDAO<User>, UserDAOLocal {
                 curUser.setName(rs.getString("userFirstName"));
                 users.add(curUser);
             }
-            System.out.println("FindUsers " + users);
             return users;
 
         } catch (SQLException e) {

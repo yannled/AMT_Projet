@@ -106,7 +106,6 @@ public class ApplicationsServlet extends javax.servlet.http.HttpServlet {
                 description = request.getParameter("description");
 
                 Application myApplicationToModify = applicationDAO.findByApiKey(Integer.parseInt(apiKey));
-                System.out.println("######################################################################### " + myApplicationToModify.getName());
 
                 if (myApplicationToModify != null) {
                     myApplicationToModify.setName(name);

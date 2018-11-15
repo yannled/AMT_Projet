@@ -122,8 +122,6 @@ public class ProfileServlet extends javax.servlet.http.HttpServlet {
                         ImageIO.write(sourceImage, "jpeg", os);
                         long imgSize = os.size();
 
-                        System.out.print(imgSize);
-
                         is = new ByteArrayInputStream(os.toByteArray());
 
                         if (imgSize < 50000) {

@@ -42,7 +42,6 @@ public class DetailsProjectServlet extends javax.servlet.http.HttpServlet {
         if(idRequest != "") {
             try {
                 Long idProject = Long.parseLong(idRequest);
-                System.out.println("idProject : " + idProject);
                 application = applicationDAO.findById(idProject);
                 usersOfProject = userDAO.findAllByProjectId(idProject);
                 allUsers = userDAO.findAll();

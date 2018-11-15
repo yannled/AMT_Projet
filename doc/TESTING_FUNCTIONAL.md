@@ -1,6 +1,6 @@
 # Test fonctionnels
 
-Nous avons crée des tests permettant de vérifier le bon fonctionnement de squelette principal de notre application, c'est-à-dire : 
+Nous avons crée des tests permettant de vérifier le bon fonctionnement du squelette principal de notre application, c'est-à-dire : 
 
 - Login
 - Création de compte

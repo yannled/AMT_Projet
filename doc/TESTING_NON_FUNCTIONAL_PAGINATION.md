@@ -1,4 +1,4 @@
-Gestion de la pagination
+# Gestion de la pagination
 
 ### Problème sans pagination
 

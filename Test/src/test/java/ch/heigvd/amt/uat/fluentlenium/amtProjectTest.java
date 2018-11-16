@@ -24,7 +24,7 @@ import static org.fluentlenium.core.filter.MatcherConstructor.contains;
  */
 public class amtProjectTest extends FluentTest {
 
-  private final String baseUrl = "http://amtprojet:8080/amtprojetRemote/";
+  private final String baseUrl = "http://localhost:8080/amt_project/";
 
   private final String TEST_EMAIL_OK = "test@gmail.com";
   private final String TEST_PASSWORD_OK = "1234";
@@ -250,7 +250,7 @@ public class amtProjectTest extends FluentTest {
   @Override
   public WebDriver getDefaultDriver() {
     //return new FirefoxDriver();
-    System.setProperty("webdriver.chrome.driver", "/home/zutt/Documents/sync/Heig/AMT/ChromeDriver/chromedriver");
+    System.setProperty("webdriver.chrome.driver", "chromedriver");
     return new ChromeDriver();
   }
 
